@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mana_driver/Login/selectLanguage.dart';
+import 'package:mana_driver/OnBoardingScreens/onboarding_screens.dart';
 import 'package:mana_driver/Widgets/colors.dart';
 import 'package:mana_driver/Widgets/customText.dart';
 
@@ -15,13 +16,10 @@ class _SplashScreenState extends State<SplashScreen> {
   void initState() {
     super.initState();
 
-    // Delay for 2.5 seconds, then navigate to LanguageSelectionScreen
     Future.delayed(const Duration(seconds: 3), () {
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(
-          builder: (context) => const LanguageSelectionScreen(),
-        ),
+        MaterialPageRoute(builder: (context) => OnboardingScreen()),
       );
     });
   }
