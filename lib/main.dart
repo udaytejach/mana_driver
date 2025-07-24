@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:mana_driver/Login/selectLanguage.dart';
 import 'package:mana_driver/Splashscreen/splashScreen.dart';
 
 void main() {
@@ -12,7 +14,12 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: const SplashScreen(),
+      theme: ThemeData(
+        scaffoldBackgroundColor: Colors.white,
+        textTheme: GoogleFonts.poppinsTextTheme(),
+        useMaterial3: true,
+      ),
+      home: const LanguageSelectionScreen(),
     );
   }
 }
