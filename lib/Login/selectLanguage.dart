@@ -64,7 +64,7 @@ class _LanguageSelectionScreenState extends State<LanguageSelectionScreen> {
                               selectedLanguage = newValue;
                             });
                           },
-                          items: const [
+                          items: [
                             DropdownMenuItem(
                               value: 'English',
                               child: Text('English'),
@@ -77,7 +77,7 @@ class _LanguageSelectionScreenState extends State<LanguageSelectionScreen> {
                           decoration: InputDecoration(
                             hintText: 'Choose Language',
                             hintStyle: GoogleFonts.poppins(
-                              color: const Color(0xFF717680),
+                              color: kseegreyColor,
                             ),
                             contentPadding: const EdgeInsets.symmetric(
                               horizontal: 12,

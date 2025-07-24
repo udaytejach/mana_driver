@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mana_driver/Login/selectLanguage.dart';
 import 'package:mana_driver/Widgets/colors.dart';
 import 'package:mana_driver/Widgets/customText.dart';
 
@@ -10,6 +11,21 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
+  @override
+  void initState() {
+    super.initState();
+
+    // Delay for 2.5 seconds, then navigate to LanguageSelectionScreen
+    Future.delayed(const Duration(seconds: 3), () {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder: (context) => const LanguageSelectionScreen(),
+        ),
+      );
+    });
+  }
+
   double dynamicHeight(BuildContext context, double figmaHeight) {
     const baseHeight = 812;
     final screenHeight = MediaQuery.of(context).size.height;

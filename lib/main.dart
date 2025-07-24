@@ -18,8 +18,14 @@ class MyApp extends StatelessWidget {
         scaffoldBackgroundColor: Colors.white,
         textTheme: GoogleFonts.poppinsTextTheme(),
         useMaterial3: true,
+        dropdownMenuTheme: DropdownMenuThemeData(
+          menuStyle: MenuStyle(
+            backgroundColor: MaterialStatePropertyAll(Colors.white),
+            elevation: MaterialStatePropertyAll(4), // optional shadow
+          ),
+        ),
       ),
-      home: const LanguageSelectionScreen(),
+      home: const SplashScreen(),
     );
   }
 }
