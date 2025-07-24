@@ -30,11 +30,15 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
     },
   ];
 
+  String selectedValue = 'English';
+  List<String> languageOptions = ['English', 'Telugu'];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: korangeColor,
       body: Stack(
+        clipBehavior: Clip.none,
         children: [
           Positioned(
             top: -80,
@@ -107,6 +111,48 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
                 border: Border.all(color: korangeBordercolor, width: 1),
+              ),
+            ),
+          ),
+
+          Positioned(
+            top: 70,
+            right: 16,
+            child: Container(
+              width: 120,
+              height: 38,
+              padding: EdgeInsets.symmetric(horizontal: 20),
+              decoration: BoxDecoration(
+                color: KorangeLightColor,
+                borderRadius: BorderRadius.circular(8),
+              ),
+              child: DropdownButtonHideUnderline(
+                child: DropdownButton<String>(
+                  value: selectedValue,
+                  icon: Icon(
+                    Icons.keyboard_arrow_down_rounded,
+                    color: kwhiteColor,
+                  ),
+                  style: TextStyle(color: Colors.white),
+                  dropdownColor: Colors.white,
+                  items:
+                      languageOptions.map((String value) {
+                        return DropdownMenuItem<String>(
+                          value: value,
+                          child: CustomText(
+                            text: value,
+                            fontSize: 14,
+                            fontWeight: FontWeight.w400,
+                            textcolor: kwhiteColor,
+                          ),
+                        );
+                      }).toList(),
+                  onChanged: (newValue) {
+                    setState(() {
+                      selectedValue = newValue!;
+                    });
+                  },
+                ),
               ),
             ),
           ),
