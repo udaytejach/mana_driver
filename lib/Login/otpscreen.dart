@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:mana_driver/Widgets/colors.dart';
 import 'package:mana_driver/Widgets/customText.dart';
@@ -49,7 +50,7 @@ class _OtpScreenState extends State<OtpScreen> {
                           children: [
                             const TextSpan(text: "OTP sent to "),
                             TextSpan(
-                              text: "+91 9133135731",
+                              text: "+91 9133135731 ",
                               style: TextStyle(
                                 color:
                                     korangeColor, // your defined orange color
@@ -68,6 +69,10 @@ class _OtpScreenState extends State<OtpScreen> {
                       Pinput(
                         controller: otpController,
                         length: 4,
+                        keyboardType: TextInputType.number,
+                        inputFormatters: [
+                          FilteringTextInputFormatter.digitsOnly,
+                        ],
                         defaultPinTheme: PinTheme(
                           width: 60,
                           height: 60,

@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:mana_driver/Login/otpscreen.dart';
+import 'package:mana_driver/Login/registration.dart';
 import 'package:mana_driver/Widgets/colors.dart';
 import 'package:mana_driver/Widgets/customText.dart';
+import 'package:country_picker/country_picker.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -12,6 +15,18 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
+  Country selectedCountry = Country(
+    phoneCode: "91",
+    countryCode: "IN",
+    e164Sc: 0,
+    geographic: true,
+    level: 1,
+    name: "India",
+    example: "India",
+    displayName: "India",
+    displayNameNoCountryCode: "India",
+    e164Key: "",
+  );
   final TextEditingController phoneController = TextEditingController();
 
   @override
@@ -50,7 +65,10 @@ class _LoginScreenState extends State<LoginScreen> {
 
                       TextFormField(
                         controller: phoneController,
-                        keyboardType: TextInputType.phone,
+                        keyboardType: TextInputType.number,
+                        inputFormatters: [
+                          FilteringTextInputFormatter.digitsOnly,
+                        ],
                         style: GoogleFonts.poppins(
                           color: korangeColor,
                           fontSize: 16,
@@ -62,31 +80,48 @@ class _LoginScreenState extends State<LoginScreen> {
                             color: Colors.grey,
                             fontSize: 14,
                           ),
-                          prefixIcon: Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              const SizedBox(width: 12),
-                              const Text(
-                                "🇮🇳",
-                                style: TextStyle(fontSize: 20),
+                          prefixIcon: GestureDetector(
+                            onTap: () {
+                              showCountryPicker(
+                                context: context,
+                                showPhoneCode: true,
+                                onSelect: (Country country) {
+                                  setState(() {
+                                    selectedCountry = country;
+                                  });
+                                },
+                              );
+                            },
+                            child: Container(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 8,
                               ),
-                              const SizedBox(width: 8),
-                              Text(
-                                "+91",
-                                style: GoogleFonts.poppins(
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w500,
-                                  color: kseegreyColor,
-                                ),
+                              child: Row(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  Text(
+                                    "${selectedCountry.flagEmoji} ",
+                                    style: const TextStyle(fontSize: 20),
+                                  ),
+                                  const SizedBox(width: 4),
+                                  Text(
+                                    "+${selectedCountry.phoneCode}",
+                                    style: GoogleFonts.poppins(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w500,
+                                      color: kseegreyColor,
+                                    ),
+                                  ),
+                                  const SizedBox(width: 8),
+                                  Container(
+                                    height: 30,
+                                    width: 1,
+                                    color: const Color(0xFFBDBDBD),
+                                  ),
+                                  const SizedBox(width: 8),
+                                ],
                               ),
-                              const SizedBox(width: 8),
-                              Container(
-                                height: 30,
-                                width: 1,
-                                color: const Color(0xFFBDBDBD),
-                              ),
-                              const SizedBox(width: 12),
-                            ],
+                            ),
                           ),
                           contentPadding: const EdgeInsets.symmetric(
                             vertical: 16,
@@ -162,11 +197,21 @@ class _LoginScreenState extends State<LoginScreen> {
                         fontWeight: FontWeight.w500,
                         textcolor: kgreyColor,
                       ),
-                      CustomText(
-                        text: "Register",
-                        fontSize: 14,
-                        fontWeight: FontWeight.w500,
-                        textcolor: korangeColor,
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => RegisterScreen(),
+                            ),
+                          );
+                        },
+                        child: CustomText(
+                          text: "Register",
+                          fontSize: 14,
+                          fontWeight: FontWeight.w500,
+                          textcolor: korangeColor,
+                        ),
                       ),
                     ],
                   ),
