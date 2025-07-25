@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
+
+import 'package:mana_driver/Bottom_NavigationBar/bottomNavigationBar.dart';
+
 import 'package:mana_driver/Widgets/colors.dart';
 import 'package:mana_driver/Widgets/customText.dart';
 import 'package:pinput/pinput.dart';
@@ -141,7 +144,12 @@ class _OtpScreenState extends State<OtpScreen> {
                       height: 50,
                       child: ElevatedButton(
                         onPressed: () {
-                          // TODO: Validate and continue
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => BottomNavigation(),
+                            ),
+                          );
                         },
                         style: ElevatedButton.styleFrom(
                           backgroundColor: korangeColor,
