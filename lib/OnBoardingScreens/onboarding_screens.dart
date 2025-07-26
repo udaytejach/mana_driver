@@ -32,101 +32,35 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
 
   String selectedValue = 'English';
   List<String> languageOptions = ['English', 'Telugu'];
-  // @override
+  @override
   // void dispose() {
   //   FocusScope.of(context).unfocus();
   //   super.dispose();
   // }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: korangeColor,
       body: Stack(
-        clipBehavior: Clip.none,
         children: [
           Positioned(
-            top: -80,
-            left: -74,
-            child: Container(
-              width: 170,
-              height: 170,
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                border: Border.all(color: korangeBordercolor, width: 1),
-              ),
-            ),
-          ),
-          Positioned(
-            top: -80,
-            left: -74,
-            child: Container(
-              width: 220,
-              height: 220,
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                border: Border.all(color: korangeBordercolor, width: 1),
-              ),
-            ),
-          ),
-          Positioned(
-            top: -80,
-            left: -74,
-            child: Container(
-              width: 280,
-              height: 280,
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                border: Border.all(color: korangeBordercolor, width: 1),
-              ),
-            ),
-          ),
-
-          Positioned(
-            top: -80,
-            left: -74,
-            child: Container(
-              width: 350,
-              height: 350,
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                border: Border.all(color: korangeBordercolor, width: 1),
-              ),
-            ),
-          ),
-          Positioned(
-            top: -80,
-            left: -74,
-            child: Container(
-              width: 440,
-              height: 440,
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                border: Border.all(color: korangeBordercolor, width: 1),
-              ),
-            ),
-          ),
-
-          Positioned(
-            top: -80,
-            left: -74,
-            child: Container(
-              width: 530,
-              height: 530,
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                border: Border.all(color: korangeBordercolor, width: 1),
-              ),
+            top: -10,
+            left: -70,
+            child: Image.asset(
+              'images/onboard.png',
+              width: 500,
+              height: 430,
+              fit: BoxFit.contain,
             ),
           ),
 
           Positioned(
             top: 70,
-            right: 16,
+            right: 10,
             child: Container(
               width: 120,
               height: 38,
-              padding: EdgeInsets.symmetric(horizontal: 20),
+              padding: EdgeInsets.symmetric(horizontal: 16),
               decoration: BoxDecoration(
                 color: KorangeLightColor,
                 borderRadius: BorderRadius.circular(8),
@@ -139,7 +73,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                     color: kwhiteColor,
                   ),
                   style: TextStyle(color: Colors.white),
-                  dropdownColor: Colors.white,
+                  dropdownColor: KorangeLightColor,
                   items:
                       languageOptions.map((String value) {
                         return DropdownMenuItem<String>(
@@ -215,9 +149,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     currentIndex == 0
-                        ? SizedBox(
-                          width: 44,
-                        ) // Keeps spacing equal but hides the button
+                        ? SizedBox(width: 44)
                         : Container(
                           height: 44,
                           width: 44,
@@ -247,7 +179,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                         dotColor: Colors.white54,
                         activeDotColor: Colors.white,
                         dotHeight: 9,
-                        dotWidth: 10,
+                        dotWidth: 9,
                         expansionFactor: 5,
                         spacing: 5,
                       ),
