@@ -32,11 +32,11 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
 
   String selectedValue = 'English';
   List<String> languageOptions = ['English', 'Telugu'];
-  @override
-  void dispose() {
-    FocusScope.of(context).unfocus();
-    super.dispose();
-  }
+  // @override
+  // void dispose() {
+  //   FocusScope.of(context).unfocus();
+  //   super.dispose();
+  // }
 
   @override
   Widget build(BuildContext context) {

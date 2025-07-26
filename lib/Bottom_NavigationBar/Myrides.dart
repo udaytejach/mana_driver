@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mana_driver/AppBar/appBar.dart';
 import 'package:mana_driver/Widgets/colors.dart';
 
 import 'package:mana_driver/Widgets/customText.dart';
@@ -33,6 +34,7 @@ class _MyRidesScreenState extends State<MyRidesScreen>
         decoration: BoxDecoration(
           color: isSelected ? Color(0xFFFF6B00) : Color(0xFFF3F4F8),
           borderRadius: BorderRadius.circular(20),
+
           // border: Border.all(color: isSelected ? Colors.orange : Colors.grey),
         ),
         child: Center(
@@ -53,7 +55,7 @@ class _MyRidesScreenState extends State<MyRidesScreen>
 
       color: kwhiteColor,
       shape: RoundedRectangleBorder(
-        side: BorderSide(color: Color(0xFFE0E0E0), width: 0.5),
+        side: BorderSide(color: KcardborderColor, width: 1.0),
         borderRadius: BorderRadius.circular(12),
       ),
       child: Padding(
@@ -207,48 +209,7 @@ class _MyRidesScreenState extends State<MyRidesScreen>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        elevation: 0,
-        backgroundColor: Colors.white,
-        automaticallyImplyLeading: false,
-
-        title: Row(
-          children: [
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: const [
-                CustomText(
-                  text: "Namaskaram,",
-                  textcolor: kseegreyColor,
-                  fontSize: 14,
-                  fontWeight: FontWeight.w500,
-                ),
-                CustomText(
-                  text: "Ranjith Kumar",
-                  textcolor: korangeColor,
-                  fontWeight: FontWeight.w600,
-                  fontSize: 20,
-                ),
-              ],
-            ),
-            Spacer(),
-            Container(
-              padding: const EdgeInsets.all(10),
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                color: Colors.white,
-                border: Border.all(color: KnotificationcircleColor, width: 0.5),
-              ),
-              child: Image.asset(
-                'images/notification.png',
-                width: 24,
-                height: 24,
-                fit: BoxFit.contain,
-              ),
-            ),
-          ],
-        ),
-      ),
+      appBar: const CustomMainAppBar(),
 
       body: Column(
         children: [
@@ -257,15 +218,20 @@ class _MyRidesScreenState extends State<MyRidesScreen>
 
             child: Padding(
               padding: const EdgeInsets.only(top: 20),
-              child: TabBar(
-                controller: _tabController,
-                isScrollable: true,
-                indicator: BoxDecoration(),
-                tabs: [
-                  buildTab("All", 0),
-                  buildTab("Upcoming", 1),
-                  buildTab("Completed", 2),
-                ],
+              child: Material(
+                color: Colors.white,
+                elevation: 0,
+                child: TabBar(
+                  controller: _tabController,
+                  isScrollable: true,
+                  // indicator: BoxDecoration(),
+                  indicatorColor: Colors.transparent,
+                  tabs: [
+                    buildTab("All", 0),
+                    buildTab("Upcoming", 1),
+                    buildTab("Completed", 2),
+                  ],
+                ),
               ),
             ),
           ),

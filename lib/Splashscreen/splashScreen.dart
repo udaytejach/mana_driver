@@ -27,11 +27,11 @@ class _SplashScreenState extends State<SplashScreen> {
     });
   }
 
-  @override
-  void dispose() {
-    FocusScope.of(context).unfocus();
-    super.dispose();
-  }
+  // @override
+  // void dispose() {
+  //   FocusScope.of(context).unfocus();
+  //   super.dispose();
+  // }
 
   double dynamicHeight(BuildContext context, double figmaHeight) {
     const baseHeight = 812;

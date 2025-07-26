@@ -10,3 +10,6 @@ const KorangeLightColor = Color(0xFFFF8A35);
 const KnotificationcircleColor = Color(0xFFDAE1E9);
 const KdeviderColor = Color(0xFFF3F4F8);
 const KbottomnaviconColor = Color(0xFFC5C5C5);
+const KgreenColor = Color(0xFF00D458);
+const KcardborderColor = Color(0xFFE5E8F3);
+const KblackColor = Color(0xFF222222);
