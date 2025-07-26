@@ -41,8 +41,7 @@ class _BottomNavigationState extends State<BottomNavigation> {
             imagePath,
             width: 32,
             height: 32,
-            color:
-                isSelected ? korangeColor : KbottomnaviconColor, // ✅ Color tint
+            color: isSelected ? korangeColor : KbottomnaviconColor,
           ),
           const SizedBox(height: 4),
           Text(

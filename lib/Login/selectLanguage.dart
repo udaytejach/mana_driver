@@ -112,9 +112,7 @@ class _LanguageSelectionScreenState extends State<LanguageSelectionScreen> {
                 ),
                 const Spacer(),
                 Padding(
-                  padding: const EdgeInsets.only(
-                    bottom: 32,
-                  ), // <-- bottom margin
+                  padding: const EdgeInsets.only(bottom: 32),
                   child: Center(
                     child: SizedBox(
                       width: 220,

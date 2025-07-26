@@ -5,6 +5,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:mana_driver/Bottom_NavigationBar/bottomNavigationBar.dart';
 
 import 'package:mana_driver/Widgets/colors.dart';
+import 'package:mana_driver/Widgets/customButton.dart';
 import 'package:mana_driver/Widgets/customText.dart';
 import 'package:pinput/pinput.dart';
 
@@ -54,10 +55,7 @@ class _OtpScreenState extends State<OtpScreen> {
                             const TextSpan(text: "OTP sent to "),
                             TextSpan(
                               text: "+91 9133135731 ",
-                              style: TextStyle(
-                                color:
-                                    korangeColor, // your defined orange color
-                              ),
+                              style: TextStyle(color: korangeColor),
                             ),
                             const TextSpan(
                               text: " this OTP will get auto entering",
@@ -68,7 +66,6 @@ class _OtpScreenState extends State<OtpScreen> {
 
                       const SizedBox(height: 50),
 
-                      // 4-digit OTP input
                       Pinput(
                         controller: otpController,
                         length: 4,
@@ -107,7 +104,6 @@ class _OtpScreenState extends State<OtpScreen> {
 
                       const SizedBox(height: 20),
 
-                      // Resend OTP
                       Align(
                         alignment: Alignment.centerRight,
                         child: RichText(
@@ -135,37 +131,16 @@ class _OtpScreenState extends State<OtpScreen> {
                 ),
                 const Spacer(),
 
-                // Send OTP Button
-                Padding(
-                  padding: const EdgeInsets.only(bottom: 12),
-                  child: Center(
-                    child: SizedBox(
-                      width: 220,
-                      height: 50,
-                      child: ElevatedButton(
-                        onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => BottomNavigation(),
-                            ),
-                          );
-                        },
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: korangeColor,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(70),
-                          ),
-                        ),
-                        child: CustomText(
-                          text: "Sign up",
-                          fontSize: 16,
-                          textcolor: kwhiteColor,
-                          fontWeight: FontWeight.w500,
-                        ),
-                      ),
-                    ),
-                  ),
+                CustomButton(
+                  text: 'Sign up',
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (_) => BottomNavigation()),
+                    );
+                  },
+                  width: 220,
+                  height: 53,
                 ),
 
                 const SizedBox(height: 32),

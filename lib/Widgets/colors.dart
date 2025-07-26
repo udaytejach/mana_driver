@@ -13,3 +13,4 @@ const KbottomnaviconColor = Color(0xFFC5C5C5);
 const KgreenColor = Color(0xFF00D458);
 const KcardborderColor = Color(0xFFE5E8F3);
 const KblackColor = Color(0xFF222222);
+const KredColor = Color(0xFFFF4229);

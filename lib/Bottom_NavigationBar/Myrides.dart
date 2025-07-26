@@ -34,8 +34,6 @@ class _MyRidesScreenState extends State<MyRidesScreen>
         decoration: BoxDecoration(
           color: isSelected ? Color(0xFFFF6B00) : Color(0xFFF3F4F8),
           borderRadius: BorderRadius.circular(20),
-
-          // border: Border.all(color: isSelected ? Colors.orange : Colors.grey),
         ),
         child: Center(
           child: CustomText(
@@ -65,32 +63,6 @@ class _MyRidesScreenState extends State<MyRidesScreen>
             Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // Stack(
-                //   alignment: Alignment.bottomRight,
-                //   children: [
-                //     CircleAvatar(
-                //       radius: 30,
-                //       backgroundImage: AssetImage('images/user.png'),
-                //     ),
-                //     Positioned(
-                //       bottom: 0,
-                //       right: 0,
-                //       child: Container(
-                //         decoration: BoxDecoration(
-                //           shape: BoxShape.circle,
-                //           color: Colors.green,
-                //           border: Border.all(color: Colors.white, width: 2),
-                //         ),
-                //         padding: const EdgeInsets.all(4),
-                //         child: const Icon(
-                //           Icons.check,
-                //           size: 12,
-                //           color: Colors.white,
-                //         ),
-                //       ),
-                //     ),
-                //   ],
-                // ),
                 Stack(
                   alignment: Alignment.bottomCenter,
                   children: [
@@ -103,11 +75,7 @@ class _MyRidesScreenState extends State<MyRidesScreen>
                       child: Container(
                         width: 20,
                         height: 20,
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          // color: Colors.white,
-                          // border: Border.all(color: Colors.white, width: 2),
-                        ),
+                        decoration: BoxDecoration(shape: BoxShape.circle),
                         child: ClipOval(
                           child: Image.asset(
                             'images/verified.png',
@@ -224,7 +192,7 @@ class _MyRidesScreenState extends State<MyRidesScreen>
                 child: TabBar(
                   controller: _tabController,
                   isScrollable: true,
-                  // indicator: BoxDecoration(),
+
                   indicatorColor: Colors.transparent,
                   tabs: [
                     buildTab("All", 0),

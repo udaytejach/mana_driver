@@ -6,6 +6,7 @@ import 'package:mana_driver/Sidemenu/favoriteDriverScreen.dart';
 import 'package:mana_driver/Sidemenu/helpAndSupportScreen.dart';
 import 'package:mana_driver/Sidemenu/myAddressScreen.dart';
 import 'package:mana_driver/Sidemenu/offersScreen.dart';
+import 'package:mana_driver/Sidemenu/profilePage.dart';
 import 'package:mana_driver/Sidemenu/referScreen.dart';
 import 'package:mana_driver/Sidemenu/termsAndConditions.dart';
 import 'package:mana_driver/Sidemenu/updateMobilescreen.dart';
@@ -42,41 +43,49 @@ class _MenuScreenState extends State<MenuScreen> {
         children: [
           const SizedBox(height: 46),
 
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              // Circle image
-              const CircleAvatar(
-                radius: 30,
-                backgroundImage: AssetImage('images/user.png'),
-              ),
-              const SizedBox(width: 12),
-              // Column with two texts
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: const [
-                    CustomText(
-                      text: "Ranjith Kumar",
-                      fontSize: 18,
-                      fontWeight: FontWeight.w600,
-                      textcolor: korangeColor,
-                    ),
-                    SizedBox(height: 4),
-                    CustomText(
-                      text: "rohi**********17@gmail.com",
-                      fontSize: 12,
-                      fontWeight: FontWeight.w300,
-                      textcolor: kseegreyColor,
-                    ),
-                  ],
+          InkWell(
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const ProfileScreen()),
+              );
+            },
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                // Circle image
+                const CircleAvatar(
+                  radius: 30,
+                  backgroundImage: AssetImage('images/user.png'),
                 ),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Image.asset("images/chevronRight.png"),
-              ),
-            ],
+                const SizedBox(width: 12),
+                // Column with two texts
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: const [
+                      CustomText(
+                        text: "Ranjith Kumar",
+                        fontSize: 18,
+                        fontWeight: FontWeight.w600,
+                        textcolor: korangeColor,
+                      ),
+                      SizedBox(height: 4),
+                      CustomText(
+                        text: "rohi**********17@gmail.com",
+                        fontSize: 12,
+                        fontWeight: FontWeight.w300,
+                        textcolor: kseegreyColor,
+                      ),
+                    ],
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Image.asset("images/chevronRight.png"),
+                ),
+              ],
+            ),
           ),
 
           const SizedBox(height: 5),
@@ -166,7 +175,7 @@ class _MenuScreenState extends State<MenuScreen> {
                         );
                         break;
                       case 'Logout':
-                        _showLogoutDialog(); // Or handle logout logic here
+                        _showLogoutDialog();
                         break;
                     }
                   },

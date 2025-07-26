@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:mana_driver/Login/selectLanguage.dart';
-import 'package:mana_driver/OnBoardingScreens/onboarding_screens.dart';
+
 import 'package:mana_driver/Splashscreen/splashScreen.dart';
 
 void main() {

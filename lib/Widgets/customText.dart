@@ -6,6 +6,8 @@ class CustomText extends StatelessWidget {
   final double fontSize;
   final FontWeight fontWeight;
   final Color textcolor;
+  final bool underline;
+  final Color? underlineColor;
 
   const CustomText({
     super.key,
@@ -13,6 +15,8 @@ class CustomText extends StatelessWidget {
     required this.fontSize,
     required this.fontWeight,
     required this.textcolor,
+    this.underline = false,
+    this.underlineColor,
   });
 
   @override
@@ -23,6 +27,8 @@ class CustomText extends StatelessWidget {
         fontSize: fontSize,
         fontWeight: fontWeight,
         color: textcolor,
+        decoration: underline ? TextDecoration.underline : TextDecoration.none,
+        decorationColor: underline ? (underlineColor ?? textcolor) : null,
       ),
     );
   }
