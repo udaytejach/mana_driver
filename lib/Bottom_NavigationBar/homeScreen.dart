@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:mana_driver/Location/driverAssigned.dart';
 import 'package:mana_driver/Widgets/colors.dart';
 import 'package:mana_driver/Widgets/customText.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
@@ -551,7 +552,14 @@ class _HomeScreenState extends State<HomeScreen> {
                           vertical: 5,
                         ),
                       ),
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (_) => DriverAssignedScreen(),
+                          ),
+                        );
+                      },
                       child: CustomText(
                         text: "Book A Driver",
                         fontSize: 16,
