@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:mana_driver/Login/selectLanguage.dart';
+import 'package:flutter/services.dart';
+import 'package:google_fonts/google_fonts.dart';
+
 import 'package:mana_driver/Sidemenu/aboutManaDriver.dart';
 import 'package:mana_driver/Sidemenu/cancellationPolicyScreen.dart';
 import 'package:mana_driver/Sidemenu/favoriteDriverScreen.dart';
@@ -9,9 +11,13 @@ import 'package:mana_driver/Sidemenu/offersScreen.dart';
 import 'package:mana_driver/Sidemenu/profilePage.dart';
 import 'package:mana_driver/Sidemenu/referScreen.dart';
 import 'package:mana_driver/Sidemenu/termsAndConditions.dart';
-import 'package:mana_driver/Sidemenu/updateMobilescreen.dart';
+
 import 'package:mana_driver/Widgets/colors.dart';
+import 'package:mana_driver/Widgets/customButton.dart';
 import 'package:mana_driver/Widgets/customText.dart';
+import 'package:mana_driver/Widgets/customTextField.dart';
+import 'package:mana_driver/Widgets/customoutlinedbutton.dart';
+import 'package:pinput/pinput.dart';
 
 class MenuScreen extends StatefulWidget {
   const MenuScreen({super.key});
@@ -21,6 +27,8 @@ class MenuScreen extends StatefulWidget {
 }
 
 class _MenuScreenState extends State<MenuScreen> {
+  String? selectedLanguage;
+  final TextEditingController nameController = TextEditingController();
   final List<Map<String, dynamic>> menuItems = [
     {'image': 'images/address.png', 'title': 'My Address'},
     {'image': 'images/favorite.png', 'title': 'Favourite Drivers'},
@@ -32,6 +40,8 @@ class _MenuScreenState extends State<MenuScreen> {
     {'image': 'images/support.png', 'title': 'Help & Support'},
     {'image': 'images/policy.png', 'title': 'Cancellation policy'},
     {'image': 'images/aboutMD.png', 'title': 'About Mana Driver'},
+    {'image': 'images/delete_acnt.png', 'title': 'Delete Account'},
+
     {'image': 'images/logout.png', 'title': 'Logout'},
   ];
 
@@ -115,19 +125,246 @@ class _MenuScreenState extends State<MenuScreen> {
                         );
                         break;
                       case 'Update Mobile Number':
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (_) => UpdateMobileScreen(),
-                          ),
+                        showDialog(
+                          context: context,
+                          builder: (context) {
+                            final otpController = TextEditingController();
+
+                            return AlertDialog(
+                              backgroundColor: kwhiteColor,
+                              title: const CustomText(
+                                text: 'Update mobile number',
+                                textcolor: KblackColor,
+                                fontSize: 18,
+                                fontWeight: FontWeight.w600,
+                              ),
+                              content: SingleChildScrollView(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    CustomTextField(
+                                      controller: nameController,
+                                      labelText: 'Enter Mobile',
+                                    ),
+                                    const SizedBox(height: 20),
+                                    const CustomText(
+                                      text: 'Enter OTP',
+                                      textcolor: KblackColor,
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                    const SizedBox(height: 10),
+                                    Pinput(
+                                      controller: otpController,
+                                      length: 4,
+                                      keyboardType: TextInputType.number,
+                                      inputFormatters: [
+                                        FilteringTextInputFormatter.digitsOnly,
+                                      ],
+                                      defaultPinTheme: PinTheme(
+                                        width: 60,
+                                        height: 60,
+                                        textStyle: GoogleFonts.poppins(
+                                          fontSize: 20,
+                                          fontWeight: FontWeight.w600,
+                                          color: korangeColor,
+                                        ),
+                                        decoration: BoxDecoration(
+                                          border: Border.all(
+                                            color: kbordergreyColor,
+                                          ),
+                                          borderRadius: BorderRadius.circular(
+                                            10,
+                                          ),
+                                        ),
+                                        margin: const EdgeInsets.symmetric(
+                                          horizontal: 10,
+                                        ),
+                                      ),
+                                      focusedPinTheme: PinTheme(
+                                        width: 60,
+                                        height: 60,
+                                        textStyle: GoogleFonts.poppins(
+                                          fontSize: 20,
+                                          fontWeight: FontWeight.w600,
+                                          color: Colors.black,
+                                        ),
+                                        decoration: BoxDecoration(
+                                          border: Border.all(
+                                            color: korangeColor,
+                                            width: 2,
+                                          ),
+                                          borderRadius: BorderRadius.circular(
+                                            10,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                    const SizedBox(height: 10),
+                                    Align(
+                                      alignment: Alignment.centerRight,
+                                      child: RichText(
+                                        text: TextSpan(
+                                          style: GoogleFonts.poppins(
+                                            fontSize: 14,
+                                            color: kgreyColor,
+                                            fontWeight: FontWeight.w400,
+                                          ),
+                                          children: [
+                                            const TextSpan(
+                                              text: "You didn’t receive OTP? ",
+                                            ),
+                                            TextSpan(
+                                              text: "Resend OTP",
+                                              style: TextStyle(
+                                                color: korangeColor,
+                                                fontWeight: FontWeight.w600,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              actions: [
+                                Row(
+                                  children: [
+                                    Expanded(
+                                      child: CustomCancelButton(
+                                        onPressed: () {
+                                          Navigator.pop(context);
+                                        },
+                                      ),
+                                    ),
+                                    const SizedBox(width: 12),
+                                    Expanded(
+                                      child: CustomButton(
+                                        onPressed: () {
+                                          Navigator.pop(context);
+                                        },
+                                        text: "Update",
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            );
+                          },
                         );
                         break;
+
                       case 'App language':
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (_) => LanguageSelectionScreen(),
-                          ),
+                        showDialog(
+                          context: context,
+                          builder: (context) {
+                            final otpController = TextEditingController();
+
+                            return AlertDialog(
+                              backgroundColor: kwhiteColor,
+
+                              content: SingleChildScrollView(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: const CustomText(
+                                        text: 'Change Your App Language',
+                                        textcolor: KblackColor,
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.w600,
+                                      ),
+                                    ),
+                                    const SizedBox(height: 10),
+                                    SizedBox(
+                                      height: 58,
+                                      child: DropdownButtonFormField<String>(
+                                        isExpanded: true,
+                                        value: selectedLanguage,
+                                        onChanged: (newValue) {
+                                          setState(() {
+                                            selectedLanguage = newValue;
+                                          });
+                                        },
+                                        items: [
+                                          DropdownMenuItem(
+                                            value: 'English',
+                                            child: Text('English'),
+                                          ),
+                                          DropdownMenuItem(
+                                            value: 'Telugu',
+                                            child: Text('Telugu'),
+                                          ),
+                                        ],
+                                        decoration: InputDecoration(
+                                          hintText: 'Choose Language',
+                                          hintStyle: GoogleFonts.poppins(
+                                            color: kseegreyColor,
+                                          ),
+                                          contentPadding:
+                                              const EdgeInsets.symmetric(
+                                                horizontal: 12,
+                                                vertical: 16,
+                                              ),
+                                          fillColor: kwhiteColor,
+                                          filled: true,
+                                          border: OutlineInputBorder(
+                                            borderRadius: BorderRadius.circular(
+                                              10,
+                                            ),
+                                            borderSide: const BorderSide(
+                                              color: Color(0xFFE0E0E0),
+                                            ),
+                                          ),
+                                          enabledBorder: OutlineInputBorder(
+                                            borderRadius: BorderRadius.circular(
+                                              10,
+                                            ),
+                                            borderSide: const BorderSide(
+                                              color: Color(0xFFD5D7DA),
+                                            ),
+                                          ),
+                                          focusedBorder: OutlineInputBorder(
+                                            borderRadius: BorderRadius.circular(
+                                              10,
+                                            ),
+                                            borderSide: const BorderSide(
+                                              color: Color(0xFFD5D7DA),
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                    const SizedBox(height: 10),
+                                  ],
+                                ),
+                              ),
+                              actions: [
+                                Row(
+                                  children: [
+                                    Expanded(
+                                      child: CustomCancelButton(
+                                        onPressed: () {
+                                          Navigator.pop(context);
+                                        },
+                                      ),
+                                    ),
+                                    const SizedBox(width: 12),
+                                    Expanded(
+                                      child: CustomButton(
+                                        onPressed: () {
+                                          Navigator.pop(context);
+                                        },
+                                        text: "Change",
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            );
+                          },
                         );
                         break;
                       case 'Offers':
@@ -172,6 +409,69 @@ class _MenuScreenState extends State<MenuScreen> {
                           MaterialPageRoute(
                             builder: (_) => AboutManaDriverScreen(),
                           ),
+                        );
+                        break;
+                      case 'Delete Account':
+                        showDialog(
+                          context: context,
+                          builder: (context) {
+                            final otpController = TextEditingController();
+
+                            return AlertDialog(
+                              backgroundColor: kwhiteColor,
+
+                              content: SingleChildScrollView(
+                                child: Center(
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    children: [
+                                      const SizedBox(height: 10),
+                                      Image.asset("images/deleteacnt.png"),
+                                      const SizedBox(height: 10),
+                                      CustomText(
+                                        text: "Warning",
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.w600,
+                                        textcolor: KblackColor,
+                                      ),
+                                      const SizedBox(height: 10),
+
+                                      CustomText(
+                                        text:
+                                            "Are you sure want to delete your account?",
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.w400,
+                                        textcolor: kseegreyColor,
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                              actions: [
+                                Row(
+                                  children: [
+                                    Expanded(
+                                      child: CustomCancelButton(
+                                        onPressed: () {
+                                          Navigator.pop(context);
+                                        },
+                                      ),
+                                    ),
+                                    const SizedBox(width: 12),
+                                    Expanded(
+                                      child: CustomButton(
+                                        onPressed: () {
+                                          Navigator.pop(context);
+                                        },
+                                        text: "Confirm",
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            );
+                          },
                         );
                         break;
                       case 'Logout':

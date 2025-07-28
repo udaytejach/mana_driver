@@ -3,6 +3,8 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:mana_driver/AppBar/appBar.dart';
+import 'package:mana_driver/AppBar/notificationScreen.dart';
 import 'package:mana_driver/Location/driverAssigned.dart';
 import 'package:mana_driver/Widgets/colors.dart';
 import 'package:mana_driver/Widgets/customText.dart';
@@ -125,6 +127,8 @@ class _HomeScreenState extends State<HomeScreen> {
                     top: 50,
                     left: 16,
                     right: 16,
+
+                    // child: CustomMainAppBar(),
                     child: Row(
                       children: [
                         Column(
@@ -145,26 +149,37 @@ class _HomeScreenState extends State<HomeScreen> {
                           ],
                         ),
                         Spacer(),
-                        Container(
-                          padding: const EdgeInsets.all(10),
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            color: Colors.white,
-                            border: Border.all(
-                              color: KnotificationcircleColor,
-                              width: 1,
+                        GestureDetector(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (_) => NotificationScreen(),
+                              ),
+                            );
+                          },
+                          child: Container(
+                            padding: const EdgeInsets.all(10),
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              color: Colors.white,
+                              border: Border.all(
+                                color: KnotificationcircleColor,
+                                width: 1,
+                              ),
                             ),
-                          ),
-                          child: Image.asset(
-                            'images/notification.png',
-                            width: 24,
-                            height: 24,
-                            fit: BoxFit.contain,
+                            child: Image.asset(
+                              'images/notification.png',
+                              width: 24,
+                              height: 24,
+                              fit: BoxFit.contain,
+                            ),
                           ),
                         ),
                       ],
                     ),
                   ),
+
                   Positioned(
                     top: 160,
                     right: 12,

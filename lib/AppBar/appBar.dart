@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mana_driver/AppBar/notificationScreen.dart';
 import 'package:mana_driver/Widgets/colors.dart';
 import 'package:mana_driver/Widgets/customText.dart';
 
@@ -37,18 +38,29 @@ class CustomMainAppBar extends StatelessWidget implements PreferredSizeWidget {
               ],
             ),
             const Spacer(),
-            Container(
-              padding: const EdgeInsets.all(10),
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                color: Colors.white,
-                border: Border.all(color: KnotificationcircleColor, width: 0.5),
-              ),
-              child: Image.asset(
-                'images/notification.png',
-                width: 24,
-                height: 24,
-                fit: BoxFit.contain,
+            GestureDetector(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (_) => NotificationScreen()),
+                );
+              },
+              child: Container(
+                padding: const EdgeInsets.all(10),
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: Colors.white,
+                  border: Border.all(
+                    color: KnotificationcircleColor,
+                    width: 0.5,
+                  ),
+                ),
+                child: Image.asset(
+                  'images/notification.png',
+                  width: 24,
+                  height: 24,
+                  fit: BoxFit.contain,
+                ),
               ),
             ),
           ],
