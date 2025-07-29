@@ -17,3 +17,6 @@ const KredColor = Color(0xFFFF4229);
 const KlightgreyColor = Color(0xFFF3F4F8);
 const KaddresscardborderColor = Color(0xFFDCE3EC);
 const korangeresponseColor = Color(0xFFFF9D00);
+const KcontactcardColor = Color(0xFFFFF4EB);
+const KcontactimagecontainerColor = Color(0xFFFFE6D3);
+const KcontacttextColor = Color(0xFFFFBE8C);

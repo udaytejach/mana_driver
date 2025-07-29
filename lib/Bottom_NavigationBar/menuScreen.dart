@@ -264,81 +264,82 @@ class _MenuScreenState extends State<MenuScreen> {
                             return AlertDialog(
                               backgroundColor: kwhiteColor,
 
-                              content: SingleChildScrollView(
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Padding(
-                                      padding: const EdgeInsets.all(8.0),
-                                      child: const CustomText(
-                                        text: 'Change Your App Language',
-                                        textcolor: KblackColor,
-                                        fontSize: 18,
-                                        fontWeight: FontWeight.w600,
+                              content: SizedBox(
+                                width: double.infinity,
+                                child: SingleChildScrollView(
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: const CustomText(
+                                          text: 'Change Your App Language',
+                                          textcolor: KblackColor,
+                                          fontSize: 18,
+                                          fontWeight: FontWeight.w600,
+                                        ),
                                       ),
-                                    ),
-                                    const SizedBox(height: 10),
-                                    SizedBox(
-                                      height: 58,
-                                      child: DropdownButtonFormField<String>(
-                                        isExpanded: true,
-                                        value: selectedLanguage,
-                                        onChanged: (newValue) {
-                                          setState(() {
-                                            selectedLanguage = newValue;
-                                          });
-                                        },
-                                        items: [
-                                          DropdownMenuItem(
-                                            value: 'English',
-                                            child: Text('English'),
-                                          ),
-                                          DropdownMenuItem(
-                                            value: 'Telugu',
-                                            child: Text('Telugu'),
-                                          ),
-                                        ],
-                                        decoration: InputDecoration(
-                                          hintText: 'Choose Language',
-                                          hintStyle: GoogleFonts.poppins(
-                                            color: kseegreyColor,
-                                          ),
-                                          contentPadding:
-                                              const EdgeInsets.symmetric(
-                                                horizontal: 12,
-                                                vertical: 16,
+                                      const SizedBox(height: 10),
+                                      SizedBox(
+                                        height: 58,
+                                        child: DropdownButtonFormField<String>(
+                                          isExpanded: true,
+                                          value: selectedLanguage,
+                                          onChanged: (newValue) {
+                                            setState(() {
+                                              selectedLanguage = newValue;
+                                            });
+                                          },
+                                          items: [
+                                            DropdownMenuItem(
+                                              value: 'English',
+                                              child: Text('English'),
+                                            ),
+                                            DropdownMenuItem(
+                                              value: 'Telugu',
+                                              child: Text('Telugu'),
+                                            ),
+                                          ],
+                                          decoration: InputDecoration(
+                                            hintText: 'Choose Language',
+                                            hintStyle: GoogleFonts.poppins(
+                                              color: kseegreyColor,
+                                            ),
+                                            contentPadding:
+                                                const EdgeInsets.symmetric(
+                                                  horizontal: 12,
+                                                  vertical: 16,
+                                                ),
+                                            fillColor: kwhiteColor,
+                                            filled: true,
+                                            border: OutlineInputBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(10),
+                                              borderSide: const BorderSide(
+                                                color: Color(0xFFE0E0E0),
                                               ),
-                                          fillColor: kwhiteColor,
-                                          filled: true,
-                                          border: OutlineInputBorder(
-                                            borderRadius: BorderRadius.circular(
-                                              10,
                                             ),
-                                            borderSide: const BorderSide(
-                                              color: Color(0xFFE0E0E0),
+                                            enabledBorder: OutlineInputBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(10),
+                                              borderSide: const BorderSide(
+                                                color: Color(0xFFD5D7DA),
+                                              ),
                                             ),
-                                          ),
-                                          enabledBorder: OutlineInputBorder(
-                                            borderRadius: BorderRadius.circular(
-                                              10,
-                                            ),
-                                            borderSide: const BorderSide(
-                                              color: Color(0xFFD5D7DA),
-                                            ),
-                                          ),
-                                          focusedBorder: OutlineInputBorder(
-                                            borderRadius: BorderRadius.circular(
-                                              10,
-                                            ),
-                                            borderSide: const BorderSide(
-                                              color: Color(0xFFD5D7DA),
+                                            focusedBorder: OutlineInputBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(10),
+                                              borderSide: const BorderSide(
+                                                color: Color(0xFFD5D7DA),
+                                              ),
                                             ),
                                           ),
                                         ),
                                       ),
-                                    ),
-                                    const SizedBox(height: 10),
-                                  ],
+                                      const SizedBox(height: 10),
+                                    ],
+                                  ),
                                 ),
                               ),
                               actions: [
@@ -420,31 +421,34 @@ class _MenuScreenState extends State<MenuScreen> {
                             return AlertDialog(
                               backgroundColor: kwhiteColor,
 
-                              content: SingleChildScrollView(
-                                child: Center(
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.center,
-                                    children: [
-                                      const SizedBox(height: 10),
-                                      Image.asset("images/deleteacnt.png"),
-                                      const SizedBox(height: 10),
-                                      CustomText(
-                                        text: "Warning",
-                                        fontSize: 18,
-                                        fontWeight: FontWeight.w600,
-                                        textcolor: KblackColor,
-                                      ),
-                                      const SizedBox(height: 10),
+                              content: SizedBox(
+                                width: double.infinity,
+                                child: SingleChildScrollView(
+                                  child: Center(
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                      children: [
+                                        const SizedBox(height: 10),
+                                        Image.asset("images/deleteacnt.png"),
+                                        const SizedBox(height: 10),
+                                        CustomText(
+                                          text: "Warning",
+                                          fontSize: 18,
+                                          fontWeight: FontWeight.w600,
+                                          textcolor: KblackColor,
+                                        ),
+                                        const SizedBox(height: 10),
 
-                                      CustomText(
-                                        text:
-                                            "Are you sure want to delete your account?",
-                                        fontSize: 14,
-                                        fontWeight: FontWeight.w400,
-                                        textcolor: kseegreyColor,
-                                      ),
-                                    ],
+                                        CustomText(
+                                          text:
+                                              "Are you sure want to delete your account?",
+                                          fontSize: 14,
+                                          fontWeight: FontWeight.w400,
+                                          textcolor: kseegreyColor,
+                                        ),
+                                      ],
+                                    ),
                                   ),
                                 ),
                               ),

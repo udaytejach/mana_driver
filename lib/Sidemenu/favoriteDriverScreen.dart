@@ -34,7 +34,7 @@ class FavouriteDriversScreen extends StatelessWidget {
               ),
               Center(
                 child: CustomText(
-                  text: "Offers",
+                  text: "Favourite Drivers",
                   textcolor: KblackColor,
                   fontWeight: FontWeight.w600,
                   fontSize: 22,
@@ -44,11 +44,12 @@ class FavouriteDriversScreen extends StatelessWidget {
           ),
         ),
       ),
-      body: Center(
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
+      body: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Center(
           child: CustomText(
-            text: 'You don’t offers at the moment please try after sometime.',
+            text:
+                'You don’t Favourite Drivers at the moment please try after sometime.',
             fontSize: 14,
             fontWeight: FontWeight.w400,
             textcolor: kseegreyColor,

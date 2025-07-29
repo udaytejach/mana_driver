@@ -89,7 +89,7 @@ class DriverAssignedScreen extends StatelessWidget {
                         Image.asset("images/rides.png"),
 
                         const SizedBox(width: 4),
-                        const Text("102 Rides"),
+                        const Text("Rides"),
                       ],
                     ),
                   ],
