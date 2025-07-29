@@ -16,3 +16,4 @@ const KblackColor = Color(0xFF222222);
 const KredColor = Color(0xFFFF4229);
 const KlightgreyColor = Color(0xFFF3F4F8);
 const KaddresscardborderColor = Color(0xFFDCE3EC);
+const korangeresponseColor = Color(0xFFFF9D00);

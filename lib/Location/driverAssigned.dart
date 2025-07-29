@@ -1,5 +1,8 @@
 import 'package:dotted_line/dotted_line.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:mana_driver/Bottom_NavigationBar/Myrides.dart';
+import 'package:mana_driver/Bottom_NavigationBar/bottomNavigationBar.dart';
 import 'package:mana_driver/Widgets/colors.dart';
 import 'package:mana_driver/Widgets/customButton.dart';
 import 'package:mana_driver/Widgets/customText.dart';
@@ -486,7 +489,9 @@ class DriverAssignedScreen extends StatelessWidget {
 
           CustomButton(
             text: 'Cancel Ride',
-            onPressed: () {},
+            onPressed: () {
+              showCancelReasonBottomSheet(context);
+            },
             width: 220,
             height: 50,
           ),
@@ -684,6 +689,206 @@ class DriverAssignedScreen extends StatelessWidget {
   }
 }
 
+void _showCanceldailog(BuildContext context) {
+  showGeneralDialog(
+    context: context,
+    barrierDismissible: true,
+
+    barrierLabel: "Driver Dialog",
+    barrierColor: Colors.black.withOpacity(0.7),
+    transitionDuration: const Duration(milliseconds: 200),
+    pageBuilder: (context, animation, secondaryAnimation) {
+      Future.delayed(const Duration(seconds: 3), () {
+        Navigator.of(context).pop();
+        Navigator.of(
+          context,
+        ).push(MaterialPageRoute(builder: (context) => BottomNavigation()));
+      });
+      return Center(
+        child: Container(
+          height: 300,
+          margin: const EdgeInsets.symmetric(horizontal: 10),
+          padding: const EdgeInsets.all(24),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(15),
+          ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              SizedBox(height: 15),
+              Image.asset(
+                'images/cancellationdailog.png',
+                height: 100,
+                width: 100,
+              ),
+              SizedBox(height: 10),
+
+              CustomText(
+                text: 'Cancellation Successful',
+                fontSize: 16,
+                fontWeight: FontWeight.w600,
+                textcolor: KblackColor,
+              ),
+              SizedBox(height: 10),
+              SizedBox(
+                width: 250,
+                child: Text(
+                  "Your request has been processed.We're sorry to see you go!",
+
+                  style: GoogleFonts.poppins(
+                    fontSize: 14,
+                    fontWeight: FontWeight.w400,
+                    color: kgreyColor,
+                    decoration: TextDecoration.none,
+                  ),
+
+                  textAlign: TextAlign.center,
+                ),
+              ),
+              // SizedBox(
+              //   width: 250,
+              //   child: Center(
+              //     child: CustomText(
+              //       text:
+              //           "Your request has been processed.We're sorry to see you go!",
+
+              //       fontSize: 14,
+              //       fontWeight: FontWeight.w400,
+              //       textcolor: kgreyColor,
+              //     ),
+              //   ),
+              // ),
+            ],
+          ),
+        ),
+      );
+    },
+  );
+}
+
+void showCancelReasonBottomSheet(BuildContext context) {
+  String? selectedReason;
+  final reasons = [
+    "Booked by Mistake",
+    "Found an Alternative Option",
+    "Pricing / Cost Issue",
+    "Personal Reasons",
+    "Emergency Situation",
+    "Dissatisfied with Previous Experience",
+    "Technical Issues / App Glitch",
+  ];
+
+  showModalBottomSheet(
+    context: context,
+    isScrollControlled: true,
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+    ),
+    builder: (context) {
+      return StatefulBuilder(
+        builder: (context, setState) {
+          return Padding(
+            padding: EdgeInsets.only(
+              left: 15,
+              right: 15,
+              top: 15,
+              bottom: MediaQuery.of(context).viewInsets.bottom + 10,
+            ),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const CustomText(
+                  text: "Cancel reason",
+                  fontSize: 18,
+                  fontWeight: FontWeight.w600,
+                  textcolor: KblackColor,
+                ),
+
+                SizedBox(height: 0),
+                ...reasons.map((reason) {
+                  return InkWell(
+                    onTap: () {
+                      setState(() {
+                        selectedReason = reason;
+                      });
+                    },
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(
+                        vertical: 0,
+                      ), // control vertical space here
+                      child: Row(
+                        children: [
+                          Radio<String>(
+                            value: reason,
+                            groupValue: selectedReason,
+                            activeColor: korangeColor,
+                            onChanged: (value) {
+                              setState(() {
+                                selectedReason = value;
+                              });
+                            },
+                          ),
+                          SizedBox(width: 8),
+                          Expanded(
+                            child: CustomText(
+                              text: reason,
+                              fontSize: 16,
+                              fontWeight: FontWeight.w500,
+                              textcolor: KblackColor,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  );
+                }).toList(),
+
+                SizedBox(height: 10),
+                Center(
+                  child: SizedBox(
+                    width: 220,
+                    height: 50,
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: korangeColor,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(40),
+                        ),
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 10,
+                          vertical: 5,
+                        ),
+                      ),
+                      onPressed:
+                          selectedReason == null
+                              ? null
+                              : () async {
+                                Navigator.pop(context);
+                                _showCanceldailog(context);
+                              },
+
+                      child: CustomText(
+                        text: "Cancel Ride",
+                        fontSize: 14,
+                        fontWeight: FontWeight.w500,
+                        textcolor: kwhiteColor,
+                      ),
+                    ),
+                  ),
+                ),
+
+                SizedBox(height: 10),
+              ],
+            ),
+          );
+        },
+      );
+    },
+  );
+}
+
 Widget _buildDot(Color color) {
   return Container(
     width: 12,
@@ -697,4 +902,87 @@ class FeedbackOption {
   final String imagePath;
 
   FeedbackOption({required this.label, required this.imagePath});
+}
+
+class CancelRideBottomSheet {
+  static Future<void> show(BuildContext context) async {
+    String? selectedReason;
+
+    final reasons = [
+      "Booked by Mistake",
+      "Found an Alternative Option",
+      "Pricing / Cost Issue",
+      "Personal Reasons",
+      "Emergency Situation",
+      "Dissatisfied with Previous Experience",
+      "Technical Issues / App Glitch",
+    ];
+
+    await showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+      ),
+      builder: (context) {
+        return StatefulBuilder(
+          builder: (context, setState) {
+            return Padding(
+              padding: const EdgeInsets.all(16),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    "Cancel reason",
+                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
+                  ),
+                  const SizedBox(height: 10),
+                  ...reasons.map((reason) {
+                    return RadioListTile<String>(
+                      value: reason,
+                      groupValue: selectedReason,
+                      contentPadding: EdgeInsets.zero,
+                      activeColor: Colors.orange,
+                      title: Text(reason),
+                      onChanged: (value) {
+                        setState(() {
+                          selectedReason = value;
+                        });
+                      },
+                    );
+                  }).toList(),
+                  const SizedBox(height: 20),
+                  SizedBox(
+                    width: double.infinity,
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.orange,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(30),
+                        ),
+                        padding: const EdgeInsets.symmetric(vertical: 14),
+                      ),
+                      onPressed: () async {
+                        CancelRideBottomSheet.show(context);
+                      },
+                      child: Text(
+                        "Cancel Ride",
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w600,
+                          color: Colors.white,
+                        ),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 10),
+                ],
+              ),
+            );
+          },
+        );
+      },
+    );
+  }
 }
