@@ -210,7 +210,7 @@ class _MyvehicleState extends State<Myvehicle> {
           onPressed: () {
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => VehicleDetailsScreen()),
+              MaterialPageRoute(builder: (context) => AddNewVehicle()),
             );
           },
           child: CustomText(

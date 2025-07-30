@@ -7,6 +7,8 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:mana_driver/AppBar/notificationScreen.dart';
 import 'package:mana_driver/Location/driverAssigned.dart';
 import 'package:mana_driver/Vehicles/confirm_details.dart';
+import 'package:mana_driver/Vehicles/my_vehicle.dart';
+import 'package:mana_driver/Vehicles/vehicle_details.dart';
 import 'package:mana_driver/Widgets/colors.dart';
 import 'package:mana_driver/Widgets/customText.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
@@ -424,16 +426,24 @@ class _HomeScreenState extends State<HomeScreen> {
                         fontWeight: FontWeight.bold,
                         textcolor: KblackColor,
                       ),
-                      Text(
-                        'View Vehicles',
-                        style: GoogleFonts.poppins(
-                          fontSize: 12,
-                          fontWeight: FontWeight.w400,
-                          color: korangeColor,
-                          decoration: TextDecoration.underline,
-                          decorationColor: korangeColor,
-                          decorationStyle: TextDecorationStyle.solid,
-                          decorationThickness: 1.5,
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (_) => Myvehicle()),
+                          );
+                        },
+                        child: Text(
+                          'View Vehicles',
+                          style: GoogleFonts.poppins(
+                            fontSize: 12,
+                            fontWeight: FontWeight.w400,
+                            color: korangeColor,
+                            decoration: TextDecoration.underline,
+                            decorationColor: korangeColor,
+                            decorationStyle: TextDecorationStyle.solid,
+                            decorationThickness: 1.5,
+                          ),
                         ),
                       ),
                     ],
@@ -523,11 +533,21 @@ class _HomeScreenState extends State<HomeScreen> {
                                     ],
                                   ),
                                 ),
-                                Align(
-                                  alignment: Alignment.center,
-                                  child: Icon(
-                                    Icons.arrow_forward_ios,
-                                    size: 18,
+                                GestureDetector(
+                                  onTap: () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (_) => VehicleDetailsScreen(),
+                                      ),
+                                    );
+                                  },
+                                  child: Align(
+                                    alignment: Alignment.center,
+                                    child: Icon(
+                                      Icons.arrow_forward_ios,
+                                      size: 18,
+                                    ),
                                   ),
                                 ),
                               ],

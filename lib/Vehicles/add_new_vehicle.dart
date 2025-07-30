@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:mana_driver/Vehicles/my_vehicle.dart';
 import 'package:mana_driver/Widgets/colors.dart';
 import 'package:mana_driver/Widgets/customText.dart';
 import 'package:dotted_border/dotted_border.dart';
@@ -346,7 +347,12 @@ class _AddNewVehicleState extends State<AddNewVehicle> {
                       vertical: 5,
                     ),
                   ),
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => Myvehicle()),
+                    );
+                  },
                   child: CustomText(
                     text: "Add Vehicle",
                     fontSize: 14,
