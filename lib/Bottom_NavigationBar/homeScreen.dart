@@ -6,6 +6,7 @@ import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:mana_driver/AppBar/notificationScreen.dart';
 import 'package:mana_driver/Location/driverAssigned.dart';
+import 'package:mana_driver/Location/location.dart';
 import 'package:mana_driver/Vehicles/confirm_details.dart';
 import 'package:mana_driver/Vehicles/my_vehicle.dart';
 import 'package:mana_driver/Vehicles/vehicle_details.dart';
@@ -239,6 +240,14 @@ class _HomeScreenState extends State<HomeScreen> {
                                         border: InputBorder.none,
                                       ),
                                       onTap: () {
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder:
+                                                (_) =>
+                                                    LocationSelectionScreen(),
+                                          ),
+                                        );
                                         print('Pickup location tapped');
                                       },
                                     ),
@@ -340,6 +349,14 @@ class _HomeScreenState extends State<HomeScreen> {
                                         border: InputBorder.none,
                                       ),
                                       onTap: () {
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder:
+                                                (_) =>
+                                                    LocationSelectionScreen(),
+                                          ),
+                                        );
                                         print('Drop location tapped');
                                       },
                                     ),

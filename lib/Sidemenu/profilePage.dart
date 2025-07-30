@@ -114,12 +114,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
               child: CustomButton(
                 text: 'Update Profile',
                 onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (_) => LocationSelectionScreen(),
-                    ),
-                  );
                   ScaffoldMessenger.of(context).showSnackBar(
                     const SnackBar(content: Text("Profile updated!")),
                   );
