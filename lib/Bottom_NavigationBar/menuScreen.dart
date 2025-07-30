@@ -360,11 +360,23 @@ class _MenuScreenState extends State<MenuScreen> {
       Row(
         children: [
           Expanded(
-            child: CustomCancelButton(onPressed: () => Navigator.pop(context)),
+            child: CustomCancelButton(
+              text: "Cancel",
+              onPressed: () {},
+              height: 46,
+              width: 140,
+            ),
+
+            // CustomCancelButton(onPressed: () => Navigator.pop(context)),
           ),
           const SizedBox(width: 12),
           Expanded(
-            child: CustomButton(onPressed: onConfirm, text: confirmText),
+            child: CustomButton(
+              onPressed: onConfirm,
+              text: confirmText,
+              height: 46,
+              width: 140,
+            ),
           ),
         ],
       ),
@@ -373,7 +385,7 @@ class _MenuScreenState extends State<MenuScreen> {
 
   PinTheme _pinTheme() => PinTheme(
     width: 60,
-    height: 58,
+    height: 50,
     textStyle: GoogleFonts.poppins(
       fontSize: 20,
       fontWeight: FontWeight.w600,
