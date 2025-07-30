@@ -192,7 +192,7 @@ class _MyRidesScreenState extends State<MyRidesScreen>
                 child: TabBar(
                   controller: _tabController,
                   isScrollable: true,
-
+                  dividerColor: Colors.transparent,
                   indicatorColor: Colors.transparent,
                   tabs: [
                     buildTab("All", 0),

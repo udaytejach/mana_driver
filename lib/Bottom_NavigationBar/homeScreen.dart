@@ -813,7 +813,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 bottom: MediaQuery.of(context).viewInsets.bottom,
               ),
               child: SizedBox(
-                height: MediaQuery.of(context).size.height * 0.85,
+                height: 700,
                 child: SingleChildScrollView(
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
@@ -1318,7 +1318,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               },
                             ),
 
-                            SizedBox(height: 20),
+                            SizedBox(height: 15),
 
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,

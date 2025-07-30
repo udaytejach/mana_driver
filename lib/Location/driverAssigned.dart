@@ -487,14 +487,42 @@ class DriverAssignedScreen extends StatelessWidget {
           const DottedLine(dashColor: kseegreyColor),
           const SizedBox(height: 50),
 
-          CustomButton(
-            text: 'Cancel Ride',
-            onPressed: () {
-              showCancelReasonBottomSheet(context);
-            },
-            width: 220,
-            height: 50,
+          Center(
+            child: SizedBox(
+              width: 220,
+              height: 50,
+              child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: korangeColor,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(40),
+                  ),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 10,
+                    vertical: 5,
+                  ),
+                ),
+                onPressed: () {
+                  showCancelReasonBottomSheet(context);
+                },
+                child: CustomText(
+                  text: "Cancel Ride",
+                  fontSize: 14,
+                  fontWeight: FontWeight.w500,
+                  textcolor: kwhiteColor,
+                ),
+              ),
+            ),
           ),
+
+          // CustomButton(
+          //   text: 'Cancel Ride',
+          //   onPressed: () {
+          //     showCancelReasonBottomSheet(context);
+          //   },
+          //   width: 220,
+          //   height: 50,
+          // ),
           const SizedBox(height: 20),
         ],
       ),
