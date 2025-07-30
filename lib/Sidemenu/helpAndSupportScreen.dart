@@ -80,15 +80,14 @@ class HelpAndSupport extends StatelessWidget {
                         ),
                         SizedBox(height: 16),
 
-                        Center(
-                          child: SizedBox(
-                            width: 190,
-                            child: CustomText(
-                              text: "How can I help you today?",
-                              fontSize: 24,
-                              fontWeight: FontWeight.w700,
-                              textcolor: Color(0xFFFF6B00),
-                            ),
+                        SizedBox(
+                          width: 190,
+                          child: CustomText(
+                            text: "How can I help you today?",
+                            fontSize: 24,
+                            fontWeight: FontWeight.w700,
+                            textcolor: Color(0xFFFF6B00),
+                            textAlign: TextAlign.center,
                           ),
                         ),
                         SizedBox(height: 12),

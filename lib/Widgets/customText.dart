@@ -8,6 +8,7 @@ class CustomText extends StatelessWidget {
   final Color textcolor;
   final bool underline;
   final Color? underlineColor;
+  final TextAlign? textAlign;
 
   const CustomText({
     super.key,
@@ -17,6 +18,7 @@ class CustomText extends StatelessWidget {
     required this.textcolor,
     this.underline = false,
     this.underlineColor,
+    this.textAlign,
   });
 
   @override

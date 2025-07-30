@@ -47,11 +47,18 @@ class OffersScreen extends StatelessWidget {
       body: Center(
         child: Padding(
           padding: const EdgeInsets.all(8.0),
-          child: CustomText(
-            text: 'You don’t offers at the moment please try after sometime.',
-            fontSize: 14,
-            fontWeight: FontWeight.w400,
-            textcolor: kseegreyColor,
+          child: SizedBox(
+            width: double.infinity,
+            child: Align(
+              alignment: Alignment.center,
+              child: CustomText(
+                text:
+                    'You don’t have offers at the moment. Please try again later.',
+                fontSize: 14,
+                fontWeight: FontWeight.w400,
+                textcolor: kseegreyColor,
+              ),
+            ),
           ),
         ),
       ),

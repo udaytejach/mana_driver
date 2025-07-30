@@ -218,6 +218,7 @@ class _MenuScreenState extends State<MenuScreen> {
               fontWeight: FontWeight.w600,
             ),
             content: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisSize: MainAxisSize.min,
               children: [
                 CustomTextField(
@@ -230,6 +231,7 @@ class _MenuScreenState extends State<MenuScreen> {
                   textcolor: KblackColor,
                   fontSize: 18,
                   fontWeight: FontWeight.w600,
+                  textAlign: TextAlign.start,
                 ),
                 const SizedBox(height: 10),
                 Pinput(
