@@ -49,8 +49,14 @@ class _MenuScreenState extends State<MenuScreen> {
   @override
   Widget build(BuildContext context) {
     final vm = context.watch<LoginViewModel>();
-    final userName = vm.loggedInUser?['fullName'] ?? 'Guest';
-    final userEmail = vm.loggedInUser?['email'] ?? 'Guest';
+    final userName =
+        "${vm.loggedInUser?['firstName'] ?? ''} ${vm.loggedInUser?['lastName'] ?? ''}"
+                .trim()
+                .isEmpty
+            ? "Guest"
+            : "${vm.loggedInUser?['firstName'] ?? ''} ${vm.loggedInUser?['lastName'] ?? ''}"
+                .trim();
+    final userEmail = vm.loggedInUser?['email'] ?? 'guest@example.com';
 
     return LayoutBuilder(
       builder: (context, constraints) {
@@ -61,7 +67,7 @@ class _MenuScreenState extends State<MenuScreen> {
           child: Column(
             children: [
               const SizedBox(height: 40),
-              _buildProfileTile(),
+              _buildProfileTile(userName, userEmail),
               const Divider(color: KdeviderColor),
               Expanded(
                 child: ListView.separated(
@@ -81,7 +87,7 @@ class _MenuScreenState extends State<MenuScreen> {
     );
   }
 
-  Widget _buildProfileTile() {
+  Widget _buildProfileTile(String userName, String userEmail) {
     return InkWell(
       onTap:
           () => Navigator.push(
@@ -98,16 +104,16 @@ class _MenuScreenState extends State<MenuScreen> {
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
-              children: const [
+              children: [
                 CustomText(
-                  text: "Ranjith Kumar",
+                  text: userName,
                   fontSize: 18,
                   fontWeight: FontWeight.w600,
                   textcolor: korangeColor,
                 ),
                 SizedBox(height: 4),
                 CustomText(
-                  text: "rohi**********17@gmail.com",
+                  text: userEmail,
                   fontSize: 12,
                   fontWeight: FontWeight.w300,
                   textcolor: kseegreyColor,
