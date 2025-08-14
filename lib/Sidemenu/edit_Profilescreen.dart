@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:mana_driver/Sidemenu/profilePage.dart';
 
 import 'package:mana_driver/Widgets/colors.dart';
 import 'package:mana_driver/Widgets/customButton.dart';
@@ -134,83 +135,80 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
         ),
       ),
 
-      body: SingleChildScrollView(
-        child: Expanded(
-          child: Padding(
-            padding: const EdgeInsets.all(20.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Center(
-                  child: Stack(
-                    clipBehavior: Clip.none,
-                    children: [
-                      const CircleAvatar(
-                        radius: 55,
-                        backgroundColor: Color(0xFFE0E0E0),
-                        backgroundImage: AssetImage('images/user.png'),
-                      ),
-
-                      Positioned(
-                        right: 0,
-                        bottom: 0,
-                        child: CircleAvatar(
-                          backgroundColor: korangeColor,
-                          radius: 18,
-                          child: Image.asset("images/camera.png"),
-                        ),
-                      ),
-                    ],
+      body: Padding(
+        padding: const EdgeInsets.all(20.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Center(
+              child: Stack(
+                clipBehavior: Clip.none,
+                children: [
+                  const CircleAvatar(
+                    radius: 55,
+                    backgroundColor: Color(0xFFE0E0E0),
+                    backgroundImage: AssetImage('images/user.png'),
                   ),
-                ),
 
-                const SizedBox(height: 40),
-                CustomTextField(
-                  controller: firstnameController,
-                  labelText: 'First Name',
-                ),
-                const SizedBox(height: 20),
-
-                CustomTextField(
-                  controller: lastnameController,
-                  labelText: 'Last Name',
-                ),
-
-                const SizedBox(height: 20),
-
-                CustomTextField(
-                  controller: emailController,
-                  labelText: 'Email address',
-                ),
-
-                const SizedBox(height: 20),
-
-                CustomTextField(
-                  controller: phoneController,
-                  labelText: 'Mobile Number',
-                  readOnly: true,
-                  suffix: const Text(
-                    "Verified",
-                    style: TextStyle(
-                      color: Colors.green,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 14,
+                  Positioned(
+                    right: 0,
+                    bottom: 0,
+                    child: CircleAvatar(
+                      backgroundColor: korangeColor,
+                      radius: 18,
+                      child: Image.asset("images/camera.png"),
                     ),
                   ),
-                ),
-
-                SizedBox(height: 180),
-                Center(
-                  child: CustomButton(
-                    text: isSaving ? 'Saving...' : 'Save',
-                    onPressed: isSaving ? null : saveProfile,
-                    width: double.infinity,
-                    height: 50,
-                  ),
-                ),
-              ],
+                ],
+              ),
             ),
-          ),
+
+            const SizedBox(height: 40),
+            CustomTextField(
+              controller: firstnameController,
+              labelText: 'First Name',
+            ),
+            const SizedBox(height: 20),
+
+            CustomTextField(
+              controller: lastnameController,
+              labelText: 'Last Name',
+            ),
+
+            const SizedBox(height: 20),
+
+            CustomTextField(
+              controller: emailController,
+              labelText: 'Email address',
+            ),
+
+            const SizedBox(height: 20),
+
+            CustomTextField(
+              controller: phoneController,
+              labelText: 'Mobile Number',
+              readOnly: true,
+              suffix: const Text(
+                "Verified",
+                style: TextStyle(
+                  color: Colors.green,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 14,
+                ),
+              ),
+            ),
+
+            SizedBox(height: 180),
+            Center(
+              child: CustomButton(
+                text: isSaving ? 'Saving...' : 'Save',
+                onPressed: isSaving ? null : saveProfile,
+                width: double.infinity,
+                height: 50,
+              ),
+            ),
+            SizedBox(height: 80),
+          ],
         ),
       ),
     );
