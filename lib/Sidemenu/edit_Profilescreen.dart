@@ -79,7 +79,10 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
           const SnackBar(content: Text('Profile updated successfully!')),
         );
 
-        Navigator.pop(context);
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (_) => ProfileScreen()),
+        );
       } else {
         ScaffoldMessenger.of(
           context,
@@ -198,7 +201,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
               ),
             ),
 
-            SizedBox(height: 180),
+            SizedBox(height: 100),
             Center(
               child: CustomButton(
                 text: isSaving ? 'Saving...' : 'Save',
@@ -207,7 +210,6 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                 height: 50,
               ),
             ),
-            SizedBox(height: 80),
           ],
         ),
       ),
