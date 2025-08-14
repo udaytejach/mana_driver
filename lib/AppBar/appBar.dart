@@ -2,12 +2,23 @@ import 'package:flutter/material.dart';
 import 'package:mana_driver/AppBar/notificationScreen.dart';
 import 'package:mana_driver/Widgets/colors.dart';
 import 'package:mana_driver/Widgets/customText.dart';
+import 'package:mana_driver/viewmodels/login_viewmodel.dart';
+import 'package:provider/provider.dart';
 
 class CustomMainAppBar extends StatelessWidget implements PreferredSizeWidget {
   const CustomMainAppBar({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final vm = context.watch<LoginViewModel>();
+    final userName =
+        "${vm.loggedInUser?['firstName'] ?? ''} ${vm.loggedInUser?['lastName'] ?? ''}"
+                .trim()
+                .isEmpty
+            ? "Guest"
+            : "${vm.loggedInUser?['firstName'] ?? ''} ${vm.loggedInUser?['lastName'] ?? ''}"
+                .trim();
+
     return AppBar(
       elevation: 0,
       backgroundColor: Colors.white,
@@ -22,15 +33,15 @@ class CustomMainAppBar extends StatelessWidget implements PreferredSizeWidget {
           children: [
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
-              children: const [
-                CustomText(
+              children: [
+                const CustomText(
                   text: "Namaskaram,",
                   textcolor: kseegreyColor,
                   fontSize: 14,
                   fontWeight: FontWeight.w500,
                 ),
                 CustomText(
-                  text: "Ranjith Kumar",
+                  text: userName,
                   textcolor: korangeColor,
                   fontWeight: FontWeight.w600,
                   fontSize: 20,

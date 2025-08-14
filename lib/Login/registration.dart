@@ -7,6 +7,8 @@ import 'package:mana_driver/Widgets/customText.dart';
 import 'package:country_picker/country_picker.dart';
 import 'package:mana_driver/Widgets/customTextField.dart';
 import 'package:mana_driver/Widgets/mobileNumberInputField.dart';
+import 'package:mana_driver/viewmodels/register_viewmodel.dart';
+import 'package:provider/provider.dart';
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({super.key});
@@ -16,7 +18,9 @@ class RegisterScreen extends StatefulWidget {
 }
 
 class _RegisterScreenState extends State<RegisterScreen> {
-  final TextEditingController nameController = TextEditingController();
+  final TextEditingController firstnameController = TextEditingController();
+  final TextEditingController lastnameController = TextEditingController();
+
   final TextEditingController emailController = TextEditingController();
   final TextEditingController phoneController = TextEditingController();
 
@@ -36,6 +40,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
+    final vm = Provider.of<RegisterViewModel>(context);
 
     return Scaffold(
       resizeToAvoidBottomInset: true,
@@ -63,14 +68,20 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 const SizedBox(height: 50),
 
                 CustomTextField(
-                  controller: nameController,
-                  labelText: 'Full Name',
+                  controller: firstnameController,
+                  labelText: 'First Name',
+                ),
+                const SizedBox(height: 20),
+
+                CustomTextField(
+                  controller: lastnameController,
+                  labelText: 'Last Name',
                 ),
 
                 const SizedBox(height: 20),
 
                 CustomTextField(
-                  controller: nameController,
+                  controller: emailController,
                   labelText: 'Email ID',
                 ),
                 const SizedBox(height: 20),
@@ -86,17 +97,41 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 ),
                 const SizedBox(height: 40),
 
-                CustomButton(
-                  text: 'Register Now',
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (_) => const LoginScreen()),
-                    );
-                  },
-                  width: 220,
-                  height: 53,
-                ),
+                vm.isLoading
+                    ? const CircularProgressIndicator()
+                    : CustomButton(
+                      text: 'Register Now',
+                      onPressed: () async {
+                        final success = await vm.register(
+                          fisrtName: firstnameController.text,
+                          lastName: lastnameController.text,
+
+                          email: emailController.text,
+                          phone: phoneController.text,
+                          countryCode: selectedCountry.countryCode,
+                        );
+
+                        if (success) {
+                          if (mounted) {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (_) => const LoginScreen(),
+                              ),
+                            );
+                          }
+                        } else {
+                          final msg = vm.errorMessage ?? 'Registration failed';
+                          if (mounted) {
+                            ScaffoldMessenger.of(
+                              context,
+                            ).showSnackBar(SnackBar(content: Text(msg)));
+                          }
+                        }
+                      },
+                      width: 220,
+                      height: 53,
+                    ),
                 const SizedBox(height: 16),
 
                 Row(
@@ -113,7 +148,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => LoginScreen(),
+                            builder: (context) => const LoginScreen(),
                           ),
                         );
                       },

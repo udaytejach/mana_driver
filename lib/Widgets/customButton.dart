@@ -4,20 +4,22 @@ import 'package:mana_driver/Widgets/colors.dart';
 
 class CustomButton extends StatelessWidget {
   final String text;
-  final VoidCallback onPressed;
+  // final VoidCallback onPressed;
   final double fontSize;
   final FontWeight fontWeight;
   final Color textColor;
   final Color backgroundColor;
   final double borderRadius;
   final EdgeInsetsGeometry padding;
+  final VoidCallback? onPressed;
   final double? width;
   final double? height;
 
   const CustomButton({
     super.key,
     required this.text,
-    required this.onPressed,
+    // required this.onPressed,
+    this.onPressed,
     this.fontSize = 16,
     this.fontWeight = FontWeight.w500,
     this.textColor = Colors.white,

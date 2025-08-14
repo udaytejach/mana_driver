@@ -8,6 +8,7 @@ class CustomTextField extends StatelessWidget {
   final TextInputType keyboardType;
   final bool obscureText;
   final Color labelColor;
+  final bool readOnly;
   final Color textColor;
   final Color borderColor;
   final double fontSize;
@@ -18,6 +19,7 @@ class CustomTextField extends StatelessWidget {
     super.key,
     required this.controller,
     required this.labelText,
+    this.readOnly = false,
     this.keyboardType = TextInputType.text,
     this.obscureText = false,
     this.labelColor = Colors.grey,
@@ -34,6 +36,7 @@ class CustomTextField extends StatelessWidget {
       controller: controller,
       keyboardType: keyboardType,
       obscureText: obscureText,
+      readOnly: readOnly,
       maxLines: maxLines ?? 1,
 
       style: GoogleFonts.poppins(color: textColor, fontSize: fontSize),

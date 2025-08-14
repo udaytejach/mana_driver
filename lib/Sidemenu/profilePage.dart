@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:mana_driver/Location/location.dart';
+import 'package:mana_driver/Sidemenu/edit_Profilescreen.dart';
+
 import 'package:mana_driver/Widgets/colors.dart';
 import 'package:mana_driver/Widgets/customButton.dart';
 import 'package:mana_driver/Widgets/customText.dart';
 import 'package:mana_driver/Widgets/customTextField.dart';
+import 'package:mana_driver/viewmodels/login_viewmodel.dart';
+import 'package:provider/provider.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
@@ -13,9 +16,26 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
-  final TextEditingController nameController = TextEditingController();
+  final TextEditingController firstnameController = TextEditingController();
+  final TextEditingController lastnameController = TextEditingController();
+
   final TextEditingController emailController = TextEditingController();
   final TextEditingController phoneController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    final vm = context.read<LoginViewModel>();
+    final user = vm.loggedInUser;
+    if (user != null) {
+      firstnameController.text = user['firstName'] ?? '';
+      lastnameController.text = user['lastName'] ?? '';
+
+      emailController.text = user['email'] ?? '';
+      phoneController.text = user['phone'] ?? '';
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -85,20 +105,33 @@ class _ProfileScreenState extends State<ProfileScreen> {
             ),
 
             const SizedBox(height: 40),
-            CustomTextField(controller: nameController, labelText: 'Full Name'),
+            CustomTextField(
+              controller: firstnameController,
+              readOnly: true,
+              labelText: 'First Name',
+            ),
 
             const SizedBox(height: 20),
-
             CustomTextField(
-              controller: nameController,
-              labelText: 'Email address',
+              controller: lastnameController,
+              readOnly: true,
+              labelText: 'last Name',
             ),
 
             const SizedBox(height: 20),
 
             CustomTextField(
-              controller: nameController,
+              controller: emailController,
+              labelText: 'Email address',
+              readOnly: true,
+            ),
+
+            const SizedBox(height: 20),
+
+            CustomTextField(
+              controller: phoneController,
               labelText: 'Mobile Number',
+              readOnly: true,
               suffix: const Text(
                 "Verified",
                 style: TextStyle(
@@ -112,10 +145,19 @@ class _ProfileScreenState extends State<ProfileScreen> {
             const Spacer(),
             Center(
               child: CustomButton(
-                text: 'Update Profile',
+                text: 'Edit Profile',
                 onPressed: () {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text("Profile updated!")),
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder:
+                          (_) => EditProfileScreen(
+                            firstName: firstnameController.text,
+                            lastName: lastnameController.text,
+                            email: emailController.text,
+                            phone: phoneController.text,
+                          ),
+                    ),
                   );
                 },
                 width: 220,

@@ -12,6 +12,8 @@ import 'package:mana_driver/Vehicles/my_vehicle.dart';
 import 'package:mana_driver/Vehicles/vehicle_details.dart';
 import 'package:mana_driver/Widgets/colors.dart';
 import 'package:mana_driver/Widgets/customText.dart';
+import 'package:mana_driver/viewmodels/login_viewmodel.dart';
+import 'package:provider/provider.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -111,6 +113,14 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final vm = context.watch<LoginViewModel>();
+    final userName =
+        "${vm.loggedInUser?['firstName'] ?? ''} ${vm.loggedInUser?['lastName'] ?? ''}"
+                .trim()
+                .isEmpty
+            ? "Guest"
+            : "${vm.loggedInUser?['firstName'] ?? ''} ${vm.loggedInUser?['lastName'] ?? ''}"
+                .trim();
     return Scaffold(
       backgroundColor: Colors.white,
       body: SingleChildScrollView(
@@ -135,7 +145,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       children: [
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
-                          children: const [
+                          children: [
                             CustomText(
                               text: "Namaskaram",
                               textcolor: kseegreyColor,
@@ -143,7 +153,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               fontWeight: FontWeight.w500,
                             ),
                             CustomText(
-                              text: "Ranjith Kumar",
+                              text: userName,
                               textcolor: korangeColor,
                               fontWeight: FontWeight.w600,
                               fontSize: 20,

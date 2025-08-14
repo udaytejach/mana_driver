@@ -17,7 +17,9 @@ import 'package:mana_driver/Widgets/customButton.dart';
 import 'package:mana_driver/Widgets/customText.dart';
 import 'package:mana_driver/Widgets/customTextField.dart';
 import 'package:mana_driver/Widgets/customoutlinedbutton.dart';
+import 'package:mana_driver/viewmodels/login_viewmodel.dart';
 import 'package:pinput/pinput.dart';
+import 'package:provider/provider.dart';
 
 class MenuScreen extends StatefulWidget {
   const MenuScreen({super.key});
@@ -46,6 +48,10 @@ class _MenuScreenState extends State<MenuScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final vm = context.watch<LoginViewModel>();
+    final userName = vm.loggedInUser?['fullName'] ?? 'Guest';
+    final userEmail = vm.loggedInUser?['email'] ?? 'Guest';
+
     return LayoutBuilder(
       builder: (context, constraints) {
         double screenWidth = constraints.maxWidth;
