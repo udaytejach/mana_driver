@@ -4,6 +4,7 @@ import 'package:mana_driver/Bottom_NavigationBar/homeScreen.dart';
 import 'package:mana_driver/Bottom_NavigationBar/menuScreen.dart';
 import 'package:mana_driver/Bottom_NavigationBar/transactionsScreen.dart';
 import 'package:mana_driver/Widgets/colors.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class BottomNavigation extends StatefulWidget {
   @override
@@ -60,6 +61,7 @@ class _BottomNavigationState extends State<BottomNavigation> {
 
   @override
   Widget build(BuildContext context) {
+    final localizations = AppLocalizations.of(context)!;
     return Scaffold(
       body: _screens[_selectedIndex],
       bottomNavigationBar: Container(
@@ -75,10 +77,18 @@ class _BottomNavigationState extends State<BottomNavigation> {
           selectedFontSize: 0,
           unselectedFontSize: 0,
           items: [
-            _buildNavItem("Home", 'images/home.png', 0),
-            _buildNavItem("My Rides", 'images/my_rides.png', 1),
-            _buildNavItem("Transactions", 'images/transactions.png', 2),
-            _buildNavItem("Menu", 'images/menu.png', 3),
+            _buildNavItem(localizations.bottomNavHome, 'images/home.png', 0),
+            _buildNavItem(
+              localizations.bottomNavMyRides,
+              'images/my_rides.png',
+              1,
+            ),
+            _buildNavItem(
+              localizations.bottomNavTransactions,
+              'images/transactions.png',
+              2,
+            ),
+            _buildNavItem(localizations.bottomNavMenu, 'images/menu.png', 3),
           ],
           currentIndex: _selectedIndex,
           onTap: _onItemTapped,

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:country_picker/country_picker.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class PhoneNumberInputField extends StatelessWidget {
   final TextEditingController controller;
@@ -27,7 +28,8 @@ class PhoneNumberInputField extends StatelessWidget {
         fontWeight: FontWeight.w500,
       ),
       decoration: InputDecoration(
-        labelText: 'Mobile Number',
+        labelText:
+            AppLocalizations.of(context)?.mobileNumber ?? 'Mobile Number',
         labelStyle: GoogleFonts.poppins(color: Colors.grey, fontSize: 14),
         prefixIcon: GestureDetector(
           onTap: () {

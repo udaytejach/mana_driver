@@ -8,6 +8,7 @@ import 'package:mana_driver/Widgets/customText.dart';
 import 'package:mana_driver/viewmodels/login_viewmodel.dart';
 import 'package:pinput/pinput.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class OtpScreen extends StatefulWidget {
   final String phoneNumber;
@@ -41,9 +42,10 @@ class _OtpScreenState extends State<OtpScreen> {
           MaterialPageRoute(builder: (_) => BottomNavigation()),
         );
       } else {
-        ScaffoldMessenger.of(
-          context,
-        ).showSnackBar(SnackBar(content: Text("Invalid OTP")));
+        final localizations = AppLocalizations.of(context);
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(localizations?.invalidOtp ?? "Invalid OTP")),
+        );
       }
     } else {}
   }
@@ -52,6 +54,7 @@ class _OtpScreenState extends State<OtpScreen> {
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
 
+    final localizations = AppLocalizations.of(context);
     return Scaffold(
       backgroundColor: Colors.white,
       body: SafeArea(
@@ -67,6 +70,7 @@ class _OtpScreenState extends State<OtpScreen> {
                     children: [
                       CustomText(
                         text:
+                            localizations?.otpTitle ??
                             "Check your phone for the OTP and enter it below.",
                         fontSize: 32,
                         fontWeight: FontWeight.w700,
@@ -81,13 +85,17 @@ class _OtpScreenState extends State<OtpScreen> {
                             color: kgreyColor,
                           ),
                           children: [
-                            const TextSpan(text: "OTP sent to "),
+                            TextSpan(
+                              text: localizations?.otpSentTo ?? "OTP sent to ",
+                            ),
                             TextSpan(
                               text: widget.phoneNumber,
                               style: TextStyle(color: korangeColor),
                             ),
-                            const TextSpan(
-                              text: " this OTP will get auto entering",
+                            TextSpan(
+                              text:
+                                  localizations?.otpAutoFill ??
+                                  " this OTP will get auto entering",
                             ),
                           ],
                         ),
@@ -139,9 +147,13 @@ class _OtpScreenState extends State<OtpScreen> {
                               fontWeight: FontWeight.w400,
                             ),
                             children: [
-                              const TextSpan(text: "You didn’t receive OTP? "),
                               TextSpan(
-                                text: "Resend OTP",
+                                text:
+                                    localizations?.didNotReceiveOtp ??
+                                    "You didn’t receive OTP? ",
+                              ),
+                              TextSpan(
+                                text: localizations?.resendOtp ?? "Resend OTP",
                                 style: TextStyle(
                                   color: korangeColor,
                                   fontWeight: FontWeight.w600,
@@ -156,7 +168,7 @@ class _OtpScreenState extends State<OtpScreen> {
                 ),
                 const Spacer(),
                 CustomButton(
-                  text: 'Sign up',
+                  text: localizations?.verifyOtp ?? 'Verify OTP',
                   onPressed: _verifyOtp,
                   width: 220,
                   height: 53,

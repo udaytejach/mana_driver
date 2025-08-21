@@ -20,13 +20,8 @@ class ProgressBarHUD extends StatelessWidget {
               color: backGroundColor ?? Colors.grey,
             ),
           ),
-          const Center(
-            child: SpinKitSpinningLines(
-              itemCount: 5,
-              color: Color(0xff098EDD),
-              lineWidth: 5,
-              size: 100,
-            ),
+          Center(
+            child: SpinKitThreeBounce(color: const Color(0xff098EDD), size: 50),
           ),
         ],
       ),

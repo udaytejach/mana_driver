@@ -20,6 +20,7 @@ import 'package:mana_driver/Widgets/customoutlinedbutton.dart';
 import 'package:mana_driver/viewmodels/login_viewmodel.dart';
 import 'package:pinput/pinput.dart';
 import 'package:provider/provider.dart';
+import 'package:mana_driver/services/locale_provider.dart';
 
 class MenuScreen extends StatefulWidget {
   const MenuScreen({super.key});
@@ -49,14 +50,8 @@ class _MenuScreenState extends State<MenuScreen> {
   @override
   Widget build(BuildContext context) {
     final vm = context.watch<LoginViewModel>();
-    final userName =
-        "${vm.loggedInUser?['firstName'] ?? ''} ${vm.loggedInUser?['lastName'] ?? ''}"
-                .trim()
-                .isEmpty
-            ? "Guest"
-            : "${vm.loggedInUser?['firstName'] ?? ''} ${vm.loggedInUser?['lastName'] ?? ''}"
-                .trim();
-    final userEmail = vm.loggedInUser?['email'] ?? 'guest@example.com';
+    final userName = vm.loggedInUser?['fullName'] ?? 'Guest';
+    final userEmail = vm.loggedInUser?['email'] ?? 'Guest';
 
     return LayoutBuilder(
       builder: (context, constraints) {
@@ -67,7 +62,7 @@ class _MenuScreenState extends State<MenuScreen> {
           child: Column(
             children: [
               const SizedBox(height: 40),
-              _buildProfileTile(userName, userEmail),
+              _buildProfileTile(),
               const Divider(color: KdeviderColor),
               Expanded(
                 child: ListView.separated(
@@ -87,7 +82,7 @@ class _MenuScreenState extends State<MenuScreen> {
     );
   }
 
-  Widget _buildProfileTile(String userName, String userEmail) {
+  Widget _buildProfileTile() {
     return InkWell(
       onTap:
           () => Navigator.push(
@@ -104,16 +99,16 @@ class _MenuScreenState extends State<MenuScreen> {
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
+              children: const [
                 CustomText(
-                  text: userName,
+                  text: "Ranjith Kumar",
                   fontSize: 18,
                   fontWeight: FontWeight.w600,
                   textcolor: korangeColor,
                 ),
                 SizedBox(height: 4),
                 CustomText(
-                  text: userEmail,
+                  text: "rohi**********17@gmail.com",
                   fontSize: 12,
                   fontWeight: FontWeight.w300,
                   textcolor: kseegreyColor,
@@ -311,6 +306,7 @@ class _MenuScreenState extends State<MenuScreen> {
                   items: const [
                     DropdownMenuItem(value: 'English', child: Text('English')),
                     DropdownMenuItem(value: 'Telugu', child: Text('Telugu')),
+                    DropdownMenuItem(value: 'Hindi', child: Text('Hindi')),
                   ],
                   decoration: _dropdownDecoration('Choose Language'),
                 ),
@@ -318,6 +314,19 @@ class _MenuScreenState extends State<MenuScreen> {
             ),
             actions: _dialogActions(
               onConfirm: () {
+                if (selectedLanguage != null) {
+                  final localeProvider = Provider.of<LocaleProvider>(
+                    context,
+                    listen: false,
+                  );
+                  if (selectedLanguage == 'English') {
+                    localeProvider.setLocale(const Locale('en'));
+                  } else if (selectedLanguage == 'Hindi') {
+                    localeProvider.setLocale(const Locale('hi'));
+                  } else if (selectedLanguage == 'Telugu') {
+                    localeProvider.setLocale(const Locale('te'));
+                  }
+                }
                 Navigator.pop(context);
               },
             ),

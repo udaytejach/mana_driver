@@ -1,4 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:mana_driver/Login/registration.dart';
 import 'package:provider/provider.dart';
@@ -10,6 +12,7 @@ import '../Widgets/colors.dart';
 import '../Widgets/customButton.dart';
 import '../Widgets/customText.dart';
 import '../Widgets/mobileNumberInputField.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class LoginScreen extends StatelessWidget {
   const LoginScreen({super.key});
@@ -60,6 +63,8 @@ class _LoginScreenBodyState extends State<_LoginScreenBody> {
 
   @override
   Widget build(BuildContext context) {
+    final localizations = AppLocalizations.of(context)!;
+
     final vm = context.watch<LoginViewModel>();
     final state = vm.state;
 
@@ -75,16 +80,14 @@ class _LoginScreenBodyState extends State<_LoginScreenBody> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   CustomText(
-                    text:
-                        "We're ready when you are. Sign in and continue your ride.",
+                    text: localizations.loginTitle,
                     fontSize: 32,
                     fontWeight: FontWeight.w700,
                     textcolor: korangeColor,
                   ),
                   const SizedBox(height: 10),
                   CustomText(
-                    text:
-                        "Enter your mobile number to get started we'll send you an OTP for verification.",
+                    text: localizations.loginSubtitle,
                     fontSize: 14,
                     fontWeight: FontWeight.w400,
                     textcolor: kgreyColor,
@@ -111,7 +114,10 @@ class _LoginScreenBodyState extends State<_LoginScreenBody> {
             const Spacer(),
 
             CustomButton(
-              text: state.isLoading ? "Checking..." : "Send OTP",
+              text:
+                  state.isLoading
+                      ? localizations.checking
+                      : localizations.sendOtp,
               onPressed:
                   state.isLoading
                       ? null
@@ -149,7 +155,6 @@ class _LoginScreenBodyState extends State<_LoginScreenBody> {
             ),
 
             const SizedBox(height: 10),
-            const SizedBox(height: 10),
 
             Padding(
               padding: const EdgeInsets.only(bottom: 32),
@@ -157,7 +162,7 @@ class _LoginScreenBodyState extends State<_LoginScreenBody> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   CustomText(
-                    text: "You don’t have an account? ",
+                    text: localizations.noAccount,
                     fontSize: 14,
                     fontWeight: FontWeight.w500,
                     textcolor: kgreyColor,
@@ -172,7 +177,7 @@ class _LoginScreenBodyState extends State<_LoginScreenBody> {
                       );
                     },
                     child: CustomText(
-                      text: "Register",
+                      text: localizations.register,
                       fontSize: 14,
                       fontWeight: FontWeight.w500,
                       textcolor: korangeColor,

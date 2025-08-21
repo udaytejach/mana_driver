@@ -1,8 +1,13 @@
 import 'package:flutter/material.dart';
+
 import 'package:google_fonts/google_fonts.dart';
 import 'package:mana_driver/Login/loginScreen.dart';
 import 'package:mana_driver/Widgets/colors.dart';
 import 'package:mana_driver/Widgets/customText.dart';
+
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:provider/provider.dart';
+import 'package:mana_driver/services/locale_provider.dart';
 
 class LanguageSelectionScreen extends StatefulWidget {
   const LanguageSelectionScreen({super.key});
@@ -13,7 +18,7 @@ class LanguageSelectionScreen extends StatefulWidget {
 }
 
 class _LanguageSelectionScreenState extends State<LanguageSelectionScreen> {
-  String? selectedLanguage;
+  String selectedLanguage = 'English';
 
   @override
   Widget build(BuildContext context) {
@@ -25,6 +30,7 @@ class _LanguageSelectionScreenState extends State<LanguageSelectionScreen> {
       body: SafeArea(
         child: LayoutBuilder(
           builder: (context, constraints) {
+            final localizations = AppLocalizations.of(context)!;
             return Column(
               children: [
                 const Spacer(),
@@ -36,8 +42,7 @@ class _LanguageSelectionScreenState extends State<LanguageSelectionScreen> {
                       Container(
                         margin: EdgeInsets.only(left: marginStart),
                         child: CustomText(
-                          text:
-                              "We support multiple languages to make you feel at home.",
+                          text: localizations.selectLanguageTitle,
                           fontSize: 32,
                           fontWeight: FontWeight.w700,
                           textcolor: korangeColor,
@@ -47,23 +52,34 @@ class _LanguageSelectionScreenState extends State<LanguageSelectionScreen> {
                       Container(
                         margin: EdgeInsets.only(left: marginStart),
                         child: CustomText(
-                          text: "Tap to continue in your chosen language.",
+                          text: localizations.selectLanguageSubtitle,
                           fontSize: 14,
                           fontWeight: FontWeight.w400,
                           textcolor: kgreyColor,
                         ),
                       ),
                       const SizedBox(height: 50),
-
                       SizedBox(
                         height: 58,
                         child: DropdownButtonFormField<String>(
                           isExpanded: true,
                           value: selectedLanguage,
                           onChanged: (newValue) {
+                            if (newValue == null) return;
                             setState(() {
                               selectedLanguage = newValue;
                             });
+                            final localeProvider = Provider.of<LocaleProvider>(
+                              context,
+                              listen: false,
+                            );
+                            if (newValue == 'English') {
+                              localeProvider.setLocale(const Locale('en'));
+                            } else if (newValue == 'Hindi') {
+                              localeProvider.setLocale(const Locale('hi'));
+                            } else if (newValue == 'Telugu') {
+                              localeProvider.setLocale(const Locale('te'));
+                            }
                           },
                           items: [
                             DropdownMenuItem(
@@ -74,9 +90,13 @@ class _LanguageSelectionScreenState extends State<LanguageSelectionScreen> {
                               value: 'Telugu',
                               child: Text('Telugu'),
                             ),
+                            DropdownMenuItem(
+                              value: 'Hindi',
+                              child: Text('Hindi'),
+                            ),
                           ],
                           decoration: InputDecoration(
-                            hintText: 'Choose Language',
+                            hintText: localizations.chooseLanguage,
                             hintStyle: GoogleFonts.poppins(
                               color: kseegreyColor,
                             ),
@@ -132,13 +152,11 @@ class _LanguageSelectionScreenState extends State<LanguageSelectionScreen> {
                             borderRadius: BorderRadius.circular(70),
                           ),
                         ),
-
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
-
                           children: [
                             CustomText(
-                              text: "Continue",
+                              text: localizations.continueButton,
                               fontSize: 16,
                               textcolor: kwhiteColor,
                               fontWeight: FontWeight.w500,

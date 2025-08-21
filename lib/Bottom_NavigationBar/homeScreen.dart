@@ -13,6 +13,7 @@ import 'package:mana_driver/Vehicles/vehicle_details.dart';
 import 'package:mana_driver/Widgets/colors.dart';
 import 'package:mana_driver/Widgets/customText.dart';
 import 'package:mana_driver/viewmodels/login_viewmodel.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:provider/provider.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
@@ -121,6 +122,7 @@ class _HomeScreenState extends State<HomeScreen> {
             ? "Guest"
             : "${vm.loggedInUser?['firstName'] ?? ''} ${vm.loggedInUser?['lastName'] ?? ''}"
                 .trim();
+    final localizations = AppLocalizations.of(context)!;
     return Scaffold(
       backgroundColor: Colors.white,
       body: SingleChildScrollView(
@@ -147,7 +149,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             CustomText(
-                              text: "Namaskaram",
+                              text: localizations.greeting,
                               textcolor: kseegreyColor,
                               fontSize: 14,
                               fontWeight: FontWeight.w500,
@@ -222,9 +224,9 @@ class _HomeScreenState extends State<HomeScreen> {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     CustomText(
-                                      text: "Pickup Location",
-                                      fontSize: 12,
-                                      fontWeight: FontWeight.w400,
+                                      text: localizations.pickupLocation,
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w500,
                                       textcolor: kgreyColor,
                                     ),
                                     SizedBox(height: 1),
@@ -237,7 +239,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                         color: KblackColor,
                                       ),
                                       decoration: InputDecoration(
-                                        hintText: "Enter pickup location",
+                                        hintText:
+                                            localizations.enterPickupLocation,
                                         hintStyle: GoogleFonts.poppins(
                                           fontSize: 14,
                                           fontWeight: FontWeight.w400,
@@ -331,9 +334,9 @@ class _HomeScreenState extends State<HomeScreen> {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     CustomText(
-                                      text: "Drop Location",
-                                      fontSize: 12,
-                                      fontWeight: FontWeight.w400,
+                                      text: localizations.dropLocation,
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w500,
                                       textcolor: kgreyColor,
                                     ),
                                     SizedBox(height: 1),
@@ -346,7 +349,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                       ),
                                       textInputAction: TextInputAction.next,
                                       decoration: InputDecoration(
-                                        hintText: "Enter drop location",
+                                        hintText:
+                                            localizations.enterDropLocation,
                                         hintStyle: GoogleFonts.poppins(
                                           fontSize: 14,
                                           fontWeight: FontWeight.w400,
@@ -393,9 +397,9 @@ class _HomeScreenState extends State<HomeScreen> {
                                         CrossAxisAlignment.start,
                                     children: [
                                       CustomText(
-                                        text: "Drop Location 2",
-                                        fontSize: 12,
-                                        fontWeight: FontWeight.w400,
+                                        text: localizations.dropLocation2,
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.w500,
                                         textcolor: kgreyColor,
                                       ),
                                       SizedBox(height: 1),
@@ -408,7 +412,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                           color: KblackColor,
                                         ),
                                         decoration: InputDecoration(
-                                          hintText: "Enter drop location 2",
+                                          hintText:
+                                              localizations.enterDropLocation2,
                                           hintStyle: GoogleFonts.poppins(
                                             fontSize: 14,
                                             fontWeight: FontWeight.w400,
@@ -448,7 +453,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       CustomText(
-                        text: 'My Vehicles',
+                        text: localizations.myVehicles,
                         fontSize: 18,
                         fontWeight: FontWeight.bold,
                         textcolor: KblackColor,
@@ -461,7 +466,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           );
                         },
                         child: Text(
-                          'View Vehicles',
+                          localizations.viewVehicles,
                           style: GoogleFonts.poppins(
                             fontSize: 12,
                             fontWeight: FontWeight.w400,
@@ -622,7 +627,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         // );
                       },
                       child: CustomText(
-                        text: "Book A Driver",
+                        text: localizations.bookADriver,
                         fontSize: 16,
                         fontWeight: FontWeight.w500,
                         textcolor: kwhiteColor,

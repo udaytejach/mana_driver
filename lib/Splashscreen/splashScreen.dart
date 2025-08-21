@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mana_driver/Login/selectLanguage.dart';
 
 import 'package:mana_driver/OnBoardingScreens/onboarding_screens.dart';
 import 'package:mana_driver/Widgets/colors.dart';
@@ -22,7 +23,7 @@ class _SplashScreenState extends State<SplashScreen> {
       });
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => OnboardingScreen()),
+        MaterialPageRoute(builder: (context) => LanguageSelectionScreen()),
       );
     });
   }
