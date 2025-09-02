@@ -1,18 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:mana_driver/Widgets/colors.dart';
 import 'package:mana_driver/Widgets/customText.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class AboutManaDriverScreen extends StatelessWidget {
-  final List<Map<String, String>> conditions = [
-    {
-      "title": "About Mana Driver",
-      "description":
-          "Mana Driver - Mee Vahanam, Maa Driver!\nMana Driver is your trusted platform to book professional, verified drivers anytime you need. Whether it's a one-way ride, round trip, hourly booking, or outstation travel - we've got you covered.",
-    },
-  ];
-
   @override
   Widget build(BuildContext context) {
+    final localizations = AppLocalizations.of(context)!;
+    final List<Map<String, String>> conditions = [
+      {"title": localizations.menuAbtMD, "description": localizations.mDdisk},
+    ];
+
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
@@ -40,7 +38,7 @@ class AboutManaDriverScreen extends StatelessWidget {
               ),
               Center(
                 child: CustomText(
-                  text: "About Mana Driver",
+                  text: localizations.menuAbtMD,
                   textcolor: KblackColor,
                   fontWeight: FontWeight.w600,
                   fontSize: 22,

@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:mana_driver/Widgets/colors.dart';
 import 'package:mana_driver/Widgets/customText.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class CancellationPolicyScreen extends StatelessWidget {
   const CancellationPolicyScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final localizations = AppLocalizations.of(context)!;
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
@@ -34,7 +36,7 @@ class CancellationPolicyScreen extends StatelessWidget {
               ),
               Center(
                 child: CustomText(
-                  text: "Cancellation policy",
+                  text: localizations.menuCancelPolicy,
                   textcolor: KblackColor,
                   fontWeight: FontWeight.w600,
                   fontSize: 22,
@@ -49,32 +51,24 @@ class CancellationPolicyScreen extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const SectionTitle('1. Free Cancellation Window'),
-            const SectionDescription(
+            SectionTitle(localizations.cP_q1),
+            SectionDescription(
               'You can cancel your booking within 5 minutes of confirmation without any charges.',
             ),
             const SizedBox(height: 20),
-            const SectionTitle('2. Cancellation After 5 Minutes'),
-            const SectionDescription(
-              '• 50 cancellation fee will be charged if:\n'
-              '• Driver already started the trip.\n'
-              '• Driver waited at your location for more than 10',
-            ),
+            SectionTitle(localizations.cP_q2),
+            SectionDescription(localizations.cP_a2),
+            SectionDescription(localizations.cP_a22),
+            SectionDescription(localizations.cP_a23),
             const SizedBox(height: 20),
-            const SectionTitle('3. No-Show Policy (Customer absent)'),
-            const SectionDescription(
-              'If customer is not available at pickup point even after 15 minutes, trip will be auto-cancelled. #100 will be charged as no-show',
-            ),
+            SectionTitle(localizations.cP_q3),
+            SectionDescription(localizations.cP_a3),
             const SizedBox(height: 20),
-            const SectionTitle('4. Driver Cancellation'),
-            const SectionDescription(
-              'If a driver cancels after accepting, we will reassign another driver. Repeated cancellations by drivers will lead to penalties and suspension.',
-            ),
+            SectionTitle(localizations.cP_q4),
+            SectionDescription(localizations.cP_a4),
             const SizedBox(height: 20),
-            const SectionTitle('5. Refund Timeline'),
-            const SectionDescription(
-              'If you paid online, eligible refunds will be processed within 3-5 business days.',
-            ),
+            SectionTitle(localizations.cP_q5),
+            SectionDescription(localizations.cP_a5),
             const SizedBox(height: 40),
           ],
         ),

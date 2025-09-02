@@ -426,7 +426,13 @@ class _MenuScreenState extends State<MenuScreen> {
                   ),
                   const Divider(color: KdeviderColor),
                   InkWell(
-                    onTap: () => _showDeleteAccountDialog(),
+                    onTap:
+                        () => _showDeleteAccountDialog(
+                          txt1: localizations.dA_t1,
+                          txt2: localizations.dA_t2,
+                          c: localizations.menuCancel,
+                          d: localizations.menuDelete,
+                        ),
                     child: Padding(
                       padding: const EdgeInsets.all(3),
                       child: Row(
@@ -619,7 +625,12 @@ class _MenuScreenState extends State<MenuScreen> {
     );
   }
 
-  void _showDeleteAccountDialog() {
+  void _showDeleteAccountDialog({
+    required String txt1,
+    required String txt2,
+    required String c,
+    required String d,
+  }) {
     showDialog(
       context: context,
       builder:
@@ -632,15 +643,15 @@ class _MenuScreenState extends State<MenuScreen> {
                 children: [
                   Image.asset("images/deleteacnt.png", height: 100),
                   const SizedBox(height: 12),
-                  const CustomText(
-                    text: "Warning",
+                  CustomText(
+                    text: txt1,
                     fontSize: 18,
                     fontWeight: FontWeight.w600,
                     textcolor: KblackColor,
                   ),
                   const SizedBox(height: 10),
-                  const CustomText(
-                    text: "Are you sure want to delete your account?",
+                  CustomText(
+                    text: txt2,
                     fontSize: 14,
                     fontWeight: FontWeight.w400,
                     textcolor: kseegreyColor,
@@ -649,8 +660,8 @@ class _MenuScreenState extends State<MenuScreen> {
               ),
             ),
             actions: _dialogActions(
-              P: "Delete",
-              c: "Cancel",
+              P: d,
+              c: c,
               onConfirm: () {
                 Navigator.pop(context);
               },

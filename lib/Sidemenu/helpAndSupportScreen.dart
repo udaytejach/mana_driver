@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:mana_driver/Widgets/colors.dart';
 import 'package:mana_driver/Widgets/customText.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class HelpAndSupport extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    final localizations = AppLocalizations.of(context)!;
     return Scaffold(
       backgroundColor: Colors.transparent, // Important!
       body: Stack(
@@ -49,7 +51,7 @@ class HelpAndSupport extends StatelessWidget {
                       ),
                       Center(
                         child: Text(
-                          "Help & Support",
+                          localizations.menuHelpSupport,
                           style: TextStyle(
                             color: kwhiteColor,
                             fontWeight: FontWeight.w600,
@@ -83,7 +85,7 @@ class HelpAndSupport extends StatelessWidget {
                         SizedBox(
                           width: 190,
                           child: CustomText(
-                            text: "How can I help you today?",
+                            text: localizations.hS_t1,
                             fontSize: 24,
                             fontWeight: FontWeight.w700,
                             textcolor: Color(0xFFFF6B00),
@@ -92,21 +94,21 @@ class HelpAndSupport extends StatelessWidget {
                         ),
                         SizedBox(height: 12),
 
-                        Center(
-                          child: CustomText(
-                            text:
-                                "Lorem Ipsum is simply dummy text\nof the printing and typesetting industry.",
-                            fontSize: 14,
-                            fontWeight: FontWeight.w400,
-                            textcolor: KorangeLightColor,
-                          ),
-                        ),
+                        // Center(
+                        //   child: CustomText(
+                        //     text:
+                        //         "Lorem Ipsum is simply dummy text\nof the printing and typesetting industry.",
+                        //     fontSize: 14,
+                        //     fontWeight: FontWeight.w400,
+                        //     textcolor: KorangeLightColor,
+                        //   ),
+                        // ),
                         SizedBox(height: 54),
 
                         Align(
                           alignment: Alignment.centerLeft,
                           child: CustomText(
-                            text: "Contact Details",
+                            text: localizations.hS_t2,
                             fontSize: 18,
                             fontWeight: FontWeight.w600,
                             textcolor: KblackColor,
@@ -118,13 +120,13 @@ class HelpAndSupport extends StatelessWidget {
                           children: [
                             contactCard(
                               "images/phone.png",
-                              "for call",
+                              localizations.hS_t3,
                               "+91 9000052798",
                             ),
                             SizedBox(height: 12),
                             contactCard(
                               "images/sendemail.png",
-                              "Send a mail",
+                              localizations.hS_t4,
                               "help@manadriver.com",
                             ),
                           ],
