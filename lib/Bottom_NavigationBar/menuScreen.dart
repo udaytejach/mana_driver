@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
-
 import 'package:mana_driver/Sidemenu/aboutManaDriver.dart';
 import 'package:mana_driver/Sidemenu/cancellationPolicyScreen.dart';
 import 'package:mana_driver/Sidemenu/favoriteDriverScreen.dart';
@@ -11,7 +9,6 @@ import 'package:mana_driver/Sidemenu/offersScreen.dart';
 import 'package:mana_driver/Sidemenu/profilePage.dart';
 import 'package:mana_driver/Sidemenu/referScreen.dart';
 import 'package:mana_driver/Sidemenu/termsAndConditions.dart';
-
 import 'package:mana_driver/Widgets/colors.dart';
 import 'package:mana_driver/Widgets/customButton.dart';
 import 'package:mana_driver/Widgets/customText.dart';
@@ -21,6 +18,7 @@ import 'package:mana_driver/viewmodels/login_viewmodel.dart';
 import 'package:pinput/pinput.dart';
 import 'package:provider/provider.dart';
 import 'package:mana_driver/services/locale_provider.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class MenuScreen extends StatefulWidget {
   const MenuScreen({super.key});
@@ -48,178 +46,464 @@ class _MenuScreenState extends State<MenuScreen> {
   ];
 
   @override
+  void instate() {
+    super.initState();
+    //  getProfileData();
+  }
+
+  @override
   Widget build(BuildContext context) {
+    final localizations = AppLocalizations.of(context)!;
     final vm = context.watch<LoginViewModel>();
-    final userName = vm.loggedInUser?['fullName'] ?? 'Guest';
-    final userEmail = vm.loggedInUser?['email'] ?? 'Guest';
+    final userName =
+        "${vm.loggedInUser?['firstName'] ?? ''} ${vm.loggedInUser?['lastName'] ?? ''}"
+            .trim();
 
-    return LayoutBuilder(
-      builder: (context, constraints) {
-        double screenWidth = constraints.maxWidth;
+    final userEmail = vm.loggedInUser?['email'] ?? "";
+    return SafeArea(
+      child: SingleChildScrollView(
+        child: LayoutBuilder(
+          builder: (context, constraints) {
+            double screenWidth = constraints.maxWidth;
 
-        return Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
-          child: Column(
-            children: [
-              const SizedBox(height: 40),
-              _buildProfileTile(),
-              const Divider(color: KdeviderColor),
-              Expanded(
-                child: ListView.separated(
-                  itemCount: menuItems.length,
-                  separatorBuilder:
-                      (_, __) => const Divider(color: KdeviderColor),
-                  itemBuilder: (context, index) {
-                    final item = menuItems[index];
-                    return _buildMenuItem(item['image'], item['title']);
-                  },
-                ),
+            return Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              child: Column(
+                children: [
+                  const SizedBox(height: 40),
+                  InkWell(
+                    onTap:
+                        () => Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (_) => const ProfileScreen(),
+                          ),
+                        ),
+                    child: Row(
+                      children: [
+                        const CircleAvatar(
+                          radius: 30,
+                          backgroundImage: AssetImage('images/user.png'),
+                        ),
+                        const SizedBox(width: 12),
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              CustomText(
+                                text: userName,
+                                fontSize: 18,
+                                fontWeight: FontWeight.w600,
+                                textcolor: korangeColor,
+                              ),
+                              SizedBox(height: 4),
+                              CustomText(
+                                text: userEmail,
+                                fontSize: 12,
+                                fontWeight: FontWeight.w300,
+                                textcolor: kseegreyColor,
+                              ),
+                            ],
+                          ),
+                        ),
+                        Image.asset("images/chevronRight.png", width: 20),
+                      ],
+                    ),
+                  ),
+                  const Divider(color: KdeviderColor),
+                  InkWell(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (_) => MyAddressScreen()),
+                      );
+                    },
+                    child: Padding(
+                      padding: const EdgeInsets.all(3),
+                      child: Row(
+                        children: [
+                          Image.asset(
+                            "images/address.png",
+                            width: 24,
+                            height: 24,
+                          ),
+                          const SizedBox(width: 12),
+                          Expanded(
+                            child: CustomText(
+                              text: localizations.menumyAddress,
+                              fontSize: 16,
+                              fontWeight: FontWeight.w400,
+                              textcolor: KblackColor,
+                            ),
+                          ),
+                          Image.asset("images/chevronRight.png", width: 20),
+                        ],
+                      ),
+                    ),
+                  ),
+                  const Divider(color: KdeviderColor),
+                  InkWell(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (_) => FavouriteDriversScreen(),
+                        ),
+                      );
+                    },
+                    child: Padding(
+                      padding: const EdgeInsets.all(3),
+                      child: Row(
+                        children: [
+                          Image.asset(
+                            "images/favorite.png",
+                            width: 24,
+                            height: 24,
+                          ),
+                          const SizedBox(width: 12),
+                          Expanded(
+                            child: CustomText(
+                              text: localizations.menuFavDrivers,
+                              fontSize: 16,
+                              fontWeight: FontWeight.w400,
+                              textcolor: KblackColor,
+                            ),
+                          ),
+                          Image.asset("images/chevronRight.png", width: 20),
+                        ],
+                      ),
+                    ),
+                  ),
+                  const Divider(color: KdeviderColor),
+
+                  InkWell(
+                    onTap:
+                        () => _showUpdateMobileDialog(
+                          uMN: localizations.menuUpdateMobileNumber,
+                          eM: localizations.menuEnterMobile,
+                          eOTP: localizations.menuEnterOTP,
+                          dR: localizations.menuDontRecieved,
+                          rS: localizations.menuResend,
+                          c: localizations.menuCancel,
+                          u: localizations.menuUpdate,
+                        ),
+                    child: Padding(
+                      padding: const EdgeInsets.all(3),
+                      child: Row(
+                        children: [
+                          Image.asset(
+                            "images/update.png",
+                            width: 24,
+                            height: 24,
+                          ),
+                          const SizedBox(width: 12),
+                          Expanded(
+                            child: CustomText(
+                              text: localizations.menuUpdateMobileNumber,
+                              fontSize: 16,
+                              fontWeight: FontWeight.w400,
+                              textcolor: KblackColor,
+                            ),
+                          ),
+                          Image.asset("images/chevronRight.png", width: 20),
+                        ],
+                      ),
+                    ),
+                  ),
+                  const Divider(color: KdeviderColor),
+                  InkWell(
+                    onTap: () => _showLanguageDialog(),
+                    child: Padding(
+                      padding: const EdgeInsets.all(3),
+                      child: Row(
+                        children: [
+                          Image.asset(
+                            "images/language.png",
+                            width: 24,
+                            height: 24,
+                          ),
+                          const SizedBox(width: 12),
+                          Expanded(
+                            child: CustomText(
+                              text: localizations.menuAppLanguage,
+                              fontSize: 16,
+                              fontWeight: FontWeight.w400,
+                              textcolor: KblackColor,
+                            ),
+                          ),
+                          Image.asset("images/chevronRight.png", width: 20),
+                        ],
+                      ),
+                    ),
+                  ),
+                  const Divider(color: KdeviderColor),
+                  InkWell(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (_) => OffersScreen()),
+                      );
+                    },
+                    child: Padding(
+                      padding: const EdgeInsets.all(3),
+                      child: Row(
+                        children: [
+                          Image.asset(
+                            "images/offers.png",
+                            width: 24,
+                            height: 24,
+                          ),
+                          const SizedBox(width: 12),
+                          Expanded(
+                            child: CustomText(
+                              text: localizations.menuOffers,
+                              fontSize: 16,
+                              fontWeight: FontWeight.w400,
+                              textcolor: KblackColor,
+                            ),
+                          ),
+                          Image.asset("images/chevronRight.png", width: 20),
+                        ],
+                      ),
+                    ),
+                  ),
+
+                  const Divider(color: KdeviderColor),
+                  InkWell(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (_) => ReferFriendScreen()),
+                      );
+                    },
+                    child: Padding(
+                      padding: const EdgeInsets.all(3),
+                      child: Row(
+                        children: [
+                          Image.asset(
+                            "images/refer.png",
+                            width: 24,
+                            height: 24,
+                          ),
+                          const SizedBox(width: 12),
+                          Expanded(
+                            child: CustomText(
+                              text: localizations.menuReferaFriend,
+                              fontSize: 16,
+                              fontWeight: FontWeight.w400,
+                              textcolor: KblackColor,
+                            ),
+                          ),
+                          Image.asset("images/chevronRight.png", width: 20),
+                        ],
+                      ),
+                    ),
+                  ),
+                  const Divider(color: KdeviderColor),
+                  InkWell(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (_) => TermsAndConditions()),
+                      );
+                    },
+                    child: Padding(
+                      padding: const EdgeInsets.all(3),
+                      child: Row(
+                        children: [
+                          Image.asset("images/info.png", width: 24, height: 24),
+                          const SizedBox(width: 12),
+                          Expanded(
+                            child: CustomText(
+                              text: localizations.menuTC,
+                              fontSize: 16,
+                              fontWeight: FontWeight.w400,
+                              textcolor: KblackColor,
+                            ),
+                          ),
+                          Image.asset("images/chevronRight.png", width: 20),
+                        ],
+                      ),
+                    ),
+                  ),
+                  const Divider(color: KdeviderColor),
+                  InkWell(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (_) => HelpAndSupport()),
+                      );
+                    },
+                    child: Padding(
+                      padding: const EdgeInsets.all(3),
+                      child: Row(
+                        children: [
+                          Image.asset(
+                            "images/support.png",
+                            width: 24,
+                            height: 24,
+                          ),
+                          const SizedBox(width: 12),
+                          Expanded(
+                            child: CustomText(
+                              text: localizations.menuHelpSupport,
+                              fontSize: 16,
+                              fontWeight: FontWeight.w400,
+                              textcolor: KblackColor,
+                            ),
+                          ),
+                          Image.asset("images/chevronRight.png", width: 20),
+                        ],
+                      ),
+                    ),
+                  ),
+
+                  const Divider(color: KdeviderColor),
+                  InkWell(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (_) => CancellationPolicyScreen(),
+                        ),
+                      );
+                    },
+                    child: Padding(
+                      padding: const EdgeInsets.all(3),
+                      child: Row(
+                        children: [
+                          Image.asset(
+                            "images/policy.png",
+                            width: 24,
+                            height: 24,
+                          ),
+                          const SizedBox(width: 12),
+                          Expanded(
+                            child: CustomText(
+                              text: localizations.menuCancelPolicy,
+                              fontSize: 16,
+                              fontWeight: FontWeight.w400,
+                              textcolor: KblackColor,
+                            ),
+                          ),
+                          Image.asset("images/chevronRight.png", width: 20),
+                        ],
+                      ),
+                    ),
+                  ),
+                  const Divider(color: KdeviderColor),
+                  InkWell(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (_) => AboutManaDriverScreen(),
+                        ),
+                      );
+                    },
+                    child: Padding(
+                      padding: const EdgeInsets.all(3),
+                      child: Row(
+                        children: [
+                          Image.asset(
+                            "images/aboutMD.png",
+                            width: 24,
+                            height: 24,
+                          ),
+                          const SizedBox(width: 12),
+                          Expanded(
+                            child: CustomText(
+                              text: localizations.menuAbtMD,
+                              fontSize: 16,
+                              fontWeight: FontWeight.w400,
+                              textcolor: KblackColor,
+                            ),
+                          ),
+                          Image.asset("images/chevronRight.png", width: 20),
+                        ],
+                      ),
+                    ),
+                  ),
+                  const Divider(color: KdeviderColor),
+                  InkWell(
+                    onTap: () => _showDeleteAccountDialog(),
+                    child: Padding(
+                      padding: const EdgeInsets.all(3),
+                      child: Row(
+                        children: [
+                          Image.asset(
+                            "images/delete_acnt.png",
+                            width: 24,
+                            height: 24,
+                          ),
+                          const SizedBox(width: 12),
+                          Expanded(
+                            child: CustomText(
+                              text: localizations.menuDeleteAccount,
+                              fontSize: 16,
+                              fontWeight: FontWeight.w400,
+                              textcolor: KblackColor,
+                            ),
+                          ),
+                          Image.asset("images/chevronRight.png", width: 20),
+                        ],
+                      ),
+                    ),
+                  ),
+                  const Divider(color: KdeviderColor),
+                  InkWell(
+                    onTap: () => _showLogoutDialog(),
+                    child: Padding(
+                      padding: const EdgeInsets.all(3),
+                      child: Row(
+                        children: [
+                          Image.asset(
+                            "images/logout.png",
+                            width: 24,
+                            height: 24,
+                          ),
+                          const SizedBox(width: 12),
+                          Expanded(
+                            child: CustomText(
+                              text: localizations.menuLogout,
+                              fontSize: 16,
+                              fontWeight: FontWeight.w400,
+                              textcolor: KblackColor,
+                            ),
+                          ),
+                          Image.asset("images/chevronRight.png", width: 20),
+                        ],
+                      ),
+                    ),
+                  ),
+                  SizedBox(height: 20),
+                ],
               ),
-            ],
-          ),
-        );
-      },
-    );
-  }
-
-  Widget _buildProfileTile() {
-    return InkWell(
-      onTap:
-          () => Navigator.push(
-            context,
-            MaterialPageRoute(builder: (_) => const ProfileScreen()),
-          ),
-      child: Row(
-        children: [
-          const CircleAvatar(
-            radius: 30,
-            backgroundImage: AssetImage('images/user.png'),
-          ),
-          const SizedBox(width: 12),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: const [
-                CustomText(
-                  text: "Ranjith Kumar",
-                  fontSize: 18,
-                  fontWeight: FontWeight.w600,
-                  textcolor: korangeColor,
-                ),
-                SizedBox(height: 4),
-                CustomText(
-                  text: "rohi**********17@gmail.com",
-                  fontSize: 12,
-                  fontWeight: FontWeight.w300,
-                  textcolor: kseegreyColor,
-                ),
-              ],
-            ),
-          ),
-          Image.asset("images/chevronRight.png", width: 20),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildMenuItem(String imagePath, String title) {
-    return InkWell(
-      onTap: () => _handleMenuAction(title),
-      child: Padding(
-        padding: const EdgeInsets.all(3),
-        child: Row(
-          children: [
-            Image.asset(imagePath, width: 24, height: 24),
-            const SizedBox(width: 12),
-            Expanded(
-              child: CustomText(
-                text: title,
-                fontSize: 16,
-                fontWeight: FontWeight.w400,
-                textcolor: KblackColor,
-              ),
-            ),
-            Image.asset("images/chevronRight.png", width: 20),
-          ],
+            );
+          },
         ),
       ),
     );
   }
 
-  void _handleMenuAction(String title) {
-    switch (title) {
-      case 'My Address':
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (_) => MyAddressScreen()),
-        );
-        break;
-      case 'Favourite Drivers':
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (_) => FavouriteDriversScreen()),
-        );
-        break;
-      case 'Update Mobile Number':
-        _showUpdateMobileDialog();
-        break;
-      case 'App language':
-        _showLanguageDialog();
-        break;
-      case 'Offers':
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (_) => OffersScreen()),
-        );
-        break;
-      case 'Refer a Friend':
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (_) => ReferFriendScreen()),
-        );
-        break;
-      case 'Terms & Conditions':
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (_) => TermsAndConditions()),
-        );
-        break;
-      case 'Help & Support':
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (_) => HelpAndSupport()),
-        );
-        break;
-      case 'Cancellation policy':
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (_) => CancellationPolicyScreen()),
-        );
-        break;
-      case 'About Mana Driver':
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (_) => AboutManaDriverScreen()),
-        );
-        break;
-      case 'Delete Account':
-        _showDeleteAccountDialog();
-        break;
-      case 'Logout':
-        _showLogoutDialog();
-        break;
-    }
-  }
-
-  void _showUpdateMobileDialog() {
+  void _showUpdateMobileDialog({
+    required String uMN,
+    required String eM,
+    required String eOTP,
+    required String dR,
+    required String rS,
+    required String c,
+    required String u,
+  }) {
     final otpController = TextEditingController();
     showDialog(
       context: context,
       builder:
           (_) => AlertDialog(
             backgroundColor: kwhiteColor,
-            title: const CustomText(
-              text: 'Update mobile number',
+            title: CustomText(
+              text: uMN,
+
               textcolor: KblackColor,
               fontSize: 18,
               fontWeight: FontWeight.w600,
@@ -228,13 +512,10 @@ class _MenuScreenState extends State<MenuScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisSize: MainAxisSize.min,
               children: [
-                CustomTextField(
-                  controller: nameController,
-                  labelText: 'Enter Mobile',
-                ),
+                CustomTextField(controller: nameController, labelText: eM),
                 const SizedBox(height: 20),
-                const CustomText(
-                  text: 'Enter OTP',
+                CustomText(
+                  text: eOTP,
                   textcolor: KblackColor,
                   fontSize: 18,
                   fontWeight: FontWeight.w600,
@@ -253,14 +534,14 @@ class _MenuScreenState extends State<MenuScreen> {
                   alignment: Alignment.centerRight,
                   child: Text.rich(
                     TextSpan(
-                      text: "Don’t received? ",
+                      text: dR,
                       style: GoogleFonts.poppins(
                         fontSize: 14,
                         color: kgreyColor,
                       ),
                       children: [
                         TextSpan(
-                          text: "Resend",
+                          text: rS,
                           style: TextStyle(
                             color: korangeColor,
                             fontWeight: FontWeight.w600,
@@ -273,6 +554,8 @@ class _MenuScreenState extends State<MenuScreen> {
               ],
             ),
             actions: _dialogActions(
+              P: u,
+              c: c,
               onConfirm: () {
                 Navigator.pop(context);
               },
@@ -313,6 +596,8 @@ class _MenuScreenState extends State<MenuScreen> {
               ],
             ),
             actions: _dialogActions(
+              P: "Update",
+              c: "Cancel",
               onConfirm: () {
                 if (selectedLanguage != null) {
                   final localeProvider = Provider.of<LocaleProvider>(
@@ -364,6 +649,8 @@ class _MenuScreenState extends State<MenuScreen> {
               ),
             ),
             actions: _dialogActions(
+              P: "Delete",
+              c: "Cancel",
               onConfirm: () {
                 Navigator.pop(context);
               },
@@ -375,6 +662,8 @@ class _MenuScreenState extends State<MenuScreen> {
 
   List<Widget> _dialogActions({
     required VoidCallback onConfirm,
+    required String P,
+    required String c,
     String confirmText = "Update",
   }) {
     return [
@@ -382,7 +671,7 @@ class _MenuScreenState extends State<MenuScreen> {
         children: [
           Expanded(
             child: CustomCancelButton(
-              text: "Cancel",
+              text: c,
               onPressed: () {},
               height: 46,
               width: 140,
@@ -394,7 +683,7 @@ class _MenuScreenState extends State<MenuScreen> {
           Expanded(
             child: CustomButton(
               onPressed: onConfirm,
-              text: confirmText,
+              text: P,
               height: 46,
               width: 140,
             ),
