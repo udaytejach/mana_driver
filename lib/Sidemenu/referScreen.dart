@@ -2,12 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:mana_driver/Widgets/colors.dart';
 import 'package:mana_driver/Widgets/customButton.dart';
 import 'package:mana_driver/Widgets/customText.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class ReferFriendScreen extends StatelessWidget {
   const ReferFriendScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final localizations = AppLocalizations.of(context)!;
     return Scaffold(
       backgroundColor: KblackColor,
       appBar: AppBar(
@@ -37,7 +39,7 @@ class ReferFriendScreen extends StatelessWidget {
               ),
               Center(
                 child: CustomText(
-                  text: "Refer a friend",
+                  text: localizations.menuReferaFriend,
                   textcolor: kwhiteColor,
                   fontWeight: FontWeight.w600,
                   fontSize: 22,
@@ -60,7 +62,7 @@ class ReferFriendScreen extends StatelessWidget {
 
             Center(
               child: CustomText(
-                text: 'Refer to your friend and get Rewards of 100/-',
+                text: localizations.rat_Txt1,
                 fontSize: 24,
                 fontWeight: FontWeight.w600,
                 textcolor: kwhiteColor,
@@ -69,23 +71,19 @@ class ReferFriendScreen extends StatelessWidget {
             const SizedBox(height: 24),
 
             Column(
-              children: const [
-                StepItem(number: 1, text: 'Send an invitation to a friend'),
+              children: [
+                StepItem(number: 1, text: localizations.rat_Txt2),
                 SizedBox(height: 10),
-                StepItem(number: 2, text: 'Your friend signup'),
+                StepItem(number: 2, text: localizations.rat_Txt3),
                 SizedBox(height: 10),
-                StepItem(
-                  number: 3,
-                  text:
-                      'You’ll both get cash when your friend first book a ride',
-                ),
+                StepItem(number: 3, text: localizations.rat_Txt4),
               ],
             ),
 
             const Spacer(),
 
             CustomButton(
-              text: 'Send a Invitation',
+              text: localizations.rat_Txt5,
               onPressed: () {},
               width: 220,
               height: 53,

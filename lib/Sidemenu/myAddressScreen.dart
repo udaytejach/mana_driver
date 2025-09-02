@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:mana_driver/Widgets/colors.dart';
 import 'package:mana_driver/Widgets/customButton.dart';
 import 'package:mana_driver/Widgets/customText.dart';
@@ -15,6 +15,7 @@ class _MyAddressScreenState extends State<MyAddressScreen> {
   int selectedAddress = 0;
   @override
   Widget build(BuildContext context) {
+    final localizations = AppLocalizations.of(context)!;
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
@@ -42,7 +43,7 @@ class _MyAddressScreenState extends State<MyAddressScreen> {
               ),
               Center(
                 child: CustomText(
-                  text: "My Address",
+                  text: localizations.menumyAddress,
                   textcolor: KblackColor,
                   fontWeight: FontWeight.w600,
                   fontSize: 22,
@@ -57,8 +58,8 @@ class _MyAddressScreenState extends State<MyAddressScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const CustomText(
-              text: 'Address',
+            CustomText(
+              text: localizations.address,
               fontSize: 18,
               fontWeight: FontWeight.w600,
               textcolor: KblackColor,
@@ -91,16 +92,15 @@ class _MyAddressScreenState extends State<MyAddressScreen> {
                         Expanded(
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
-                            children: const [
+                            children: [
                               CustomText(
-                                text: 'My Address,',
+                                text: localizations.address + ",",
                                 fontSize: 16,
                                 fontWeight: FontWeight.w600,
                                 textcolor: korangeColor,
                               ),
                               CustomText(
-                                text:
-                                    'Sy.No.98, Main Rd, Near JLN House Serilingampally, Kondapur,  500084',
+                                text: localizations.dummy_adres,
                                 textcolor: kseegreyColor,
                                 fontSize: 14,
                                 fontWeight: FontWeight.w400,
@@ -125,7 +125,10 @@ class _MyAddressScreenState extends State<MyAddressScreen> {
         child: SizedBox(
           width: double.infinity,
           height: 50,
-          child: CustomButton(onPressed: () {}, text: 'Add New Address'),
+          child: CustomButton(
+            onPressed: () {},
+            text: localizations.add_new_Address,
+          ),
         ),
       ),
     );

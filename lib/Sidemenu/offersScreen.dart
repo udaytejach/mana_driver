@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:mana_driver/Widgets/colors.dart';
 import 'package:mana_driver/Widgets/customText.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class OffersScreen extends StatelessWidget {
   const OffersScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final localizations = AppLocalizations.of(context)!;
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
@@ -34,7 +36,7 @@ class OffersScreen extends StatelessWidget {
               ),
               Center(
                 child: CustomText(
-                  text: "Offers",
+                  text: localizations.menuOffers,
                   textcolor: KblackColor,
                   fontWeight: FontWeight.w600,
                   fontSize: 22,
@@ -52,8 +54,7 @@ class OffersScreen extends StatelessWidget {
             child: Align(
               alignment: Alignment.center,
               child: CustomText(
-                text:
-                    'You don’t have offers at the moment. Please try again later.',
+                text: localizations.offer_dummy_text,
                 fontSize: 14,
                 fontWeight: FontWeight.w400,
                 textcolor: kseegreyColor,

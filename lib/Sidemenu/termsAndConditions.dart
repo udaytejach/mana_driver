@@ -1,58 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:mana_driver/Widgets/colors.dart';
 import 'package:mana_driver/Widgets/customText.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class TermsAndConditions extends StatelessWidget {
-  final List<Map<String, String>> conditions = [
-    {
-      "title": "1. Introduction",
-      "description":
-          "Welcome to our app. By using this application, you agree to the following terms and conditions.",
-    },
-    {
-      "title": "2. User Obligations",
-      "description":
-          "Users must ensure all information provided is accurate and must not misuse the service.",
-    },
-    {
-      "title": "3. Account Security",
-      "description":
-          "You are responsible for maintaining the confidentiality of your account credentials.",
-    },
-    {
-      "title": "4. Data Privacy",
-      "description":
-          "We value your privacy. Your data is stored securely and handled as per our privacy policy.",
-    },
-    {
-      "title": "5. Intellectual Property",
-      "description":
-          "All content in the app is protected by copyright and may not be reused without permission.",
-    },
-    {
-      "title": "6. Service Changes",
-      "description":
-          "We reserve the right to modify or discontinue the service without notice.",
-    },
-    {
-      "title": "7. Termination",
-      "description":
-          "We may suspend or terminate your access if you violate any terms outlined here.",
-    },
-    {
-      "title": "8. Third-party Links",
-      "description":
-          "We may include links to third-party sites. We are not responsible for their content.",
-    },
-    {
-      "title": "9. Governing Law",
-      "description":
-          "These terms shall be governed in accordance with the laws of your country or region.",
-    },
-  ];
-
   @override
   Widget build(BuildContext context) {
+    final localizations = AppLocalizations.of(context)!;
+
+    final List<Map<String, String>> conditions = [
+      {"title": localizations.tDt1, "description": localizations.tD_D1},
+      {"title": localizations.tDt2, "description": localizations.tD_D2},
+      {"title": localizations.tDt3, "description": localizations.tD_D3},
+      {"title": localizations.tDt4, "description": localizations.tD_D4},
+      {"title": localizations.tDt5, "description": localizations.tD_D5},
+      {"title": localizations.tDt6, "description": localizations.tD_D6},
+      {"title": localizations.tDt7, "description": localizations.tD_D7},
+      {"title": localizations.tDt8, "description": localizations.tD_D8},
+      {"title": localizations.tDt9, "description": localizations.tD_D9},
+    ];
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
@@ -80,7 +46,7 @@ class TermsAndConditions extends StatelessWidget {
               ),
               Center(
                 child: CustomText(
-                  text: "Terms & Conditions",
+                  text: localizations.menuTC,
                   textcolor: KblackColor,
                   fontWeight: FontWeight.w600,
                   fontSize: 22,
