@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:mana_driver/Bottom_NavigationBar/bottomNavigationBar.dart';
 import 'package:mana_driver/Login/selectLanguage.dart';
 
 import 'package:mana_driver/OnBoardingScreens/onboarding_screens.dart';
+import 'package:mana_driver/SharedPreferences/shared_preferences.dart';
 import 'package:mana_driver/Widgets/colors.dart';
 import 'package:mana_driver/Widgets/customText.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -16,17 +19,40 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     super.initState();
+    _navigateNext();
+  }
 
-    Future.delayed(const Duration(seconds: 3), () {
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        FocusManager.instance.primaryFocus?.unfocus();
-      });
+  Future<void> _navigateNext() async {
+   
+    await Future.delayed(const Duration(seconds: 3));
+
+    await SharedPrefServices.init();
+
+    bool isLoggedIn = SharedPrefServices.getislogged();
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      FocusManager.instance.primaryFocus?.unfocus();
+    });
+
+    if (isLoggedIn) {
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => LanguageSelectionScreen()),
+        MaterialPageRoute(builder: (_) => BottomNavigation()),
       );
-    });
+    } else {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (_) => LanguageSelectionScreen()),
+      );
+    }
   }
+
+  double dynamicHeight(BuildContext context, double figmaHeight) {
+    const baseHeight = 812;
+    final screenHeight = MediaQuery.of(context).size.height;
+    return (figmaHeight / baseHeight) * screenHeight;
+  }
+
 
   // @override
   // void dispose() {
@@ -34,11 +60,7 @@ class _SplashScreenState extends State<SplashScreen> {
   //   super.dispose();
   // }
 
-  double dynamicHeight(BuildContext context, double figmaHeight) {
-    const baseHeight = 812;
-    final screenHeight = MediaQuery.of(context).size.height;
-    return (figmaHeight / baseHeight) * screenHeight;
-  }
+ 
 
   @override
   Widget build(BuildContext context) {

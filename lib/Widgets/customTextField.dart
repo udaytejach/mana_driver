@@ -35,6 +35,7 @@ class CustomTextField extends StatelessWidget {
     return TextFormField(
       controller: controller,
       keyboardType: keyboardType,
+      textInputAction: TextInputAction.next,
       obscureText: obscureText,
       readOnly: readOnly,
       maxLines: maxLines ?? 1,

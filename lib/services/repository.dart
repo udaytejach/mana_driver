@@ -9,7 +9,7 @@ class RepositoryData {
     String collectionPrefix = 'users',
   }) async {
     final collectionName = 'users';
-    final docRef = _firestore.collection(collectionName).doc(user.id);
+    final docRef = _firestore.collection(collectionName).doc();
     await docRef.set(user.toMap());
   }
 

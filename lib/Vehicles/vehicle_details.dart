@@ -1,13 +1,22 @@
 import 'package:dotted_line/dotted_line.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:mana_driver/Bottom_NavigationBar/homeScreen.dart';
 import 'package:mana_driver/Vehicles/confirm_details.dart';
+import 'package:mana_driver/Vehicles/edit_vehicle_details.dart';
+import 'package:mana_driver/Vehicles/my_vehicle.dart';
 import 'package:mana_driver/Widgets/colors.dart';
 import 'package:mana_driver/Widgets/customText.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 
 class VehicleDetailsScreen extends StatelessWidget {
-  const VehicleDetailsScreen({super.key});
+  final data;
+  final String docId;
+  const VehicleDetailsScreen({
+    super.key,
+    required this.docId,
+    required this.data,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -48,7 +57,62 @@ class VehicleDetailsScreen extends StatelessWidget {
             ],
           ),
         ),
+        actions: [
+          PopupMenuButton<String>(
+            icon: const Icon(Icons.more_vert, color: Colors.black),
+            onSelected: (value) {
+              if (value == 'edit') {
+                print(docId);
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder:
+                        (_) => EditVehicleDetails(data: data, docId: docId),
+                  ),
+                );
+              } else if (value == 'delete') {
+                showDialog(
+                  context: context,
+                  builder:
+                      (ctx) => AlertDialog(
+                        title: const Text("Delete Vehicle"),
+                        content: const Text(
+                          "Are you sure you want to delete this vehicle?",
+                        ),
+                        actions: [
+                          TextButton(
+                            onPressed: () => Navigator.pop(ctx),
+                            child: const Text("Cancel"),
+                          ),
+                          TextButton(
+                            onPressed: () {
+                              Navigator.pop(ctx);
+
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                  content: Text("Vehicle deleted"),
+                                ),
+                              );
+                            },
+                            child: const Text(
+                              "Delete",
+                              style: TextStyle(color: Colors.red),
+                            ),
+                          ),
+                        ],
+                      ),
+                );
+              }
+            },
+            itemBuilder:
+                (context) => [
+                  const PopupMenuItem(value: 'edit', child: Text("Edit")),
+                  const PopupMenuItem(value: 'delete', child: Text("Delete")),
+                ],
+          ),
+        ],
       ),
+
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16),
         child: Column(
@@ -65,6 +129,44 @@ class VehicleDetailsScreen extends StatelessWidget {
                 //   ),
                 //   child: Image.asset("images/swift.png"),
                 // ),
+                // Container(
+                //   width: 130,
+                //   height: 97,
+                //   decoration: BoxDecoration(
+                //     color: Colors.grey.shade100,
+                //     borderRadius: BorderRadius.circular(12),
+                //   ),
+                //   child: ClipRRect(
+                //     borderRadius: BorderRadius.circular(12),
+                //     child: CarouselSlider(
+                //       items: [
+                //         Image.asset(
+                //           "images/swift.png",
+                //           fit: BoxFit.contain,
+                //           width: 130,
+                //         ),
+                //         Image.asset(
+                //           "images/swift.png",
+                //           fit: BoxFit.contain,
+                //           width: 130,
+                //         ),
+                //         Image.asset(
+                //           "images/swift.png",
+                //           fit: BoxFit.contain,
+                //           width: 130,
+                //         ),
+                //       ],
+                //       options: CarouselOptions(
+                //         viewportFraction: 1,
+                //         height: 97,
+                //         autoPlay: true,
+                //         enableInfiniteScroll: true,
+                //         autoPlayInterval: Duration(seconds: 3),
+                //         scrollDirection: Axis.horizontal,
+                //       ),
+                //     ),
+                //   ),
+                // ),
                 Container(
                   width: 130,
                   height: 97,
@@ -74,33 +176,34 @@ class VehicleDetailsScreen extends StatelessWidget {
                   ),
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(12),
-                    child: CarouselSlider(
-                      items: [
-                        Image.asset(
-                          "images/swift.png",
-                          fit: BoxFit.contain,
-                          width: 130,
-                        ),
-                        Image.asset(
-                          "images/swift.png",
-                          fit: BoxFit.contain,
-                          width: 130,
-                        ),
-                        Image.asset(
-                          "images/swift.png",
-                          fit: BoxFit.contain,
-                          width: 130,
-                        ),
-                      ],
-                      options: CarouselOptions(
-                        viewportFraction: 1,
-                        height: 97,
-                        autoPlay: true,
-                        enableInfiniteScroll: true,
-                        autoPlayInterval: Duration(seconds: 3),
-                        scrollDirection: Axis.horizontal,
-                      ),
-                    ),
+                    child:
+                        (data['images'] != null &&
+                                data['images'] is List &&
+                                data['images'].isNotEmpty)
+                            ? CarouselSlider(
+                              items:
+                                  (data['images'] as List<dynamic>).map((
+                                    imgUrl,
+                                  ) {
+                                    return Image.network(
+                                      imgUrl,
+                                      fit: BoxFit.cover,
+                                      width: 130,
+                                      errorBuilder:
+                                          (context, error, stackTrace) =>
+                                              const Icon(Icons.car_crash),
+                                    );
+                                  }).toList(),
+                              options: CarouselOptions(
+                                viewportFraction: 1,
+                                height: 97,
+                                autoPlay: true,
+                                enableInfiniteScroll: true,
+                                autoPlayInterval: const Duration(seconds: 3),
+                                scrollDirection: Axis.horizontal,
+                              ),
+                            )
+                            : const Icon(Icons.directions_car),
                   ),
                 ),
 
@@ -110,7 +213,7 @@ class VehicleDetailsScreen extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       CustomText(
-                        text: "Maruti Swift Dzire VXI",
+                        text: '${data['brand']} ${data['model']}',
                         textcolor: KblackColor,
                         fontWeight: FontWeight.w600,
                         fontSize: 16,
@@ -125,24 +228,24 @@ class VehicleDetailsScreen extends StatelessWidget {
                       ),
 
                       SizedBox(height: 8),
-                      RichText(
-                        text: TextSpan(
-                          children: [
-                            TextSpan(
-                              text: "₹7,957",
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 18,
-                                color: korangeColor,
-                              ),
-                            ),
-                            TextSpan(
-                              text: "/per ride",
-                              style: TextStyle(color: kgreyColor),
-                            ),
-                          ],
-                        ),
-                      ),
+                      // RichText(
+                      //   text: TextSpan(
+                      //     children: [
+                      //       TextSpan(
+                      //         text: "₹7,957",
+                      //         style: TextStyle(
+                      //           fontWeight: FontWeight.bold,
+                      //           fontSize: 18,
+                      //           color: korangeColor,
+                      //         ),
+                      //       ),
+                      //       TextSpan(
+                      //         text: "/per ride",
+                      //         style: TextStyle(color: kgreyColor),
+                      //       ),
+                      //     ],
+                      //   ),
+                      // ),
                     ],
                   ),
                 ),
@@ -157,7 +260,7 @@ class VehicleDetailsScreen extends StatelessWidget {
                 children: [
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: const [
+                    children: [
                       _SpecItem(
                         iconPath: 'images/mileage.png',
                         label: "Mileage",
@@ -166,36 +269,36 @@ class VehicleDetailsScreen extends StatelessWidget {
                       _SpecItem(
                         iconPath: 'images/fuel.png',
                         label: "Fuel Type",
-                        value: "Petrol",
+                        value: data['fuelType'] ?? "",
                       ),
                       _SpecItem(
                         iconPath: 'images/settings.png',
                         label: "Transmission",
-                        value: "Manual",
+                        value: data['transmission'] ?? "",
                       ),
                     ],
                   ),
                   const SizedBox(height: 12),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: const [
-                      _SpecItem(
-                        iconPath: 'images/peoples.png',
-                        label: "Seats",
-                        value: "5",
-                      ),
-                      _SpecItem(
-                        iconPath: 'images/paint.png',
-                        label: "Color",
-                        value: "White",
-                      ),
-                      _SpecItem(
-                        iconPath: 'images/date.png',
-                        label: "Year",
-                        value: "2024",
-                      ),
-                    ],
-                  ),
+                  // Row(
+                  //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  //   children: const [
+                  //     _SpecItem(
+                  //       iconPath: 'images/peoples.png',
+                  //       label: "Seats",
+                  //       value: "5",
+                  //     ),
+                  //     _SpecItem(
+                  //       iconPath: 'images/paint.png',
+                  //       label: "Color",
+                  //       value: "White",
+                  //     ),
+                  //     _SpecItem(
+                  //       iconPath: 'images/date.png',
+                  //       label: "Year",
+                  //       value: "2024",
+                  //     ),
+                  //   ],
+                  // ),
                 ],
               ),
             ),
@@ -203,56 +306,55 @@ class VehicleDetailsScreen extends StatelessWidget {
             const SizedBox(height: 16),
 
             // Features & Equipment
-            _section(
-              title: "Features & Equipment",
-              child: const Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  CustomText(
-                    text: "• All-Wheel Drive",
-                    textcolor: KblackColor,
-                    fontWeight: FontWeight.w400,
-                    fontSize: 13,
-                  ),
-                  const SizedBox(height: 8),
-                  CustomText(
-                    text: "• Premium Package",
-                    textcolor: KblackColor,
-                    fontWeight: FontWeight.w400,
-                    fontSize: 13,
-                  ),
-                  const SizedBox(height: 8),
-                  CustomText(
-                    text: "• Navigation",
-                    textcolor: KblackColor,
-                    fontWeight: FontWeight.w400,
-                    fontSize: 13,
-                  ),
-                  const SizedBox(height: 8),
-                  CustomText(
-                    text: "• Heated Seats",
-                    textcolor: KblackColor,
-                    fontWeight: FontWeight.w400,
-                    fontSize: 13,
-                  ),
-                ],
-              ),
-            ),
+            // _section(
+            //   title: "Features & Equipment",
+            //   child: const Column(
+            //     crossAxisAlignment: CrossAxisAlignment.start,
+            //     children: [
+            //       CustomText(
+            //         text: "• All-Wheel Drive",
+            //         textcolor: KblackColor,
+            //         fontWeight: FontWeight.w400,
+            //         fontSize: 13,
+            //       ),
+            //       const SizedBox(height: 8),
+            //       CustomText(
+            //         text: "• Premium Package",
+            //         textcolor: KblackColor,
+            //         fontWeight: FontWeight.w400,
+            //         fontSize: 13,
+            //       ),
+            //       const SizedBox(height: 8),
+            //       CustomText(
+            //         text: "• Navigation",
+            //         textcolor: KblackColor,
+            //         fontWeight: FontWeight.w400,
+            //         fontSize: 13,
+            //       ),
+            //       const SizedBox(height: 8),
+            //       CustomText(
+            //         text: "• Heated Seats",
+            //         textcolor: KblackColor,
+            //         fontWeight: FontWeight.w400,
+            //         fontSize: 13,
+            //       ),
+            //     ],
+            //   ),
+            // ),
 
-            const SizedBox(height: 16),
+            // const SizedBox(height: 16),
 
-            _section(
-              title: "About Vehicle",
-              child: CustomText(
-                text:
-                    "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's "
-                    "standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
-                textcolor: KblackColor,
-                fontWeight: FontWeight.w400,
-                fontSize: 13,
-              ),
-            ),
-
+            // _section(
+            //   title: "About Vehicle",
+            //   child: CustomText(
+            //     text:
+            //         "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's "
+            //         "standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
+            //     textcolor: KblackColor,
+            //     fontWeight: FontWeight.w400,
+            //     fontSize: 13,
+            //   ),
+            // ),
             const SizedBox(height: 30),
 
             // Button

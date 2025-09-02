@@ -1,24 +1,30 @@
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:dotted_border/dotted_border.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:mana_driver/SharedPreferences/shared_preferences.dart';
 import 'package:mana_driver/Vehicles/my_vehicle.dart';
 import 'package:mana_driver/Widgets/colors.dart';
 import 'package:mana_driver/Widgets/customText.dart';
-import 'package:dotted_border/dotted_border.dart';
-import 'package:image_picker/image_picker.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 
-class AddNewVehicle extends StatefulWidget {
-  const AddNewVehicle({super.key});
+class EditVehicleDetails extends StatefulWidget {
+  final Map<String, dynamic> data;
+  final String docId;
+  const EditVehicleDetails({
+    super.key,
+    required this.data,
+    required this.docId,
+  });
 
   @override
-  State<AddNewVehicle> createState() => _AddNewVehicleState();
+  State<EditVehicleDetails> createState() => _EditVehicleDetailsState();
 }
 
-class _AddNewVehicleState extends State<AddNewVehicle> {
+class _EditVehicleDetailsState extends State<EditVehicleDetails> {
   final List<Map<String, String>> vehicleData = [
     {"brand": "Tata", "model": "Ace", "category": "Commercial"},
     {"brand": "Tata", "model": "Intra V30", "category": "Commercial"},
@@ -245,6 +251,33 @@ class _AddNewVehicleState extends State<AddNewVehicle> {
     {"brand": "BharatBenz", "model": "Buses", "category": "Commercial"},
   ];
 
+  @override
+  void initState() {
+    super.initState();
+
+    selectedBrand = widget.data['brand']?.toString() ?? "";
+    selectedModel = widget.data['model']?.toString() ?? "";
+    selectedCategory = widget.data['category']?.toString() ?? "";
+    vehicleNumberController.text =
+        widget.data['vehicleNumber']?.toString() ?? "";
+    selectedFuelType = widget.data['fuelType']?.toString() ?? "";
+    selectedTransmission = widget.data['transmission']?.toString() ?? "";
+    selectedAc = widget.data['acAvailable']?.toString() ?? "No"; // default "No"
+
+    availableModels =
+        vehicleData
+            .where((e) => e['brand'] == selectedBrand)
+            .map((e) => e['model']?.toString() ?? "")
+            .toList();
+
+    if (widget.data['images'] != null && widget.data['images'] is List) {
+      List urls = widget.data['images'];
+      for (int i = 0; i < urls.length && i < imageUrls.length; i++) {
+        imageUrls[i] = urls[i]?.toString();
+      }
+    }
+  }
+
   String? selectedBrand;
   String? selectedModel;
   String? selectedCategory;
@@ -252,6 +285,7 @@ class _AddNewVehicleState extends State<AddNewVehicle> {
   final TextEditingController vehicleNumberController = TextEditingController();
   final TextEditingController messageController = TextEditingController();
   List<File?> images = List.generate(4, (_) => null);
+  List<String?> imageUrls = List.generate(4, (_) => null);
   File? image;
 
   String? selectedFuelType;
@@ -262,11 +296,13 @@ class _AddNewVehicleState extends State<AddNewVehicle> {
 
   bool _isLoading = false;
 
-  Future<void> _addVehicle() async {
+  Future<void> _updateVehicle(String vehicleId) async {
     try {
       setState(() {
-        _isLoading = true; // start loader
+        _isLoading = true;
       });
+
+      // Validation checks
       if (selectedBrand == null || selectedBrand!.isEmpty) {
         ScaffoldMessenger.of(
           context,
@@ -296,7 +332,6 @@ class _AddNewVehicleState extends State<AddNewVehicle> {
       }
 
       String vehicleNumber = vehicleNumberController.text.trim().toUpperCase();
-
       if (!vehicleRegex.hasMatch(vehicleNumber)) {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
@@ -324,14 +359,14 @@ class _AddNewVehicleState extends State<AddNewVehicle> {
 
       int pickedImagesCount =
           images.where((img) => img != null).toList().length;
-      if (pickedImagesCount < 2) {
+      if (pickedImagesCount + imageUrls.where((u) => u != null).length < 2) {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text("Please upload at least 2 images")),
         );
         return;
       }
 
-      List<String> imageUrls = [];
+      List<String> updatedImageUrls = List.from(imageUrls);
       for (int i = 0; i < images.length; i++) {
         if (images[i] != null) {
           String fileName =
@@ -343,26 +378,45 @@ class _AddNewVehicleState extends State<AddNewVehicle> {
           final snapshot = await uploadTask.whenComplete(() {});
           final downloadUrl = await snapshot.ref.getDownloadURL();
 
-          imageUrls.add(downloadUrl);
+          if (i < updatedImageUrls.length) {
+            updatedImageUrls[i] = downloadUrl;
+          } else {
+            updatedImageUrls.add(downloadUrl);
+          }
         }
       }
+      print("Updating Vehicle with values:");
+      print("Brand: $selectedBrand");
+      print("Model: $selectedModel");
+      print("Category: $selectedCategory");
+      print("Vehicle Number: $vehicleNumber");
+      print("Fuel Type: $selectedFuelType");
+      print("Transmission: $selectedTransmission");
+      print("Images: $updatedImageUrls");
+      print("AC Available: $selectedAc");
 
-      await FirebaseFirestore.instance.collection("vehicles").add({
-        "userId": SharedPrefServices.getUserId().toString(),
-        "brand": selectedBrand,
-        "model": selectedModel,
-        "category": selectedCategory,
-        "vehicleNumber": vehicleNumberController.text.trim(),
-        "fuelType": selectedFuelType,
-        "transmission": selectedTransmission,
-        "images": imageUrls,
-        "acAvailable": selectedAc,
-        "createdAt": FieldValue.serverTimestamp(),
-      });
+      await FirebaseFirestore.instance
+          .collection("vehicles")
+          .doc(vehicleId)
+          .update({
+            "brand": selectedBrand ?? "",
+            "model": selectedModel ?? "",
+            "category": selectedCategory ?? "",
+            "vehicleNumber": vehicleNumberController.text.trim(),
+            "fuelType": selectedFuelType ?? "",
+            "transmission": selectedTransmission ?? "",
+            "images":
+                updatedImageUrls
+                    .where((u) => u != null && u.isNotEmpty)
+                    .cast<String>()
+                    .toList(),
+            "acAvailable": selectedAc ?? "No",
+            "createdAt": FieldValue.serverTimestamp(),
+          });
 
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text("Vehicle added successfully!")),
+        const SnackBar(content: Text("Vehicle updated successfully!")),
       );
 
       Navigator.pushReplacement(
@@ -511,7 +565,7 @@ class _AddNewVehicleState extends State<AddNewVehicle> {
               ),
               Center(
                 child: CustomText(
-                  text: "Add New Vehicle",
+                  text: "Edit Vehicle",
                   textcolor: KblackColor,
                   fontWeight: FontWeight.w600,
                   fontSize: 22,
@@ -529,101 +583,81 @@ class _AddNewVehicleState extends State<AddNewVehicle> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 const SizedBox(height: 10),
-                CustomText(
-                  text: 'Add you vehicle',
-                  fontSize: 18,
-                  fontWeight: FontWeight.w600,
-                  textcolor: KblackColor,
-                ),
-                const SizedBox(height: 5),
-                CustomText(
-                  text:
-                      'Save your vehicle and get one step closer to hassle-free rides.',
-                  fontSize: 12,
-                  fontWeight: FontWeight.w300,
-                  textcolor: kgreyColor,
-                ),
-
-                const SizedBox(height: 20),
-                CustomText(
-                  text: 'Upload Vehicle Images',
-                  fontSize: 14,
-                  fontWeight: FontWeight.w500,
-                  textcolor: KblackColor,
-                ),
-
-                const SizedBox(height: 10),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: List.generate(
-                    4,
-                    (index) => Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 6.0),
-                      child: GestureDetector(
-                        onTap: () => _pickImage(index),
-                        child: DottedBorder(
-                          options: RoundedRectDottedBorderOptions(
-                            radius: const Radius.circular(10),
-                            dashPattern: [5, 5],
-                            color: kgreyColor,
-                            strokeWidth: 2,
-                            padding: const EdgeInsets.all(0),
+                GridView.builder(
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
+                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount:
+                        (images.where((f) => f != null).length +
+                                    imageUrls
+                                        .where((u) => u != null && u.isNotEmpty)
+                                        .length) ==
+                                1
+                            ? 1
+                            : 2,
+                    crossAxisSpacing: 10,
+                    mainAxisSpacing: 10,
+                    childAspectRatio: 70 / 60,
+                  ),
+                  itemCount:
+                      images.where((f) => f != null).length +
+                      imageUrls.where((u) => u != null && u.isNotEmpty).length,
+                  itemBuilder: (context, index) {
+                    return Stack(
+                      clipBehavior: Clip.none,
+                      children: [
+                        Container(
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10),
+                            color: KdeviderColor,
                           ),
-                          child: Container(
-                            width: 70,
-                            height: 60,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10),
-                              color: KdeviderColor,
-                            ),
-                            child:
-                                images[index] == null
-                                    ? const Icon(Icons.add, color: kgreyColor)
-                                    : Stack(
-                                      clipBehavior: Clip.none,
-                                      children: [
-                                        ClipRRect(
-                                          borderRadius: BorderRadius.circular(
-                                            10,
-                                          ),
-                                          child: Image.file(
-                                            images[index]!,
-                                            width: 70,
-                                            height: 60,
-                                            fit: BoxFit.cover,
-                                          ),
-                                        ),
-
-                                        Positioned(
-                                          top: -5,
-                                          right: 0,
-                                          child: GestureDetector(
-                                            onTap: () {
-                                              setState(() {
-                                                images[index] = null;
-                                              });
-                                            },
-                                            child: Container(
-                                              decoration: BoxDecoration(
-                                                color: korangeColor,
-                                                shape: BoxShape.circle,
-                                              ),
-                                              padding: const EdgeInsets.all(2),
-                                              child: const Icon(
-                                                Icons.delete,
-                                                size: 14,
-                                                color: Colors.white,
-                                              ),
+                          child:
+                              (images[index] == null &&
+                                      imageUrls[index] == null)
+                                  ? const Center(
+                                    child: Icon(Icons.add, color: kgreyColor),
+                                  )
+                                  : ClipRRect(
+                                    borderRadius: BorderRadius.circular(10),
+                                    child:
+                                        images[index] != null
+                                            ? Image.file(
+                                              images[index]!,
+                                              width: double.infinity,
+                                              height: double.infinity,
+                                              fit: BoxFit.cover,
+                                            )
+                                            : Image.network(
+                                              imageUrls[index]!,
+                                              width: double.infinity,
+                                              height: double.infinity,
+                                              fit: BoxFit.cover,
                                             ),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
+                                  ),
+                        ),
+
+                        Positioned(
+                          top: 6,
+                          right: 6,
+                          child: GestureDetector(
+                            onTap: () => _pickImage(index),
+                            child: Container(
+                              decoration: const BoxDecoration(
+                                color: Colors.orange,
+                                shape: BoxShape.circle,
+                              ),
+                              padding: const EdgeInsets.all(4),
+                              child: const Icon(
+                                Icons.edit,
+                                size: 14,
+                                color: Colors.white,
+                              ),
+                            ),
                           ),
                         ),
-                      ),
-                    ),
-                  ),
+                      ],
+                    );
+                  },
                 ),
 
                 const SizedBox(height: 25),
@@ -770,9 +804,26 @@ class _AddNewVehicleState extends State<AddNewVehicle> {
                           vertical: 5,
                         ),
                       ),
-                      onPressed: _addVehicle,
+                      onPressed: () {
+                        print(widget.docId);
+                        print("Updating Vehicle with values:");
+                        print("Brand: $selectedBrand");
+                        print("Model: $selectedModel");
+                        print("Category: $selectedCategory");
+                        print(
+                          "Vehicle Number: ${vehicleNumberController.text.trim()}",
+                        );
+                        print("Fuel Type: $selectedFuelType");
+                        print("Transmission: $selectedTransmission");
+                        print(
+                          "Images: ${imageUrls.where((u) => u != null).cast<String>().toList()}",
+                        );
+
+                        print("AC Available: $selectedAc");
+                        // _updateVehicle(widget.docId);
+                      },
                       child: CustomText(
-                        text: "Add Vehicle",
+                        text: "Update Vehicle Details",
                         fontSize: 14,
                         fontWeight: FontWeight.w500,
                         textcolor: kwhiteColor,
@@ -954,65 +1005,4 @@ class _AddNewVehicleState extends State<AddNewVehicle> {
       ),
     );
   }
-} 
-
-
-   // buildDropdownFields(
-            //   "Features & Equipment",
-            //   "Select Features & Equipment",
-            //   [
-            //     "All-Wheel Drive",
-            //     "Premium Package",
-            //     "Navigation",
-            //     "Heated Seats",
-            //   ],
-            // ),
-
-            // const SizedBox(height: 10),
-            // buildTextField(
-            //   "Type Message (Optional)",
-            //   "Enter any message",
-            //   maxLines: 3,
-            // ),
-
-            // const SizedBox(height: 10),
-            // CustomText(
-            //   text: "Upload RC Documents",
-            //   fontSize: 14,
-            //   fontWeight: FontWeight.w500,
-            //   textcolor: KblackColor,
-            // ),
-            // const SizedBox(height: 12),
-            // DottedBorder(
-            //   options: RoundedRectDottedBorderOptions(
-            //     radius: Radius.circular(10),
-            //     dashPattern: [5, 5],
-            //     color: kbordergreyColor,
-            //     strokeWidth: 2,
-            //     padding: EdgeInsets.all(0),
-            //   ),
-            //   child: Container(
-            //     width: double.infinity,
-            //     padding: const EdgeInsets.symmetric(vertical: 24),
-            //     decoration: BoxDecoration(
-            //       borderRadius: BorderRadius.circular(10),
-            //     ),
-            //     child: Column(
-            //       children: [
-            //         Image.asset(
-            //           'images/doc_icon.png',
-            //           width: 46,
-            //           height: 46,
-            //           fit: BoxFit.contain,
-            //         ),
-            //         SizedBox(height: 8),
-            //         CustomText(
-            //           text: "Upload RC Documents",
-            //           fontSize: 12,
-            //           fontWeight: FontWeight.w500,
-            //           textcolor: kgreyColor,
-            //         ),
-            //       ],
-            //     ),
-            //   ),
-            // ),
+}

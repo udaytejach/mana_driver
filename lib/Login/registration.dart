@@ -105,7 +105,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         final success = await vm.register(
                           fisrtName: firstnameController.text,
                           lastName: lastnameController.text,
-
                           email: emailController.text,
                           phone: phoneController.text,
                           countryCode: selectedCountry.countryCode,

@@ -170,24 +170,26 @@ class LocationSelectionScreen extends StatelessWidget {
 
                           const SizedBox(width: 12),
 
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              CustomText(
-                                text: "Durgam Cheruvu Metro Station",
-                                fontSize: 16,
-                                fontWeight: FontWeight.w600,
-                                textcolor: KblackColor,
-                              ),
-                              const SizedBox(height: 4),
-                              const CustomText(
-                                text:
-                                    "Durgam Cheeruvu Metro Station, Hitech City Road, \nSir Sai Nagar, Madhapur Yderabad",
-                                fontSize: 12,
-                                fontWeight: FontWeight.w400,
-                                textcolor: kseegreyColor,
-                              ),
-                            ],
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                CustomText(
+                                  text: "Durgam Cheruvu Metro Station",
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w600,
+                                  textcolor: KblackColor,
+                                ),
+                                const SizedBox(height: 4),
+                                const CustomText(
+                                  text:
+                                      "Durgam Cheeruvu Metro Station, Hitech City Road, \nSir Sai Nagar, Madhapur Yderabad",
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.w400,
+                                  textcolor: kseegreyColor,
+                                ),
+                              ],
+                            ),
                           ),
                         ],
                       ),

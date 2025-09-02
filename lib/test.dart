@@ -161,7 +161,6 @@ class _MenuScreenState extends State<MenuScreen> {
                   _buildProfileTile(),
                   const Divider(color: KdeviderColor),
 
-                  const Divider(color: KdeviderColor),
                   InkWell(
                     onTap: () {
                       Navigator.push(
@@ -477,13 +476,7 @@ class _MenuScreenState extends State<MenuScreen> {
                   ),
                   const Divider(color: KdeviderColor),
                   InkWell(
-                    onTap:
-                        () => _showDeleteAccountDialog(
-                          txt1: localizations.dA_t1,
-                          txt2: localizations.dA_t2,
-                          c: localizations.menuCancel,
-                          d: localizations.menuDelete,
-                        ),
+                    onTap: () => _showDeleteAccountDialog(),
                     child: Padding(
                       padding: const EdgeInsets.all(3),
                       child: Row(
@@ -676,12 +669,7 @@ class _MenuScreenState extends State<MenuScreen> {
     );
   }
 
-  void _showDeleteAccountDialog({
-    required String txt1,
-    required String txt2,
-    required String c,
-    required String d,
-  }) {
+  void _showDeleteAccountDialog() {
     showDialog(
       context: context,
       builder:
@@ -694,15 +682,15 @@ class _MenuScreenState extends State<MenuScreen> {
                 children: [
                   Image.asset("images/deleteacnt.png", height: 100),
                   const SizedBox(height: 12),
-                  CustomText(
-                    text: txt1,
+                  const CustomText(
+                    text: "Warning",
                     fontSize: 18,
                     fontWeight: FontWeight.w600,
                     textcolor: KblackColor,
                   ),
                   const SizedBox(height: 10),
-                  CustomText(
-                    text: txt2,
+                  const CustomText(
+                    text: "Are you sure want to delete your account?",
                     fontSize: 14,
                     fontWeight: FontWeight.w400,
                     textcolor: kseegreyColor,
@@ -711,8 +699,8 @@ class _MenuScreenState extends State<MenuScreen> {
               ),
             ),
             actions: _dialogActions(
-              P: d,
-              c: c,
+              P: "Delete",
+              c: "Cancel",
               onConfirm: () {
                 Navigator.pop(context);
               },

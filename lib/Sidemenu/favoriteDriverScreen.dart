@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mana_driver/Widgets/colors.dart';
 import 'package:mana_driver/Widgets/customText.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:mana_driver/l10n/app_localizations.dart';
 
 class FavouriteDriversScreen extends StatelessWidget {
   const FavouriteDriversScreen({super.key});

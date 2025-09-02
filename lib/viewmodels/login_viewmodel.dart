@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:country_picker/country_picker.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:mana_driver/SharedPreferences/shared_preferences.dart';
 import 'package:mana_driver/models/loginState.dart';
 
 import '../services/repository.dart';
@@ -62,7 +63,6 @@ class LoginViewModel extends ChangeNotifier {
       return;
     }
 
-    // User exists → send OTP
     final fullPhoneNumber = "+${selectedCountry.phoneCode}$phoneNumber";
 
     await FirebaseAuth.instance.verifyPhoneNumber(
@@ -88,23 +88,75 @@ class LoginViewModel extends ChangeNotifier {
     );
   }
 
-  Future<void> fetchLoggedInUser(String phoneNumber) async {
-    final snapshot =
-        await FirebaseFirestore.instance
-            .collection('users')
-            .where('phone', isEqualTo: phoneNumber)
-            .limit(1)
-            .get();
+  // Future<void> fetchLoggedInUser(String phoneNumber) async {
+  //   final snapshot =
+  //       await FirebaseFirestore.instance
+  //           .collection('users')
+  //           .where('phone', isEqualTo: phoneNumber)
+  //           .limit(1)
+  //           .get();
 
-    if (snapshot.docs.isNotEmpty) {
-      final userData = snapshot.docs.first.data();
-      _loggedInUser = userData;
-      notifyListeners();
+  //   if (snapshot.docs.isNotEmpty) {
+  //     final userData = snapshot.docs.first.data();
+  //     _loggedInUser = userData;
+  //     notifyListeners();
+  //   }
+  // }
+
+  Future<void> fetchLoggedInUser(String phoneNumber) async {
+    try {
+      final snapshot =
+          await FirebaseFirestore.instance
+              .collection('users')
+              .where('phone', isEqualTo: phoneNumber)
+              .limit(1)
+              .get();
+
+      if (snapshot.docs.isNotEmpty) {
+        final userData = snapshot.docs.first.data();
+
+        _loggedInUser = userData;
+        notifyListeners();
+
+        await SharedPrefServices.setUserId(userData['userId'] ?? "");
+        await SharedPrefServices.setRoleCode(userData['roleCode'] ?? "");
+        await SharedPrefServices.setFirstName(userData['firstName'] ?? "");
+        await SharedPrefServices.setLastName(userData['lastName'] ?? "");
+        await SharedPrefServices.setEmail(userData['email'] ?? "");
+        await SharedPrefServices.setNumber(userData['phone'] ?? "");
+        await SharedPrefServices.setDocID(snapshot.docs.first.id);
+        await SharedPrefServices.setislogged(true);
+
+        print("User details stored in SharedPreferences");
+      } else {
+        print("No user found for phone: $phoneNumber");
+      }
+    } catch (e) {
+      print("Error in fetchLoggedInUser: $e");
     }
   }
 
+  // void  updateUser(Map<String, dynamic> newUserData) {
+  //   _loggedInUser = newUserData;
+  //   notifyListeners();
+  // }
+
   void updateUser(Map<String, dynamic> newUserData) {
     _loggedInUser = newUserData;
+
+    if (newUserData.containsKey('firstName')) {
+      SharedPrefServices.setFirstName(newUserData['firstName']);
+    }
+    if (newUserData.containsKey('lastName')) {
+      SharedPrefServices.setLastName(newUserData['lastName']);
+    }
+    if (newUserData.containsKey('email')) {
+      SharedPrefServices.setEmail(newUserData['email']);
+    }
+    if (newUserData.containsKey('phone')) {
+      SharedPrefServices.setNumber(newUserData['phone']);
+    }
+
     notifyListeners();
   }
 }

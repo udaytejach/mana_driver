@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dotted_line/dotted_line.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -7,13 +8,15 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:mana_driver/AppBar/notificationScreen.dart';
 import 'package:mana_driver/Location/driverAssigned.dart';
 import 'package:mana_driver/Location/location.dart';
+import 'package:mana_driver/SharedPreferences/shared_preferences.dart';
 import 'package:mana_driver/Vehicles/confirm_details.dart';
 import 'package:mana_driver/Vehicles/my_vehicle.dart';
 import 'package:mana_driver/Vehicles/vehicle_details.dart';
 import 'package:mana_driver/Widgets/colors.dart';
 import 'package:mana_driver/Widgets/customText.dart';
+import 'package:mana_driver/l10n/app_localizations.dart';
 import 'package:mana_driver/viewmodels/login_viewmodel.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
 import 'package:provider/provider.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
@@ -41,9 +44,34 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     super.initState();
+    _fetchCars();
     _startAutoScroll();
     _startWatchAutoScroll();
     _startOfferAutoScroll();
+  }
+
+  List<Map<String, dynamic>> carList = [];
+  Future<void> _fetchCars() async {
+    try {
+      QuerySnapshot snapshot =
+          await FirebaseFirestore.instance
+              .collection("vehicles")
+              .where('userId', isEqualTo: SharedPrefServices.getUserId())
+              .get();
+
+      List<Map<String, dynamic>> loadedCars =
+          snapshot.docs.map((doc) {
+            var data = doc.data() as Map<String, dynamic>;
+            data['id'] = doc.id;
+            return data;
+          }).toList();
+
+      setState(() {
+        carList = loadedCars;
+      });
+    } catch (e) {
+      debugPrint("Error fetching cars: $e");
+    }
   }
 
   void _startOfferAutoScroll() {
@@ -458,182 +486,206 @@ class _HomeScreenState extends State<HomeScreen> {
                         fontWeight: FontWeight.bold,
                         textcolor: KblackColor,
                       ),
-                      GestureDetector(
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(builder: (_) => Myvehicle()),
-                          );
-                        },
-                        child: Text(
-                          localizations.viewVehicles,
-                          style: GoogleFonts.poppins(
-                            fontSize: 12,
-                            fontWeight: FontWeight.w400,
-                            color: korangeColor,
-                            decoration: TextDecoration.underline,
-                            decorationColor: korangeColor,
-                            decorationStyle: TextDecorationStyle.solid,
-                            decorationThickness: 1.5,
+                      carList.isNotEmpty
+                          ? GestureDetector(
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(builder: (_) => MyVehicle()),
+                              );
+                            },
+                            child: Text(
+                              localizations.viewVehicles,
+                              style: GoogleFonts.poppins(
+                                fontSize: 12,
+                                fontWeight: FontWeight.w400,
+                                color: korangeColor,
+                                decoration: TextDecoration.underline,
+                                decorationColor: korangeColor,
+                                decorationStyle: TextDecorationStyle.solid,
+                                decorationThickness: 1.5,
+                              ),
+                            ),
+                          )
+                          : Text(
+                            "",
+                            style: GoogleFonts.poppins(
+                              fontSize: 12,
+                              fontWeight: FontWeight.w400,
+                              color: Colors.grey,
+                            ),
                           ),
-                        ),
-                      ),
                     ],
                   ),
 
                   SizedBox(height: 25),
 
-                  SizedBox(
-                    height: 130,
-                    child: PageView.builder(
-                      itemCount: carList.length,
-                      controller: _pageController,
-                      itemBuilder: (context, index) {
-                        final car = carList[index];
-                        return Container(
-                          margin: EdgeInsets.only(right: 8),
-                          decoration: BoxDecoration(
-                            border: Border.all(color: korangeColor, width: 1.2),
-                            borderRadius: BorderRadius.circular(16),
-                          ),
-                          child: Padding(
-                            padding: const EdgeInsets.all(8),
-                            child: Row(
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                Container(
-                                  width: 90,
-                                  height: 90,
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(16),
-                                    color: Colors.grey.shade100,
-                                  ),
-                                  child: Center(
-                                    child: Image.asset(
-                                      car.imagePath,
-                                      height: 100,
-                                      width: 100,
-                                      fit: BoxFit.contain,
+                  if (carList.isNotEmpty) ...[
+                    SizedBox(
+                      height: 130,
+                      child: PageView.builder(
+                        itemCount: carList.length,
+                        controller: _pageController,
+                        itemBuilder: (context, index) {
+                          final car = carList[index];
+                          return Container(
+                            margin: const EdgeInsets.only(right: 8),
+                            decoration: BoxDecoration(
+                              border: Border.all(
+                                color: korangeColor,
+                                width: 1.2,
+                              ),
+                              borderRadius: BorderRadius.circular(16),
+                            ),
+                            child: Padding(
+                              padding: const EdgeInsets.all(8),
+                              child: Row(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  Container(
+                                    width: 90,
+                                    height: 90,
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(16),
+                                      color: Colors.grey.shade100,
+                                    ),
+                                    child: Center(
+                                      child: ClipRRect(
+                                        borderRadius: BorderRadius.circular(12),
+                                        child:
+                                            (car['images'] != null &&
+                                                    car['images'] is List &&
+                                                    car['images'].isNotEmpty)
+                                                ? Image.network(
+                                                  car['images'][0],
+                                                  fit: BoxFit.cover,
+                                                  width: 130,
+                                                  errorBuilder:
+                                                      (
+                                                        context,
+                                                        error,
+                                                        stackTrace,
+                                                      ) => const Icon(
+                                                        Icons.car_crash,
+                                                      ),
+                                                )
+                                                : const Icon(
+                                                  Icons.directions_car,
+                                                ),
+                                      ),
                                     ),
                                   ),
-                                ),
-                                SizedBox(width: 10),
-                                Expanded(
-                                  child: Column(
-                                    mainAxisSize: MainAxisSize.min,
-
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      CustomText(
-                                        text: car.name,
-                                        fontSize: 14,
-                                        fontWeight: FontWeight.w600,
-                                        textcolor: KblackColor,
-                                      ),
-                                      SizedBox(height: 5),
-                                      Wrap(
-                                        spacing: 6,
-                                        children: [
-                                          _infoChip(car.kmsDriven),
-                                          _infoChip(car.transmission),
-                                          _infoChip(car.fuelType),
-                                        ],
-                                      ),
-                                      SizedBox(height: 8),
-                                      RichText(
-                                        text: TextSpan(
+                                  const SizedBox(width: 10),
+                                  Expanded(
+                                    child: Column(
+                                      mainAxisSize: MainAxisSize.min,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        CustomText(
+                                          text:
+                                              '${car['brand']} ${car['model']}',
+                                          fontSize: 14,
+                                          fontWeight: FontWeight.w600,
+                                          textcolor: KblackColor,
+                                        ),
+                                        const SizedBox(height: 5),
+                                        Wrap(
+                                          spacing: 6,
                                           children: [
-                                            TextSpan(
-                                              text: car.price,
-                                              style: TextStyle(
-                                                fontWeight: FontWeight.bold,
-                                                fontSize: 18,
-                                                color: korangeColor,
-                                              ),
-                                            ),
-                                            TextSpan(
-                                              text: '/per ride',
-                                              style: TextStyle(
-                                                fontSize: 14,
-                                                color: Colors.black,
-                                              ),
-                                            ),
+                                            _infoChip(car['transmission']),
+                                            _infoChip(car['fuelType']),
+                                            _infoChip(car['category']),
                                           ],
                                         ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                                GestureDetector(
-                                  onTap: () {
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (_) => VehicleDetailsScreen(),
-                                      ),
-                                    );
-                                  },
-                                  child: Align(
-                                    alignment: Alignment.center,
-                                    child: Icon(
-                                      Icons.arrow_forward_ios,
-                                      size: 18,
+                                        const SizedBox(height: 5),
+                                        _infoChip(car['vehicleNumber']),
+                                      ],
                                     ),
                                   ),
-                                ),
-                              ],
+                                  GestureDetector(
+                                    onTap: () {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder:
+                                              (_) => VehicleDetailsScreen(
+                                                data: car,
+                                                docId: car['id'],
+                                              ),
+                                        ),
+                                      );
+                                    },
+                                    child: const Align(
+                                      alignment: Alignment.center,
+                                      child: Icon(
+                                        Icons.arrow_forward_ios,
+                                        size: 18,
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
                             ),
+                          );
+                        },
+                      ),
+                    ),
+                    const SizedBox(height: 15),
+                    SmoothPageIndicator(
+                      controller: _pageController,
+                      count: carList.length,
+                      effect: WormEffect(
+                        dotHeight: 6,
+                        dotWidth: 30,
+                        activeDotColor: korangeColor,
+                        dotColor: Colors.grey.shade300,
+                      ),
+                    ),
+                    SizedBox(height: 25),
+
+                    SizedBox(
+                      width: 220,
+                      height: 50,
+                      child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: korangeColor,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(40),
                           ),
-                        );
-                      },
-                    ),
-                  ),
-                  SizedBox(height: 15),
-
-                  SmoothPageIndicator(
-                    controller: _pageController,
-                    count: carList.length,
-                    effect: WormEffect(
-                      dotHeight: 6,
-                      dotWidth: 30,
-                      activeDotColor: korangeColor,
-                      dotColor: Colors.grey.shade300,
-                    ),
-                  ),
-                  SizedBox(height: 25),
-
-                  SizedBox(
-                    width: 220,
-                    height: 50,
-                    child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: korangeColor,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(40),
+                          padding: EdgeInsets.symmetric(
+                            horizontal: 10,
+                            vertical: 5,
+                          ),
                         ),
-                        padding: EdgeInsets.symmetric(
-                          horizontal: 10,
-                          vertical: 5,
+                        onPressed: () {
+                          showBookingBottomSheet(context);
+                          // Navigator.push(
+                          //   context,
+                          //   MaterialPageRoute(
+                          //     builder: (_) => DriverAssignedScreen(),
+                          //   ),
+                          // );
+                        },
+                        child: CustomText(
+                          text: localizations.bookADriver,
+                          fontSize: 16,
+                          fontWeight: FontWeight.w500,
+                          textcolor: kwhiteColor,
                         ),
                       ),
-                      onPressed: () {
-                        showBookingBottomSheet(context);
-                        // Navigator.push(
-                        //   context,
-                        //   MaterialPageRoute(
-                        //     builder: (_) => DriverAssignedScreen(),
-                        //   ),
-                        // );
-                      },
+                    ),
+                  ] else ...[
+                    const Center(
                       child: CustomText(
-                        text: localizations.bookADriver,
-                        fontSize: 16,
+                        text: "No vehicles found",
+                        fontSize: 15,
                         fontWeight: FontWeight.w500,
-                        textcolor: kwhiteColor,
+                        textcolor: Colors.black,
                       ),
                     ),
-                  ),
+                  ],
+                  SizedBox(height: 20),
                 ],
               ),
             ),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mana_driver/SharedPreferences/shared_preferences.dart';
 import 'package:mana_driver/Sidemenu/edit_Profilescreen.dart';
 
 import 'package:mana_driver/Widgets/colors.dart';
@@ -34,6 +35,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
       emailController.text = user['email'] ?? '';
       phoneController.text = user['phone'] ?? '';
     }
+  }
+
+  String _getUserInitials() {
+    final first = SharedPrefServices.getFirstName();
+    final last = SharedPrefServices.getLastName();
+
+    String firstInitial = first!.isNotEmpty ? first[0].toUpperCase() : '';
+    String lastInitial = last!.isNotEmpty ? last[0].toUpperCase() : '';
+
+    return firstInitial + lastInitial;
   }
 
   @override
@@ -85,21 +96,39 @@ class _ProfileScreenState extends State<ProfileScreen> {
               child: Stack(
                 clipBehavior: Clip.none,
                 children: [
-                  const CircleAvatar(
+                  CircleAvatar(
                     radius: 55,
-                    backgroundColor: Color(0xFFE0E0E0),
-                    backgroundImage: AssetImage('images/user.png'),
+                    backgroundColor: KlightgreyColor,
+                    backgroundImage:
+                        SharedPrefServices.getProfileImage() != null &&
+                                SharedPrefServices.getProfileImage()!.isNotEmpty
+                            ? NetworkImage(
+                              SharedPrefServices.getProfileImage()!,
+                            )
+                            : null,
+                    child:
+                        (SharedPrefServices.getProfileImage() == null ||
+                                SharedPrefServices.getProfileImage()!.isEmpty)
+                            ? Text(
+                              _getUserInitials(),
+                              style: const TextStyle(
+                                fontSize: 36,
+                                fontWeight: FontWeight.w600,
+                                color: Color(0xFFC7D5E7),
+                              ),
+                            )
+                            : null,
                   ),
 
-                  Positioned(
-                    right: 0,
-                    bottom: 0,
-                    child: CircleAvatar(
-                      backgroundColor: korangeColor,
-                      radius: 18,
-                      child: Image.asset("images/camera.png"),
-                    ),
-                  ),
+                  // Positioned(
+                  //   right: 0,
+                  //   bottom: 0,
+                  //   child: CircleAvatar(
+                  //     backgroundColor: korangeColor,
+                  //     radius: 18,
+                  //     child: Image.asset("images/camera.png"),
+                  //   ),
+                  // ),
                 ],
               ),
             ),

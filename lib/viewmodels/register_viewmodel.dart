@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:mana_driver/services/repository.dart';
 import 'package:uuid/uuid.dart';
@@ -26,7 +27,6 @@ class RegisterViewModel extends ChangeNotifier {
   Future<bool> register({
     required String fisrtName,
     required String lastName,
-
     required String email,
     required String phone,
     required String countryCode,
@@ -35,16 +35,21 @@ class RegisterViewModel extends ChangeNotifier {
     _setError(null);
 
     try {
-      // Basic validation
       if (fisrtName.trim().isEmpty) throw Exception('First name required');
       if (lastName.trim().isEmpty) throw Exception('Last name required');
-
       if (email.trim().isEmpty) throw Exception('Email required');
       if (phone.trim().isEmpty) throw Exception('Phone required');
 
+      final snapshot =
+          await FirebaseFirestore.instance.collection('users').get();
+      final totalCount = snapshot.docs.length;
+
+      final generatedUserId = "MD${totalCount + 1}";
+
       final id = const Uuid().v4();
       final user = UserModel(
-        id: id,
+        userId: generatedUserId,
+        roleCode: "Owner",
         firstName: fisrtName.trim(),
         lastName: lastName.trim(),
         email: email.trim(),

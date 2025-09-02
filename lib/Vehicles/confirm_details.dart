@@ -106,7 +106,11 @@ class _ConfirmDetailsState extends State<ConfirmDetails> {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (_) => VehicleDetailsScreen(),
+                                builder:
+                                    (_) => VehicleDetailsScreen(
+                                      data: '',
+                                      docId: '',
+                                    ),
                               ),
                             );
                           },

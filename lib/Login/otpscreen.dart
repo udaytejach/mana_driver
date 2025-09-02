@@ -5,10 +5,10 @@ import 'package:mana_driver/Bottom_NavigationBar/bottomNavigationBar.dart';
 import 'package:mana_driver/Widgets/colors.dart';
 import 'package:mana_driver/Widgets/customButton.dart';
 import 'package:mana_driver/Widgets/customText.dart';
+import 'package:mana_driver/l10n/app_localizations.dart';
 import 'package:mana_driver/viewmodels/login_viewmodel.dart';
 import 'package:pinput/pinput.dart';
 import 'package:provider/provider.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class OtpScreen extends StatefulWidget {
   final String phoneNumber;

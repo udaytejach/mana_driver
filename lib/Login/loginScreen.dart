@@ -3,6 +3,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:mana_driver/Login/registration.dart';
+import 'package:mana_driver/l10n/app_localizations.dart';
 import 'package:provider/provider.dart';
 import 'package:country_picker/country_picker.dart';
 import '../services/repository.dart';
@@ -12,7 +13,6 @@ import '../Widgets/colors.dart';
 import '../Widgets/customButton.dart';
 import '../Widgets/customText.dart';
 import '../Widgets/mobileNumberInputField.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class LoginScreen extends StatelessWidget {
   const LoginScreen({super.key});
