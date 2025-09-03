@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:mana_driver/Bottom_NavigationBar/bottomNavigationBar.dart';
 import 'package:mana_driver/SharedPreferences/shared_preferences.dart';
 import 'package:mana_driver/Vehicles/my_vehicle.dart';
 import 'package:mana_driver/Widgets/colors.dart';
@@ -265,7 +266,7 @@ class _AddNewVehicleState extends State<AddNewVehicle> {
   Future<void> _addVehicle() async {
     try {
       setState(() {
-        _isLoading = true; // start loader
+        _isLoading = true;
       });
       if (selectedBrand == null || selectedBrand!.isEmpty) {
         ScaffoldMessenger.of(
@@ -295,8 +296,27 @@ class _AddNewVehicleState extends State<AddNewVehicle> {
         return;
       }
 
-      String vehicleNumber = vehicleNumberController.text.trim().toUpperCase();
+      String rawInput = vehicleNumberController.text.trim();
 
+      if (rawInput.isEmpty) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text("Please enter vehicle number")),
+        );
+        return;
+      }
+
+      if (rawInput.contains(RegExp(r'[a-z]'))) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text(
+              "Vehicle number must be in CAPITAL letters (e.g. TS05BY1234)",
+            ),
+          ),
+        );
+        return;
+      }
+
+      String vehicleNumber = rawInput;
       if (!vehicleRegex.hasMatch(vehicleNumber)) {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
@@ -324,9 +344,9 @@ class _AddNewVehicleState extends State<AddNewVehicle> {
 
       int pickedImagesCount =
           images.where((img) => img != null).toList().length;
-      if (pickedImagesCount < 2) {
+      if (pickedImagesCount < 1) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text("Please upload at least 2 images")),
+          const SnackBar(content: Text("Please upload at least 1 image")),
         );
         return;
       }
@@ -367,7 +387,7 @@ class _AddNewVehicleState extends State<AddNewVehicle> {
 
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => MyVehicle()),
+        MaterialPageRoute(builder: (context) => BottomNavigation()),
       );
     } catch (e) {
       if (!mounted) return;
@@ -802,6 +822,7 @@ class _AddNewVehicleState extends State<AddNewVehicle> {
       child: TextFormField(
         maxLines: maxLines,
         controller: vehicleNumberController,
+        // textCapitalization: TextCapitalization.characters,
         style: TextStyle(
           color: korangeColor,
           fontSize: 14,

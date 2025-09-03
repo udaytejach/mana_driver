@@ -1,23 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:mana_driver/AppBar/notificationScreen.dart';
+import 'package:mana_driver/SharedPreferences/shared_preferences.dart';
 import 'package:mana_driver/Widgets/colors.dart';
 import 'package:mana_driver/Widgets/customText.dart';
-import 'package:mana_driver/viewmodels/login_viewmodel.dart';
-import 'package:provider/provider.dart';
 
 class CustomMainAppBar extends StatelessWidget implements PreferredSizeWidget {
   const CustomMainAppBar({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final vm = context.watch<LoginViewModel>();
+    // final vm = context.watch<LoginViewModel>();
+    final firstName = SharedPrefServices.getFirstName() ?? "";
+    final lastName = SharedPrefServices.getLastName() ?? "";
     final userName =
-        "${vm.loggedInUser?['firstName'] ?? ''} ${vm.loggedInUser?['lastName'] ?? ''}"
-                .trim()
-                .isEmpty
+        "$firstName $lastName".trim().isEmpty
             ? "Guest"
-            : "${vm.loggedInUser?['firstName'] ?? ''} ${vm.loggedInUser?['lastName'] ?? ''}"
-                .trim();
+            : "$firstName $lastName".trim();
 
     return AppBar(
       elevation: 0,

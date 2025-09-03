@@ -6,8 +6,6 @@ import 'package:mana_driver/Widgets/customButton.dart';
 import 'package:mana_driver/Widgets/customText.dart';
 import 'package:mana_driver/Widgets/customTextField.dart';
 import 'package:mana_driver/l10n/app_localizations.dart';
-import 'package:mana_driver/viewmodels/login_viewmodel.dart';
-import 'package:provider/provider.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
@@ -26,15 +24,25 @@ class _ProfileScreenState extends State<ProfileScreen> {
   @override
   void initState() {
     super.initState();
-    final vm = context.read<LoginViewModel>();
-    final user = vm.loggedInUser;
-    if (user != null) {
-      firstnameController.text = user['firstName'] ?? '';
-      lastnameController.text = user['lastName'] ?? '';
+    _loadUserFromPrefs();
+    // final vm = context.read<LoginViewModel>();
+    // final user = vm.loggedInUser;
+    // if (user != null) {
+    //   firstnameController.text = user['firstName'] ?? '';
+    //   lastnameController.text = user['lastName'] ?? '';
 
-      emailController.text = user['email'] ?? '';
-      phoneController.text = user['phone'] ?? '';
-    }
+    //   emailController.text = user['email'] ?? '';
+    //   phoneController.text = user['phone'] ?? '';
+    // }
+  }
+
+  Future<void> _loadUserFromPrefs() async {
+    firstnameController.text = await SharedPrefServices.getFirstName() ?? '';
+    lastnameController.text = await SharedPrefServices.getLastName() ?? '';
+    emailController.text = await SharedPrefServices.getEmail() ?? '';
+    phoneController.text = await SharedPrefServices.getNumber() ?? '';
+
+    setState(() {}); // update UI after assigning
   }
 
   String _getUserInitials() {

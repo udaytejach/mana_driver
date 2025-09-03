@@ -142,14 +142,21 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final vm = context.watch<LoginViewModel>();
+    // final vm = context.watch<LoginViewModel>();
+    // final userName =
+    //     "${vm.loggedInUser?['firstName'] ?? ''} ${vm.loggedInUser?['lastName'] ?? ''}"
+    //             .trim()
+    //             .isEmpty
+    //         ? "Guest"
+    //         : "${vm.loggedInUser?['firstName'] ?? ''} ${vm.loggedInUser?['lastName'] ?? ''}"
+    //             .trim();
+
+    final firstName = SharedPrefServices.getFirstName() ?? "";
+    final lastName = SharedPrefServices.getLastName() ?? "";
     final userName =
-        "${vm.loggedInUser?['firstName'] ?? ''} ${vm.loggedInUser?['lastName'] ?? ''}"
-                .trim()
-                .isEmpty
+        "$firstName $lastName".trim().isEmpty
             ? "Guest"
-            : "${vm.loggedInUser?['firstName'] ?? ''} ${vm.loggedInUser?['lastName'] ?? ''}"
-                .trim();
+            : "$firstName $lastName".trim();
     final localizations = AppLocalizations.of(context)!;
     return Scaffold(
       backgroundColor: Colors.white,
@@ -852,7 +859,7 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
       child: CustomText(
         text: text,
-        fontSize: 10,
+        fontSize: 9,
         fontWeight: FontWeight.w300,
         textcolor: KblackColor,
       ),
