@@ -9,7 +9,7 @@ import 'package:mana_driver/viewmodels/login_viewmodel.dart';
 import 'package:mana_driver/viewmodels/register_viewmodel.dart';
 import 'package:mana_driver/services/locale_provider.dart';
 import 'package:provider/provider.dart';
-// import 'package:firebase_auth/firebase_auth.dart';
+
 import 'package:mana_driver/Splashscreen/splashScreen.dart';
 import 'package:mana_driver/firebase_options.dart';
 
