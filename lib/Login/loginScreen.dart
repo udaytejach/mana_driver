@@ -1,7 +1,10 @@
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:mana_driver/Login/registration.dart';
 import 'package:mana_driver/l10n/app_localizations.dart';
 import 'package:provider/provider.dart';
@@ -70,125 +73,135 @@ class _LoginScreenBodyState extends State<_LoginScreenBody> {
     final vm = context.watch<LoginViewModel>();
     final state = vm.state;
 
-    return Scaffold(
-      backgroundColor: Colors.white,
-      body: SafeArea(
-        child: Column(
-          children: [
-            const Spacer(),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  CustomText(
-                    text: localizations.loginTitle,
-                    fontSize: 32,
-                    fontWeight: FontWeight.w700,
-                    textcolor: korangeColor,
-                  ),
-                  const SizedBox(height: 10),
-                  CustomText(
-                    text: localizations.loginSubtitle,
-                    fontSize: 14,
-                    fontWeight: FontWeight.w400,
-                    textcolor: kgreyColor,
-                  ),
-                  const SizedBox(height: 50),
-                  PhoneNumberInputField(
-                    controller: phoneController,
-                    selectedCountry: vm.selectedCountry,
-                    onCountryChanged: (Country country) {
-                      vm.setCountry(country);
-                    },
-                  ),
-                  if (state.errorMessage.isNotEmpty)
-                    Padding(
-                      padding: const EdgeInsets.only(top: 8),
-                      child: Text(
-                        state.errorMessage,
-                        style: const TextStyle(color: Colors.red),
-                      ),
-                    ),
-                ],
-              ),
-            ),
-            const Spacer(),
-
-            CustomButton(
-              text:
-                  state.isLoading
-                      ? localizations.checking
-                      : localizations.sendOtp,
-              onPressed:
-                  state.isLoading
-                      ? null
-                      : () async {
-                        final phoneNumber = phoneController.text.trim();
-                        if (phoneNumber.isEmpty) {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(
-                              content: Text("Please enter mobile number"),
-                            ),
-                          );
-                          return;
-                        }
-
-                        final exists = await _checkUserExists(phoneNumber);
-
-                        if (exists) {
-                          await vm.fetchLoggedInUser(phoneNumber);
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder:
-                                  (_) => OtpScreen(
-                                    phoneNumber: phoneNumber,
-                                    isTestOtp: true,
-                                  ),
-                            ),
-                          );
-                        } else {
-                          _handleSendOtp(context);
-                        }
-                      },
-              width: 220,
-              height: 50,
-            ),
-
-            const SizedBox(height: 10),
-
-            Padding(
-              padding: const EdgeInsets.only(bottom: 32),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  CustomText(
-                    text: localizations.noAccount,
-                    fontSize: 14,
-                    fontWeight: FontWeight.w500,
-                    textcolor: kgreyColor,
-                  ),
-                  GestureDetector(
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => RegisterScreen(),
-                        ),
-                      );
-                    },
-                    child: CustomText(
-                      text: localizations.register,
-                      fontSize: 14,
-                      fontWeight: FontWeight.w500,
+    return PopScope(
+      canPop: false,
+      onPopInvokedWithResult: (didPop, result) async {
+        if (didPop) return;
+        bool exitApp = await _showExitDialog(context);
+        if (exitApp) {
+          Navigator.of(context).pop(true);
+        }
+      },
+      child: Scaffold(
+        backgroundColor: Colors.white,
+        body: SafeArea(
+          child: Column(
+            children: [
+              const Spacer(),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    CustomText(
+                      text: localizations.loginTitle,
+                      fontSize: 32,
+                      fontWeight: FontWeight.w700,
                       textcolor: korangeColor,
                     ),
-                  ),
-                ],
+                    const SizedBox(height: 10),
+                    CustomText(
+                      text: localizations.loginSubtitle,
+                      fontSize: 14,
+                      fontWeight: FontWeight.w400,
+                      textcolor: kgreyColor,
+                    ),
+                    const SizedBox(height: 50),
+                    PhoneNumberInputField(
+                      controller: phoneController,
+                      selectedCountry: vm.selectedCountry,
+                      onCountryChanged: (Country country) {
+                        vm.setCountry(country);
+                      },
+                    ),
+                    if (state.errorMessage.isNotEmpty)
+                      Padding(
+                        padding: const EdgeInsets.only(top: 8),
+                        child: Text(
+                          state.errorMessage,
+                          style: const TextStyle(color: Colors.red),
+                        ),
+                      ),
+                  ],
+                ),
               ),
-            ),
-          ],
+              const Spacer(),
+
+              CustomButton(
+                text:
+                    state.isLoading
+                        ? localizations.checking
+                        : localizations.sendOtp,
+                onPressed:
+                    state.isLoading
+                        ? null
+                        : () async {
+                          final phoneNumber = phoneController.text.trim();
+                          if (phoneNumber.isEmpty) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: Text("Please enter mobile number"),
+                              ),
+                            );
+                            return;
+                          }
+
+                          final exists = await _checkUserExists(phoneNumber);
+
+                          if (exists) {
+                            await vm.fetchLoggedInUser(phoneNumber);
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder:
+                                    (_) => OtpScreen(
+                                      phoneNumber: phoneNumber,
+                                      isTestOtp: true,
+                                    ),
+                              ),
+                            );
+                          } else {
+                            _handleSendOtp(context);
+                          }
+                        },
+                width: 220,
+                height: 50,
+              ),
+
+              const SizedBox(height: 10),
+
+              Padding(
+                padding: const EdgeInsets.only(bottom: 32),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    CustomText(
+                      text: localizations.noAccount,
+                      fontSize: 14,
+                      fontWeight: FontWeight.w500,
+                      textcolor: kgreyColor,
+                    ),
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => RegisterScreen(),
+                          ),
+                        );
+                      },
+                      child: CustomText(
+                        text: localizations.register,
+                        fontSize: 14,
+                        fontWeight: FontWeight.w500,
+                        textcolor: korangeColor,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -202,5 +215,53 @@ class _LoginScreenBodyState extends State<_LoginScreenBody> {
             .limit(1)
             .get();
     return snapshot.docs.isNotEmpty;
+  }
+
+  Future<bool> _showExitDialog(BuildContext context) async {
+    return (await showDialog(
+          context: context,
+          builder:
+              (context) => AlertDialog(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                content: Text(
+                  'Do you want to exit the app ?',
+                  style: GoogleFonts.poppins(
+                    color: Colors.black,
+                    fontSize: 15,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+                actions: <Widget>[
+                  TextButton(
+                    onPressed: () => Navigator.of(context).pop(false),
+                    child: Text(
+                      'Cancel',
+                      style: GoogleFonts.poppins(
+                        color: korangeColor,
+                        fontSize: 14,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  ),
+                  TextButton(
+                    onPressed: () {
+                      Navigator.of(context).pop(true);
+                      exit(0);
+                    },
+                    child: Text(
+                      'Exit',
+                      style: GoogleFonts.poppins(
+                        color: korangeColor,
+                        fontSize: 14,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+        )) ??
+        false;
   }
 }

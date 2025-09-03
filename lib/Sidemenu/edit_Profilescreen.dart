@@ -1,5 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:mana_driver/Bottom_NavigationBar/bottomNavigationBar.dart';
+import 'package:mana_driver/SharedPreferences/shared_preferences.dart';
 import 'package:mana_driver/Sidemenu/profilePage.dart';
 import 'package:mana_driver/Widgets/colors.dart';
 import 'package:mana_driver/Widgets/customButton.dart';
@@ -56,8 +58,12 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     setState(() => isSaving = true);
 
     try {
-      final userId = vm.loggedInUser?['id'];
-
+      setState(() {
+        isSaving = true;
+      });
+      // final userId = vm.loggedInUser?['id'];
+      final userId = SharedPrefServices.getDocId();
+      print("User ID: $userId");
       if (userId != null) {
         await FirebaseFirestore.instance
             .collection('users')
@@ -81,7 +87,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
 
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (_) => ProfileScreen()),
+          MaterialPageRoute(builder: (_) => BottomNavigation()),
         );
       } else {
         ScaffoldMessenger.of(
@@ -93,8 +99,20 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
         context,
       ).showSnackBar(SnackBar(content: Text('Error updating profile: $e')));
     } finally {
-      setState(() => isSaving = false);
+      setState(() {
+        isSaving = false;
+      });
     }
+  }
+
+  String _getUserInitials() {
+    final first = SharedPrefServices.getFirstName();
+    final last = SharedPrefServices.getLastName();
+
+    String firstInitial = first!.isNotEmpty ? first[0].toUpperCase() : '';
+    String lastInitial = last!.isNotEmpty ? last[0].toUpperCase() : '';
+
+    return firstInitial + lastInitial;
   }
 
   @override
@@ -139,85 +157,111 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
         ),
       ),
 
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.all(20.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Center(
-                child: Stack(
-                  clipBehavior: Clip.none,
-                  children: [
-                    const CircleAvatar(
-                      radius: 55,
-                      backgroundColor: Color(0xFFE0E0E0),
-                      backgroundImage: AssetImage('images/user.png'),
-                    ),
+      body: Stack(
+        children: [
+          SingleChildScrollView(
+            child: Padding(
+              padding: const EdgeInsets.all(20.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Center(
+                    child: Stack(
+                      clipBehavior: Clip.none,
+                      children: [
+                        CircleAvatar(
+                          radius: 55,
+                          backgroundColor: KlightgreyColor,
+                          backgroundImage:
+                              SharedPrefServices.getProfileImage() != null &&
+                                      SharedPrefServices.getProfileImage()!
+                                          .isNotEmpty
+                                  ? NetworkImage(
+                                    SharedPrefServices.getProfileImage()!,
+                                  )
+                                  : null,
+                          child:
+                              (SharedPrefServices.getProfileImage() == null ||
+                                      SharedPrefServices.getProfileImage()!
+                                          .isEmpty)
+                                  ? Text(
+                                    _getUserInitials(),
+                                    style: const TextStyle(
+                                      fontSize: 25,
+                                      fontWeight: FontWeight.w600,
+                                      color: Color(0xFFC7D5E7),
+                                    ),
+                                  )
+                                  : null,
+                        ),
 
-                    Positioned(
-                      right: 0,
-                      bottom: 0,
-                      child: CircleAvatar(
-                        backgroundColor: korangeColor,
-                        radius: 18,
-                        child: Image.asset("images/camera.png"),
+                        Positioned(
+                          right: 0,
+                          bottom: 0,
+                          child: CircleAvatar(
+                            backgroundColor: korangeColor,
+                            radius: 18,
+                            child: Image.asset("images/camera.png"),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+
+                  const SizedBox(height: 40),
+                  CustomTextField(
+                    controller: firstnameController,
+                    labelText: localizations.p_firstName,
+                  ),
+                  const SizedBox(height: 20),
+
+                  CustomTextField(
+                    controller: lastnameController,
+                    labelText: localizations.p_lastName,
+                  ),
+
+                  const SizedBox(height: 20),
+
+                  CustomTextField(
+                    controller: emailController,
+                    labelText: localizations.p_email,
+                  ),
+
+                  const SizedBox(height: 20),
+
+                  CustomTextField(
+                    controller: phoneController,
+                    labelText: localizations.p_phoneNumner,
+                    readOnly: true,
+                    suffix: Text(
+                      localizations.p_verified,
+                      style: TextStyle(
+                        color: Colors.green,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 14,
                       ),
                     ),
-                  ],
-                ),
-              ),
-
-              const SizedBox(height: 40),
-              CustomTextField(
-                controller: firstnameController,
-                labelText: localizations.p_firstName,
-              ),
-              const SizedBox(height: 20),
-
-              CustomTextField(
-                controller: lastnameController,
-                labelText: localizations.p_lastName,
-              ),
-
-              const SizedBox(height: 20),
-
-              CustomTextField(
-                controller: emailController,
-                labelText: localizations.p_email,
-              ),
-
-              const SizedBox(height: 20),
-
-              CustomTextField(
-                controller: phoneController,
-                labelText: localizations.p_phoneNumner,
-                readOnly: true,
-                suffix: Text(
-                  localizations.p_verified,
-                  style: TextStyle(
-                    color: Colors.green,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 14,
                   ),
-                ),
-              ),
 
-              SizedBox(height: 100),
-              Center(
-                child: CustomButton(
-                  text:
-                      isSaving
-                          ? localizations.menuSaving
-                          : localizations.menuSave,
-                  onPressed: isSaving ? null : saveProfile,
-                  width: double.infinity,
-                  height: 50,
-                ),
+                  SizedBox(height: 100),
+                  Center(
+                    child: CustomButton(
+                      text:
+                          isSaving
+                              ? localizations.menuSaving
+                              : localizations.menuSave,
+                      onPressed: isSaving ? null : saveProfile,
+                      width: double.infinity,
+                      height: 50,
+                    ),
+                  ),
+                ],
               ),
-            ],
+            ),
           ),
-        ),
+          if (isSaving)
+            Center(child: CircularProgressIndicator(color: korangeColor)),
+        ],
       ),
     );
   }

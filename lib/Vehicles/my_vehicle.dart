@@ -26,7 +26,10 @@ class _MyVehicleState extends State<MyVehicle> {
   Future<void> _fetchCars() async {
     try {
       QuerySnapshot snapshot =
-          await FirebaseFirestore.instance.collection("vehicles").get();
+          await FirebaseFirestore.instance
+              .collection("vehicles")
+              .where('userId', isEqualTo: SharedPrefServices.getUserId())
+              .get();
 
       List<Map<String, dynamic>> loadedCars =
           snapshot.docs.map((doc) {
@@ -52,6 +55,7 @@ class _MyVehicleState extends State<MyVehicle> {
     }
   }
 
+  bool isLoading = false;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -93,8 +97,23 @@ class _MyVehicleState extends State<MyVehicle> {
         ),
       ),
       body:
-          carList.isEmpty
+          isLoading
               ? const Center(child: CircularProgressIndicator())
+              : carList.isEmpty
+              ? Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    CustomText(
+                      text: 'No Vehicles Found',
+                      fontSize: 16,
+                      fontWeight: FontWeight.w500,
+                      textcolor: Colors.grey,
+                    ),
+                    const SizedBox(height: 10),
+                  ],
+                ),
+              )
               : Container(
                 margin: const EdgeInsets.symmetric(horizontal: 15),
                 child: Column(
@@ -116,6 +135,7 @@ class _MyVehicleState extends State<MyVehicle> {
                       textcolor: kgreyColor,
                     ),
                     const SizedBox(height: 20),
+
                     Expanded(
                       child: ListView.builder(
                         itemCount: carList.length,

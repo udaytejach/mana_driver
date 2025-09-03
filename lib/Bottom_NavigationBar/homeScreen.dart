@@ -486,35 +486,26 @@ class _HomeScreenState extends State<HomeScreen> {
                         fontWeight: FontWeight.bold,
                         textcolor: KblackColor,
                       ),
-                      carList.isNotEmpty
-                          ? GestureDetector(
-                            onTap: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(builder: (_) => MyVehicle()),
-                              );
-                            },
-                            child: Text(
-                              localizations.viewVehicles,
-                              style: GoogleFonts.poppins(
-                                fontSize: 12,
-                                fontWeight: FontWeight.w400,
-                                color: korangeColor,
-                                decoration: TextDecoration.underline,
-                                decorationColor: korangeColor,
-                                decorationStyle: TextDecorationStyle.solid,
-                                decorationThickness: 1.5,
-                              ),
-                            ),
-                          )
-                          : Text(
-                            "",
-                            style: GoogleFonts.poppins(
-                              fontSize: 12,
-                              fontWeight: FontWeight.w400,
-                              color: Colors.grey,
-                            ),
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (_) => MyVehicle()),
+                          );
+                        },
+                        child: Text(
+                          localizations.viewVehicles,
+                          style: GoogleFonts.poppins(
+                            fontSize: 12,
+                            fontWeight: FontWeight.w400,
+                            color: korangeColor,
+                            decoration: TextDecoration.underline,
+                            decorationColor: korangeColor,
+                            decorationStyle: TextDecorationStyle.solid,
+                            decorationThickness: 1.5,
                           ),
+                        ),
+                      ),
                     ],
                   ),
 
