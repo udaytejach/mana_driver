@@ -95,7 +95,7 @@ class _MyAddressScreenState extends State<MyAddressScreen> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               CustomText(
-                                text: localizations.address + ",",
+                                text: localizations.address,
                                 fontSize: 16,
                                 fontWeight: FontWeight.w600,
                                 textcolor: korangeColor,

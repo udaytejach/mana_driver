@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:mana_driver/SharedPreferences/shared_preferences.dart';
 import 'package:mana_driver/Sidemenu/edit_Profilescreen.dart';
-
 import 'package:mana_driver/Widgets/colors.dart';
 import 'package:mana_driver/Widgets/customButton.dart';
 import 'package:mana_driver/Widgets/customText.dart';
 import 'package:mana_driver/Widgets/customTextField.dart';
+import 'package:mana_driver/l10n/app_localizations.dart';
 import 'package:mana_driver/viewmodels/login_viewmodel.dart';
 import 'package:provider/provider.dart';
 
@@ -37,18 +36,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
     }
   }
 
-  String _getUserInitials() {
-    final first = SharedPrefServices.getFirstName();
-    final last = SharedPrefServices.getLastName();
-
-    String firstInitial = first!.isNotEmpty ? first[0].toUpperCase() : '';
-    String lastInitial = last!.isNotEmpty ? last[0].toUpperCase() : '';
-
-    return firstInitial + lastInitial;
-  }
-
   @override
   Widget build(BuildContext context) {
+    final localizations = AppLocalizations.of(context)!;
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
@@ -76,7 +66,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               ),
               Center(
                 child: CustomText(
-                  text: "Profile",
+                  text: localizations.profile,
                   textcolor: KblackColor,
                   fontWeight: FontWeight.w600,
                   fontSize: 22,
@@ -96,39 +86,21 @@ class _ProfileScreenState extends State<ProfileScreen> {
               child: Stack(
                 clipBehavior: Clip.none,
                 children: [
-                  CircleAvatar(
+                  const CircleAvatar(
                     radius: 55,
-                    backgroundColor: KlightgreyColor,
-                    backgroundImage:
-                        SharedPrefServices.getProfileImage() != null &&
-                                SharedPrefServices.getProfileImage()!.isNotEmpty
-                            ? NetworkImage(
-                              SharedPrefServices.getProfileImage()!,
-                            )
-                            : null,
-                    child:
-                        (SharedPrefServices.getProfileImage() == null ||
-                                SharedPrefServices.getProfileImage()!.isEmpty)
-                            ? Text(
-                              _getUserInitials(),
-                              style: const TextStyle(
-                                fontSize: 36,
-                                fontWeight: FontWeight.w600,
-                                color: Color(0xFFC7D5E7),
-                              ),
-                            )
-                            : null,
+                    backgroundColor: Color(0xFFE0E0E0),
+                    backgroundImage: AssetImage('images/user.png'),
                   ),
 
-                  // Positioned(
-                  //   right: 0,
-                  //   bottom: 0,
-                  //   child: CircleAvatar(
-                  //     backgroundColor: korangeColor,
-                  //     radius: 18,
-                  //     child: Image.asset("images/camera.png"),
-                  //   ),
-                  // ),
+                  Positioned(
+                    right: 0,
+                    bottom: 0,
+                    child: CircleAvatar(
+                      backgroundColor: korangeColor,
+                      radius: 18,
+                      child: Image.asset("images/camera.png"),
+                    ),
+                  ),
                 ],
               ),
             ),
@@ -137,21 +109,21 @@ class _ProfileScreenState extends State<ProfileScreen> {
             CustomTextField(
               controller: firstnameController,
               readOnly: true,
-              labelText: 'First Name',
+              labelText: localizations.p_firstName,
             ),
 
             const SizedBox(height: 20),
             CustomTextField(
               controller: lastnameController,
               readOnly: true,
-              labelText: 'last Name',
+              labelText: localizations.p_lastName,
             ),
 
             const SizedBox(height: 20),
 
             CustomTextField(
               controller: emailController,
-              labelText: 'Email address',
+              labelText: localizations.p_email,
               readOnly: true,
             ),
 
@@ -159,10 +131,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
             CustomTextField(
               controller: phoneController,
-              labelText: 'Mobile Number',
+              labelText: localizations.p_phoneNumner,
               readOnly: true,
-              suffix: const Text(
-                "Verified",
+              suffix: Text(
+                localizations.p_verified,
                 style: TextStyle(
                   color: Colors.green,
                   fontWeight: FontWeight.bold,
@@ -174,7 +146,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
             const Spacer(),
             Center(
               child: CustomButton(
-                text: 'Edit Profile',
+                text: localizations.p_editProfile,
                 onPressed: () {
                   Navigator.push(
                     context,

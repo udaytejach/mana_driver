@@ -1,19 +1,13 @@
-import 'dart:io';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
-import 'package:mana_driver/Bottom_NavigationBar/bottomNavigationBar.dart';
-import 'package:mana_driver/Bottom_NavigationBar/homeScreen.dart';
-import 'package:mana_driver/SharedPreferences/shared_preferences.dart';
 import 'package:mana_driver/Sidemenu/profilePage.dart';
-
 import 'package:mana_driver/Widgets/colors.dart';
 import 'package:mana_driver/Widgets/customButton.dart';
 import 'package:mana_driver/Widgets/customText.dart';
 import 'package:mana_driver/Widgets/customTextField.dart';
 import 'package:mana_driver/viewmodels/login_viewmodel.dart';
 import 'package:provider/provider.dart';
+import 'package:mana_driver/l10n/app_localizations.dart';
 
 class EditProfileScreen extends StatefulWidget {
   final String firstName;
@@ -56,104 +50,13 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     super.dispose();
   }
 
-  String _getUserInitials() {
-    final first = SharedPrefServices.getFirstName();
-    final last = SharedPrefServices.getLastName();
-
-    String firstInitial = first!.isNotEmpty ? first[0].toUpperCase() : '';
-    String lastInitial = last!.isNotEmpty ? last[0].toUpperCase() : '';
-
-    return firstInitial + lastInitial;
-  }
-
-  List<File?> images = [];
-  File? _profileImage;
-
-  void _pickImage() async {
-    showDialog(
-      context: context,
-      builder:
-          (context) => SimpleDialog(
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(10),
-            ),
-            title: const Center(child: Text("Select Image From")),
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  SimpleDialogOption(
-                    onPressed: () async {
-                      Navigator.pop(context);
-                      final pickedImage = await ImagePicker().pickImage(
-                        source: ImageSource.camera,
-                      );
-                      if (pickedImage != null) {
-                        setState(() {
-                          _profileImage = File(pickedImage.path);
-                        });
-                      }
-                    },
-                    child: Row(
-                      children: const [
-                        Icon(Icons.camera, size: 18, color: Colors.orange),
-                        SizedBox(width: 8),
-                        Text("Camera"),
-                      ],
-                    ),
-                  ),
-                  SimpleDialogOption(
-                    onPressed: () async {
-                      Navigator.pop(context);
-                      final pickedImage = await ImagePicker().pickImage(
-                        source: ImageSource.gallery,
-                      );
-                      if (pickedImage != null) {
-                        setState(() {
-                          _profileImage = File(pickedImage.path);
-                        });
-                      }
-                    },
-                    child: Row(
-                      children: const [
-                        Icon(
-                          Icons.photo_library,
-                          size: 18,
-                          color: Colors.orange,
-                        ),
-                        SizedBox(width: 8),
-                        Text("Gallery"),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-            ],
-          ),
-    );
-  }
-
-  Future<File?> pickImage(BuildContext context) async {
-    File? image;
-    try {
-      final pickedImage = await ImagePicker().pickImage(
-        source: ImageSource.gallery,
-      );
-      if (pickedImage != null) {
-        image = File(pickedImage.path);
-      }
-    } catch (e) {}
-
-    return image;
-  }
-
   Future<void> saveProfile() async {
     final vm = Provider.of<LoginViewModel>(context, listen: false);
 
     setState(() => isSaving = true);
 
     try {
-      final userId = SharedPrefServices.getDocId();
+      final userId = vm.loggedInUser?['id'];
 
       if (userId != null) {
         await FirebaseFirestore.instance
@@ -176,9 +79,9 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
           const SnackBar(content: Text('Profile updated successfully!')),
         );
 
-        Navigator.pushReplacement(
+        Navigator.push(
           context,
-          MaterialPageRoute(builder: (_) => BottomNavigation()),
+          MaterialPageRoute(builder: (_) => ProfileScreen()),
         );
       } else {
         ScaffoldMessenger.of(
@@ -196,6 +99,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final localizations = AppLocalizations.of(context)!;
     return Scaffold(
       resizeToAvoidBottomInset: true,
       appBar: AppBar(
@@ -224,7 +128,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
               ),
               Center(
                 child: CustomText(
-                  text: "Edit Profile",
+                  text: localizations.p_editProfile,
                   textcolor: KblackColor,
                   fontWeight: FontWeight.w600,
                   fontSize: 22,
@@ -235,9 +139,9 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
         ),
       ),
 
-      body: Padding(
-        padding: const EdgeInsets.all(20.0),
-        child: SingleChildScrollView(
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.all(20.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -245,46 +149,19 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                 child: Stack(
                   clipBehavior: Clip.none,
                   children: [
-                    CircleAvatar(
+                    const CircleAvatar(
                       radius: 55,
-                      backgroundColor: Colors.grey.shade300,
-                      backgroundImage:
-                          _profileImage != null
-                              ? FileImage(_profileImage!)
-                              : (SharedPrefServices.getProfileImage() != null &&
-                                  SharedPrefServices.getProfileImage()!
-                                      .isNotEmpty)
-                              ? NetworkImage(
-                                SharedPrefServices.getProfileImage()!,
-                              )
-                              : null,
-                      child:
-                          (_profileImage == null &&
-                                  (SharedPrefServices.getProfileImage() ==
-                                          null ||
-                                      SharedPrefServices.getProfileImage()!
-                                          .isEmpty))
-                              ? Text(
-                                _getUserInitials(),
-                                style: const TextStyle(
-                                  fontSize: 36,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.white,
-                                ),
-                              )
-                              : null,
+                      backgroundColor: Color(0xFFE0E0E0),
+                      backgroundImage: AssetImage('images/user.png'),
                     ),
 
                     Positioned(
                       right: 0,
                       bottom: 0,
-                      child: GestureDetector(
-                        onTap: () => _pickImage(),
-                        child: CircleAvatar(
-                          backgroundColor: korangeColor,
-                          radius: 18,
-                          child: Image.asset("images/camera.png"),
-                        ),
+                      child: CircleAvatar(
+                        backgroundColor: korangeColor,
+                        radius: 18,
+                        child: Image.asset("images/camera.png"),
                       ),
                     ),
                   ],
@@ -294,37 +171,34 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
               const SizedBox(height: 40),
               CustomTextField(
                 controller: firstnameController,
-                labelText: 'First Name',
+                labelText: localizations.p_firstName,
               ),
               const SizedBox(height: 20),
 
               CustomTextField(
                 controller: lastnameController,
-                labelText: 'Last Name',
+                labelText: localizations.p_lastName,
               ),
 
               const SizedBox(height: 20),
 
               CustomTextField(
                 controller: emailController,
-                labelText: 'Email address',
+                labelText: localizations.p_email,
               ),
 
               const SizedBox(height: 20),
 
               CustomTextField(
                 controller: phoneController,
-                labelText: 'Mobile Number',
+                labelText: localizations.p_phoneNumner,
                 readOnly: true,
-
-                suffix: const Text(
-                  "Verified",
+                suffix: Text(
+                  localizations.p_verified,
                   style: TextStyle(
                     color: Colors.green,
                     fontWeight: FontWeight.bold,
                     fontSize: 14,
-                    decoration: TextDecoration.underline,
-                    decorationColor: Colors.green,
                   ),
                 ),
               ),
@@ -332,7 +206,10 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
               SizedBox(height: 100),
               Center(
                 child: CustomButton(
-                  text: isSaving ? 'Saving...' : 'Update Profile',
+                  text:
+                      isSaving
+                          ? localizations.menuSaving
+                          : localizations.menuSave,
                   onPressed: isSaving ? null : saveProfile,
                   width: double.infinity,
                   height: 50,

@@ -12,10 +12,12 @@ class AppLocalizationsEn extends AppLocalizations {
   String get appTitle => 'Mana Driver';
 
   @override
-  String get selectLanguageTitle => 'We support multiple languages to make you feel at home.';
+  String get selectLanguageTitle =>
+      'We support multiple languages to make you feel at home.';
 
   @override
-  String get selectLanguageSubtitle => 'Tap to continue in your chosen language.';
+  String get selectLanguageSubtitle =>
+      'Tap to continue in your chosen language.';
 
   @override
   String get chooseLanguage => 'Choose Language';
@@ -24,10 +26,12 @@ class AppLocalizationsEn extends AppLocalizations {
   String get continueButton => 'Continue';
 
   @override
-  String get loginTitle => 'We\'re ready when you are. Sign in and continue your ride.';
+  String get loginTitle =>
+      'We\'re ready when you are. Sign in and continue your ride.';
 
   @override
-  String get loginSubtitle => 'Enter your mobile number to get started we\'ll send you an OTP for verification.';
+  String get loginSubtitle =>
+      'Enter your mobile number to get started we\'ll send you an OTP for verification.';
 
   @override
   String get checking => 'Checking...';
@@ -171,16 +175,19 @@ class AppLocalizationsEn extends AppLocalizations {
   String get address => 'Address,';
 
   @override
-  String get dummy_adres => 'St.No.98, Main Rd, Near JLN House Serilingampally, Kondapur,  500084';
+  String get dummy_adres =>
+      'St.No.98, Main Rd, Near JLN House Serilingampally, Kondapur,  500084';
 
   @override
   String get add_new_Address => 'Add New Address';
 
   @override
-  String get fav_dummy_text => 'You don’t Favourite Drivers at the moment please try after sometime.';
+  String get fav_dummy_text =>
+      'You don’t Favourite Drivers at the moment please try after sometime.';
 
   @override
-  String get offer_dummy_text => 'You don’t have offers at the moment. Please try again later.';
+  String get offer_dummy_text =>
+      'You don’t have offers at the moment. Please try again later.';
 
   @override
   String get rat_Txt1 => 'Refer to your friend and get Rewards of 100/-';
@@ -192,7 +199,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get rat_Txt3 => 'Your friend signup';
 
   @override
-  String get rat_Txt4 => 'You’ll both get cash when your friend first book a ride';
+  String get rat_Txt4 =>
+      'You’ll both get cash when your friend first book a ride';
 
   @override
   String get rat_Txt5 => 'Send a Invitation';
@@ -201,55 +209,64 @@ class AppLocalizationsEn extends AppLocalizations {
   String get tDt1 => '1. Introduction';
 
   @override
-  String get tD_D1 => 'Welcome to our app. By using this application, you agree to the following terms and conditions.';
+  String get tD_D1 =>
+      'Welcome to our app. By using this application, you agree to the following terms and conditions.';
 
   @override
   String get tDt2 => '2. User Obligations';
 
   @override
-  String get tD_D2 => 'Users must ensure all information provided is accurate and must not misuse the service.';
+  String get tD_D2 =>
+      'Users must ensure all information provided is accurate and must not misuse the service.';
 
   @override
   String get tDt3 => '3. Account Security';
 
   @override
-  String get tD_D3 => 'You are responsible for maintaining the confidentiality of your account credentials.';
+  String get tD_D3 =>
+      'You are responsible for maintaining the confidentiality of your account credentials.';
 
   @override
   String get tDt4 => '4. Data Privacy';
 
   @override
-  String get tD_D4 => 'We value your privacy. Your data is stored securely and handled as per our privacy policy.';
+  String get tD_D4 =>
+      'We value your privacy. Your data is stored securely and handled as per our privacy policy.';
 
   @override
   String get tDt5 => '5. Intellectual Property';
 
   @override
-  String get tD_D5 => 'All content in the app is protected by copyright and may not be reused without permission.';
+  String get tD_D5 =>
+      'All content in the app is protected by copyright and may not be reused without permission.';
 
   @override
   String get tDt6 => '6. Service Changes';
 
   @override
-  String get tD_D6 => 'We reserve the right to modify or discontinue the service without notice.';
+  String get tD_D6 =>
+      'We reserve the right to modify or discontinue the service without notice.';
 
   @override
   String get tDt7 => '7. Termination';
 
   @override
-  String get tD_D7 => 'We may suspend or terminate your access if you violate any terms outlined here.';
+  String get tD_D7 =>
+      'We may suspend or terminate your access if you violate any terms outlined here.';
 
   @override
   String get tDt8 => '8. Third-party Links';
 
   @override
-  String get tD_D8 => 'We may include links to third-party sites. We are not responsible for their content.';
+  String get tD_D8 =>
+      'We may include links to third-party sites. We are not responsible for their content.';
 
   @override
   String get tDt9 => '9. Governing Law';
 
   @override
-  String get tD_D9 => 'These terms shall be governed in accordance with the laws of your country or region.';
+  String get tD_D9 =>
+      'These terms shall be governed in accordance with the laws of your country or region.';
 
   @override
   String get hS_t1 => 'How can I help you today?';
@@ -267,7 +284,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get cP_q1 => '1. Free Cancellation Window';
 
   @override
-  String get cP_a1 => 'You can cancel your booking within 5 minutes of confirmation without any charges.';
+  String get cP_a1 =>
+      'You can cancel your booking within 5 minutes of confirmation without any charges.';
 
   @override
   String get cP_q2 => '2. Cancellation After 5 Minutes';
@@ -285,26 +303,58 @@ class AppLocalizationsEn extends AppLocalizations {
   String get cP_q3 => '3. No-Show Policy (Customer absent)';
 
   @override
-  String get cP_a3 => 'If customer is not available at pickup point even after 15 minutes, trip will be auto-cancelled. #100 will be charged as no-show';
+  String get cP_a3 =>
+      'If customer is not available at pickup point even after 15 minutes, trip will be auto-cancelled. #100 will be charged as no-show';
 
   @override
   String get cP_q4 => '4. Driver Cancellation';
 
   @override
-  String get cP_a4 => 'If a driver cancels after accepting, we will reassign another driver. Repeated cancellations by drivers will lead to penalties and suspension.';
+  String get cP_a4 =>
+      'If a driver cancels after accepting, we will reassign another driver. Repeated cancellations by drivers will lead to penalties and suspension.';
 
   @override
   String get cP_q5 => '5. Refund Timeline';
 
   @override
-  String get cP_a5 => 'If you paid online, eligible refunds will be processed within 3-5 business days.';
+  String get cP_a5 =>
+      'If you paid online, eligible refunds will be processed within 3-5 business days.';
 
   @override
-  String get mDdisk => 'Mana Driver - Mee Vahanam, Maa Driver!\nMana Driver is your trusted platform to book professional, verified drivers anytime you need. Whether it\'s a one-way ride, round trip, hourly booking, or outstation travel - we\'ve got you covered.';
+  String get mDdisk =>
+      'Mana Driver - Mee Vahanam, Maa Driver!\nMana Driver is your trusted platform to book professional, verified drivers anytime you need. Whether it\'s a one-way ride, round trip, hourly booking, or outstation travel - we\'ve got you covered.';
 
   @override
   String get dA_t1 => 'Warning';
 
   @override
   String get dA_t2 => 'Are you sure want to delete your account?';
+
+  @override
+  String get profile => 'Profile';
+  @override
+  String get p_firstName => 'First Name';
+  @override
+  String get p_lastName => 'last Name';
+  @override
+  String get p_email => 'Email Address';
+  @override
+  String get p_phoneNumner => 'Phone Number';
+  @override
+  String get p_verified => 'Verified';
+  @override
+  String get p_editProfile => 'Edit Profile';
+  @override
+  String get home_viewoffers => 'View Offers';
+  @override
+  String get home_watch => 'Watch & Learn';
+  @override
+  String get home_prem => 'PREMIUM FEEL FOR DRIVER SERVICES';
+  @override
+  String get home_india => 'Made in India';
+
+  @override
+  String get menuSave => 'Save';
+  @override
+  String get menuSaving => 'Saving...';
 }

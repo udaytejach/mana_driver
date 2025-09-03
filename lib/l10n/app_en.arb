@@ -54,6 +54,8 @@
 "menuCancel" : "Cancel",
 "menuUpdate" : "Update",
 "menuDelete" : "Delete",
+"menuSave" : "Save",
+"menuSaving" : "Saving...",
 "address" : "Address,",
 "dummy_adres":  "St.No.98, Main Rd, Near JLN House Serilingampally, Kondapur,  500084",
 "add_new_Address" : "Add New Address",
@@ -100,5 +102,16 @@
 "cP_a5":"If you paid online, eligible refunds will be processed within 3-5 business days.",
 "mDdisk": "Mana Driver - Mee Vahanam, Maa Driver!\nMana Driver is your trusted platform to book professional, verified drivers anytime you need. Whether it's a one-way ride, round trip, hourly booking, or outstation travel - we've got you covered.",
 "dA_t1": "Warning",
-"dA_t2": "Are you sure want to delete your account?"
+"dA_t2": "Are you sure want to delete your account?",
+"profile": "Profile",
+"p_firstName": "First Name",
+"p_lastName": "last Name",
+"p_email": "Email Address",
+"p_phoneNumner": "Phone Number",
+"p_verified": "Verified",
+"p_editProfile": "Edit Profile",
+"home_viewoffers":"View Offers",
+"home_watch":"Watch & Learn",
+"home_prem":"PREMIUM FEEL FOR DRIVER SERVICES",
+"home_india":"Made in India"
 }

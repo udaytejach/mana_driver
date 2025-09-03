@@ -703,13 +703,13 @@ class _HomeScreenState extends State<HomeScreen> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       CustomText(
-                        text: 'Offers',
+                        text: localizations.menuOffers,
                         fontSize: 18,
                         fontWeight: FontWeight.bold,
                         textcolor: KblackColor,
                       ),
                       Text(
-                        'View Offers',
+                        localizations.home_viewoffers,
                         style: GoogleFonts.poppins(
                           fontSize: 12,
                           fontWeight: FontWeight.w400,
@@ -767,7 +767,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   CustomText(
-                    text: 'Watch & Learn',
+                    text: localizations.home_watch,
                     fontSize: 18,
                     fontWeight: FontWeight.bold,
                     textcolor: KblackColor,
@@ -809,7 +809,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   SizedBox(
                     width: 200,
                     child: Text(
-                      'PREMIUM FEEL FOR DRIVER SERVICES ✨',
+                      localizations.home_prem + ' ✨',
                       style: GoogleFonts.poppins(
                         fontSize: 25,
                         fontWeight: FontWeight.w600,
@@ -824,9 +824,10 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                   SizedBox(height: 15),
                   Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       CustomText(
-                        text: 'Made in India',
+                        text: localizations.home_india,
                         fontSize: 18,
                         fontWeight: FontWeight.w500,
                         textcolor: KbottomnaviconColor,
