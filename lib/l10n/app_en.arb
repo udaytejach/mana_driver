@@ -113,5 +113,18 @@
 "home_viewoffers":"View Offers",
 "home_watch":"Watch & Learn",
 "home_prem":"PREMIUM FEEL FOR DRIVER SERVICES",
-"home_india":"Made in India"
+"home_india":"Made in India",
+"veh_list_dummy":"No Vehicles Found",
+"veh_list_rec":"Recent Added Cars",
+"add_new_Vehicle" : "Add New Vehicle",
+"add_veh_desc" : "Save your vehicle and get one step closer to hassle-free rides.",
+"add_veh_imgs":"Upload Vehicle Images",
+"veh_brand" : "Vehicle Brand",
+"veh_model" : "Vehicle Model",
+"veh_cat" : "Vehicle Category",
+"veh_num" : "Enter Vehicle Number",
+"veh_fuel" : "Fuel Type",
+"veh_trans" : "Transmission",
+"veh_Ac" : "AC Available",
+"add_Vehicle" : "Add Vehicle"
 }

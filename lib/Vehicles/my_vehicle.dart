@@ -6,6 +6,7 @@ import 'package:mana_driver/Vehicles/add_new_vehicle.dart';
 import 'package:mana_driver/Vehicles/vehicle_details.dart';
 import 'package:mana_driver/Widgets/colors.dart';
 import 'package:mana_driver/Widgets/customText.dart';
+import 'package:mana_driver/l10n/app_localizations.dart';
 
 class MyVehicle extends StatefulWidget {
   const MyVehicle({super.key});
@@ -58,6 +59,7 @@ class _MyVehicleState extends State<MyVehicle> {
   bool isLoading = false;
   @override
   Widget build(BuildContext context) {
+    final localizations = AppLocalizations.of(context)!;
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -86,7 +88,7 @@ class _MyVehicleState extends State<MyVehicle> {
               ),
               Center(
                 child: CustomText(
-                  text: "My Vehicles",
+                  text: localizations.myVehicles,
                   textcolor: KblackColor,
                   fontWeight: FontWeight.w600,
                   fontSize: 22,
